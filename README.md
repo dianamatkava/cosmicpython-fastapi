@@ -27,3 +27,6 @@ flask db init
 flask db migrate
 flask db upgrade
 ```
+
+# Examples
+[Figma Design](AbritrageTraffic.pdf)

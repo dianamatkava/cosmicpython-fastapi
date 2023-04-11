@@ -1,5 +1,5 @@
 import json
-from flask import Flask
+from flask import Flask, render_template
 
 
 app = Flask(__name__)
@@ -7,4 +7,4 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def form():
-    return json.dumps({'status': 'OK'})
+    return render_template('arb-form.html')

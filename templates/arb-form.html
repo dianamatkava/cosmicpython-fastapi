@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style='width: 400px; margin: auto; position: relative; top: 200px' id='validate-input'>
+        
+        <label class="form-label" for="customFile" style='margin-bottom: 20px; font-size: 20px; font-weight: 700'>Validate an <span style='color: red'>IBAN</span>:</label>
+        <input type="text" name = "IBAN" class="form-control" id="IBAN" required placeholder='MEkk bbbc cccc cccc cccc xx'/>
+        <input type = "submit" value = "Submit" onClick=validateIBAN() class="btn btn-outline-dark w-100 mt-3" /></p>
+        <p id='message' style='color: red; font-size: smaller'></p>
+    </div>
+</body>
+</html>

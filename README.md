@@ -29,4 +29,4 @@ flask db upgrade
 ```
 
 # Examples
-[Figma Design](AbritrageTraffic.pdf)
+[Figma Design](static\pdf\AbritrageTraffic.pdf)

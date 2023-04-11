@@ -16,17 +16,28 @@ source venv/bin/activate (Linux)
 pip install -r requirements.txt
 ```
 
-## Run server:
+## Run server in development mod:
 ```bash
 flask --app app --debug run
 ```
 
-## Init DB:
+# Front end
+## Build tailwind css
+``` bash
+npx tailwindcss -i ./static/css/index.css -o ./static/css/output.css
+```
+
+## Watch tailwind css
+``` bash
+npx tailwindcss -i ./static/css/index.css -o ./static/css/output.css --watch
+```
+
+<!-- ## Init DB:
 ```bash
 flask db init
 flask db migrate
 flask db upgrade
-```
+``` -->
 
 # Examples
-[Figma Design](AbritrageTraffic.pdf)
+[Figma Design](./static/pdf/AbritrageTraffic.pdf)

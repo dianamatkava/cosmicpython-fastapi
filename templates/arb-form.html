@@ -4,15 +4,50 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/css/output.css" rel="stylesheet">
+    <link href="static/css/main.css" rel="stylesheet">
+
+    <!-- Font Family -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
-    <div style='width: 400px; margin: auto; position: relative; top: 200px' id='validate-input'>
-        
-        <label class="form-label" for="customFile" style='margin-bottom: 20px; font-size: 20px; font-weight: 700'>Validate an <span style='color: red'>IBAN</span>:</label>
-        <input type="text" name = "IBAN" class="form-control" id="IBAN" required placeholder='MEkk bbbc cccc cccc cccc xx'/>
-        <input type = "submit" value = "Submit" onClick=validateIBAN() class="btn btn-outline-dark w-100 mt-3" /></p>
-        <p id='message' style='color: red; font-size: smaller'></p>
+    <div class="w-full h-full">
+        <div class="flex items-center justify-start h-screen bg-bottom" id='contact'>
+            <div class="mx-auto w-full max-w-md main-form p-12 mt-[-200px] bg-white rounded-2xl shadow dark:bg-gray-700">
+                <h1 class="text-3xl font-bold text-center p-6 tracking-widest">Contact details</h1>
+                
+                <form method='POST' class="mt-12">
+                    <div class="m-auto main-form-block">
+                    <div class="relative z-0 my-6" id='name'>
+                        <input id='name-input' type="text" name="name" class="main-form-item mt-3 peer block w-full appearance-none border-0 border-b border-gray-500 bg-transparent py-2.5 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
+                        <label class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">
+                            Full Name
+                        </label>
+                    </div>
+                    <div class="relative z-0 my-6" id='email'>
+                        <input id='email-input' type="text" name="email" class="main-form-item mt-3 peer block w-full appearance-none border-0 border-b border-gray-500 bg-transparent py-2.5 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
+                        <label class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">
+                            Email
+                        </label>
+    
+                    </div>
+                    <div class="relative z-0 col-span-2 my-6" id='phone_number'>
+                        <input id='phone_number-input' type="text" name="email" class="main-form-item mt-3 peer block w-full appearance-none border-0 border-b border-gray-500 bg-transparent py-2.5 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
+                        <label class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">
+                            Phone Number
+                        </label>
+                    </div>
+                    </div>  
+                    <div id='subbmit'>
+                        <div class='mb-6'><a onclick='onSendMessage()' class="my-9 rounded-md bg-black px-10 py-2 text-white cursor-pointer text-center block w-full">Send Message</a></div>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
     </div>
 </body>
 </html>

@@ -52,43 +52,31 @@
                 </h1>
                 <form method='POST' class="mt-12">
                     <div class="m-auto main-form-block">
-                    <div class="relative z-0 my-6" id='name'>
-                        <input id='name-input' type="text" name="name" class="main-form-item mt-3 peer block w-full appearance-none border-0 border-b border-gray-500 bg-transparent py-3 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
-                        <label class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">
-                            Full Name
-                        </label>
-                    </div>
-                    <div class="relative z-0 my-6" id='email'>
-                        <input id='email-input' type="text" name="email" class="main-form-item mt- peer block w-full appearance-none border-0 border-b border-gray-500 bg-transparent py-3 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
-                        <label class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">
-                            Email
-                        </label>
-    
-                    </div>
-                    <div class="relative z-0 col-span-2 my-6" id='phone_number'>
-                        <input id='phone_number-input' type="text" name="email" class="main-form-item mt-3 peer block w-full appearance-none border-0 border-b border-gray-500 bg-transparent py-3 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
-                        <label class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">
-                            Phone Number
-                        </label>
-                    </div>
+                        <div class="relative z-0 my-6" id='name'>
+                            <input id='name-input' type="text" name="name" class="main-form-item mt-3 peer block w-full appearance-none border-0 border-b border-gray-500 bg-transparent py-3 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
+                            <label class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">
+                                Full Name
+                            </label>
+                        </div>
+                        <div class="relative z-0 my-6" id='email'>
+                            <input id='email-input' type="text" name="email" class="main-form-item mt- peer block w-full appearance-none border-0 border-b border-gray-500 bg-transparent py-3 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
+                            <label class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">
+                                Email
+                            </label>
+        
+                        </div>
+                        <div class="relative z-0 col-span-2 my-6" id='phone_number'>
+                            <input id='phone_number-input' type="text" name="email" class="main-form-item mt-3 peer block w-full appearance-none border-0 border-b border-gray-500 bg-transparent py-3 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
+                            <label class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">
+                                Phone Number
+                            </label>
+                        </div>
                     </div>  
-                    <div id='subbmit'>
+                    <div>
                         <div class='mb-6'>
-                            <button type="button" data-modal-toggle="applyForm" onclick="applyFormBtn('applyForm')" class="my-9 rounded-md bg-blue-900 px-10 py-2 text-white cursor-pointer text-center block w-full">Apply</button>
+                            <button type="button" data-modal-toggle="applyForm" class="my-9 rounded-md bg-blue-900 px-10 py-2 text-white cursor-pointer text-center block w-full">Apply</button>
                         </div>
                     </div>
-
-                    <div class="flex">
-                        <div id='success'>
-                            <div class='mb-6'>
-                                <a onclick="() => { console.log('Success')}" class="mr-3 rounded-full bg-green-900 px-10 py-2 text-white cursor-pointer text-center block w-full">On Success</a>
-                            </div>
-                        </div>
-                        <div id='error'>
-                            <div class='mb-6'><a onclick="() => { console.log('Error')}" class="mx-3 rounded-full bg-red-900 px-10 py-2 text-white cursor-pointer text-center block w-full">On Error</a>
-                        </div>
-                    </div>
-                    
                 </form>
             </div>
         </div>
@@ -97,7 +85,7 @@
 
 
     <!-- Form modal -->
-    <div 
+    <!-- <div 
         id="applyForm" 
         data-modal-show="true" 
         aria-hidden="true" 
@@ -107,21 +95,21 @@
             
             <div class="m-12 p-3 bg-white rounded-lg shadow relative dark:bg-gray-700">
                 <div class="h-fit">
-                    <img class="m-auto" src="../static/img/success-modal.jpg" alt="">
+                    <img class="m-auto" src="../static/img/error-modal.png" alt="">
                 </div>
                 
                 <div class="mt-12">
-                    <h1 class="text-2xl text-blue-950 text-center">All done!</h1>
+                    <h1 class="text-3xl text-red-600 text-center">Ops!</h1>
                 </div>
 
                 <div class="mt-6 flex flex-wrap justify-center items-center">
-                    <div class="h-4 w-4 m-2 bg-blue-950 rounded-full"> </div>
-                    <div class="h-4 w-4 m-2 bg-blue-950 rounded-full"> </div>
-                    <div class="h-4 w-4 m-2 bg-blue-950 rounded-full"> </div>
+                    <div class="h-3 w-3 m-2 bg-blue-950 rounded-full"> </div>
+                    <div class="h-3 w-3 m-2 bg-blue-950 rounded-full"> </div>
+                    <div class="h-3 w-3 m-2 bg-blue-950 rounded-full"> </div>
                 </div>
 
                 <div class="mt-9">
-                    <p class="text-md italic text-gray-500 text-center">Our managers will rich to you very soon )</p>
+                    <p class="text-md italic text-gray-500 text-center">Default Error message</p>
                 </div>
 
                 <div class='flex justify-center items-center mt-12 px-12 '>
@@ -131,15 +119,14 @@
             </div>
 
         </div>
-    </div>
+    </div> -->
 
 
 
 
-    <!-- Form modal -->
     <div 
         id="applyForm" 
-        data-modal-show="true" 
+        data-modal-show="false" 
         aria-hidden="true" 
         class="hidden overflow-x-hidden overflow-y-auto fixed h-modal md:h-full top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center"
     >
@@ -155,9 +142,9 @@
                 </div>
 
                 <div class="mt-6 flex flex-wrap justify-center items-center">
-                    <div class="h-4 w-4 m-2 bg-blue-950 rounded-full"> </div>
-                    <div class="h-4 w-4 m-2 bg-blue-950 rounded-full"> </div>
-                    <div class="h-4 w-4 m-2 bg-blue-950 rounded-full"> </div>
+                    <div class="h-3 w-3 m-2 bg-blue-950 rounded-full"> </div>
+                    <div class="h-3 w-3 m-2 bg-blue-950 rounded-full"> </div>
+                    <div class="h-3 w-3 m-2 bg-blue-950 rounded-full"> </div>
                 </div>
 
                 <div class="mt-9">
@@ -165,7 +152,7 @@
                 </div>
 
                 <div class='flex justify-center items-center mt-12 px-12 '>
-                    <button data-modal-toggle="applyForm" type="button"  class="block mb-9 rounded-md bg-blue-900 px-10 py-2 text-white cursor-pointer text-center">Back</button>
+                    <button data-modal-toggle="applyFormError" type="button"  class="block mb-9 rounded-md bg-blue-900 px-10 py-2 text-white cursor-pointer text-center">Back</button>
                 </div>
 
             </div>

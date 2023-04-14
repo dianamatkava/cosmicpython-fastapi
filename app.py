@@ -7,4 +7,4 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def form():
-    return render_template('arb-form.html')
+    return render_template('arb-main.html')

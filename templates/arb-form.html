@@ -1,174 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="static/css/output.css" rel="stylesheet">
-    <link href="static/css/main.css" rel="stylesheet">
+<h1 class="text-2xl font-bold text-center p-6 tracking-widest md:text-3xl">
+    Contact details
+</h1>
+<form method='POST' class="mt-12">
+    <div class="m-auto main-form-block">
+        <div class="relative z-0 my-6" id='name'>
+            <input id='name-input' type="text" name="name" class="main-form-item mt-3 peer block w-full appearance-none border-0 border-b border-gray-500 bg-transparent py-3 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
+            <label class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">
+                Full Name
+            </label>
+        </div>
+        <div class="relative z-0 my-6" id='email'>
+            <input id='email-input' type="text" name="email" class="main-form-item mt- peer block w-full appearance-none border-0 border-b border-gray-500 bg-transparent py-3 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
+            <label class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">
+                Email
+            </label>
 
-    <!-- Font Family -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap" rel="stylesheet">
-    <title>Document</title>
-</head>
-
-<body class="w-screen h-screen overflow-hidden" >
-    <div id='contact'>
-
-        <nav class="px-4 lg:px-6 py-2.5">
-            <div class="flex flex-wrap justify-between items-start mx-auto max-w-screen-xl object-fit">
-                <a href="#" class="flex items-center">
-                    <svg  class="mr-3 h-6 sm:h-9" style="fill: rgb(30 27 75);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
-                        <path d="M640 264v-16c0-8.84-7.16-16-16-16H344v-40h72c17.67 0 32-14.33 32-32V32c0-17.67-14.33-32-32-32H224c-17.67 0-32 14.33-32 32v128c0 17.67 14.33 32 32 32h72v40H16c-8.84 0-16 7.16-16 16v16c0 8.84 7.16 16 16 16h104v40H64c-17.67 0-32 14.33-32 32v128c0 17.67 14.33 32 32 32h160c17.67 0 32-14.33 32-32V352c0-17.67-14.33-32-32-32h-56v-40h304v40h-56c-17.67 0-32 14.33-32 32v128c0 17.67 14.33 32 32 32h160c17.67 0 32-14.33 32-32V352c0-17.67-14.33-32-32-32h-56v-40h104c8.84 0 16-7.16 16-16zM256 128V64h128v64H256zm-64 320H96v-64h96v64zm352 0h-96v-64h96v64z"/>
-                    </svg>
-                </a>
-            <div>
-            
-            <div class="relative inline-block group">
-                <div class="flex flex-wrap justify-end items-start mx-auto max-w-screen-xl">
-                    <button id="lang-options" class="flex items-center focus:outline-none">
-                    <img src="../static/img/ua.jpg" class="mr-3 w-9 h-9 object-fit rounded-full shadow-lg" />
-                    </button>
-                </div>
-                
-                <!-- Lang Options -->
-                <div id="lang-dropdown" class="right-0 mt-2 absolute z-10 hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                    <div class="py-2">
-                    <img onclick="console.log('EN works')" src="../static/img/en.png" class="mt-2 mr-3 w-9 h-9 object-fit rounded-full shadow-lg hover:brightness-75" />
-                    <img onclick="console.log('GE works')" src="../static/img/ge.png" class="mt-2 mr-3 w-9 h-9 object-fit rounded-full shadow-lg hover:brightness-75" />
-                    <img onclick="console.log('UA works')" src="../static/img/ua.jpg" class="mt-2 mr-3 w-9 h-9 object-fit rounded-full shadow-lg hover:brightness-75" />
-                    <img onclick="console.log('RU works')" src="../static/img/ru.png" class="mt-2 mr-3 w-9 h-9 object-fit rounded-full shadow-lg hover:brightness-75" />
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-        <div class="flex items-center justify-center h-screen bg-bottom">
-            <div class="mx-3 w-full max-w-md main-form p-9 bg-white rounded-2xl shadow dark:bg-gray-700 md:mx-auto md:p-12">
-                <h1 class="text-2xl font-bold text-center p-6 tracking-widest md:text-3xl">
-                    Contact details
-                </h1>
-                <form method='POST' class="mt-12">
-                    <div class="m-auto main-form-block">
-                        <div class="relative z-0 my-6" id='name'>
-                            <input id='name-input' type="text" name="name" class="main-form-item mt-3 peer block w-full appearance-none border-0 border-b border-gray-500 bg-transparent py-3 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
-                            <label class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">
-                                Full Name
-                            </label>
-                        </div>
-                        <div class="relative z-0 my-6" id='email'>
-                            <input id='email-input' type="text" name="email" class="main-form-item mt- peer block w-full appearance-none border-0 border-b border-gray-500 bg-transparent py-3 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
-                            <label class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">
-                                Email
-                            </label>
-        
-                        </div>
-                        <div class="relative z-0 col-span-2 my-6" id='phone_number'>
-                            <input id='phone_number-input' type="text" name="email" class="main-form-item mt-3 peer block w-full appearance-none border-0 border-b border-gray-500 bg-transparent py-3 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
-                            <label class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">
-                                Phone Number
-                            </label>
-                        </div>
-                    </div>  
-                    <div>
-                        <div class='mb-6'>
-                            <button type="button" data-modal-toggle="applyForm" class="my-9 rounded-md bg-blue-900 px-10 py-2 text-white cursor-pointer text-center block w-full">Apply</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+        </div>
+        <div class="relative z-0 col-span-2 my-6" id='phone_number'>
+            <input id='phone_number-input' type="text" name="email" class="main-form-item mt-3 peer block w-full appearance-none border-0 border-b border-gray-500 bg-transparent py-3 px-0 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
+            <label class="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">
+                Phone Number
+            </label>
+        </div>
+    </div>  
+    <div>
+        <div class='mb-6'>
+            <button type="button" data-modal-toggle="applyForm" class="my-9 rounded-md bg-blue-900 px-10 py-2 text-white cursor-pointer text-center block w-full">Apply</button>
         </div>
     </div>
-
-
-
-    <!-- Form modal -->
-    <!-- <div 
-        id="applyForm" 
-        data-modal-show="true" 
-        aria-hidden="true" 
-        class="hidden overflow-x-hidden overflow-y-auto fixed h-modal md:h-full top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center"
-    >
-        <div class="relative w-full max-w-2xl px-4 h-full md:h-auto">
-            
-            <div class="m-12 p-3 bg-white rounded-lg shadow relative dark:bg-gray-700">
-                <div class="h-fit">
-                    <img class="m-auto" src="../static/img/error-modal.png" alt="">
-                </div>
-                
-                <div class="mt-12">
-                    <h1 class="text-3xl text-red-600 text-center">Ops!</h1>
-                </div>
-
-                <div class="mt-6 flex flex-wrap justify-center items-center">
-                    <div class="h-3 w-3 m-2 bg-blue-950 rounded-full"> </div>
-                    <div class="h-3 w-3 m-2 bg-blue-950 rounded-full"> </div>
-                    <div class="h-3 w-3 m-2 bg-blue-950 rounded-full"> </div>
-                </div>
-
-                <div class="mt-9">
-                    <p class="text-md italic text-gray-500 text-center">Default Error message</p>
-                </div>
-
-                <div class='flex justify-center items-center mt-12 px-12 '>
-                    <button data-modal-toggle="applyForm" type="button"  class="block mb-9 rounded-md bg-blue-900 px-10 py-2 text-white cursor-pointer text-center">Back</button>
-                </div>
-
-            </div>
-
-        </div>
-    </div> -->
-
-
-
-
-    <div 
-        id="applyForm" 
-        data-modal-show="false" 
-        aria-hidden="true" 
-        class="hidden overflow-x-hidden overflow-y-auto fixed h-modal md:h-full top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center"
-    >
-        <div class="relative w-full max-w-2xl px-4 h-full md:h-auto">
-            
-            <div class="m-12 p-3 bg-white rounded-lg shadow relative dark:bg-gray-700">
-                <div class="h-fit">
-                    <img class="m-auto" src="../static/img/success-modal.jpg" alt="">
-                </div>
-                
-                <div class="mt-12">
-                    <h1 class="text-2xl text-blue-950 text-center">All done!</h1>
-                </div>
-
-                <div class="mt-6 flex flex-wrap justify-center items-center">
-                    <div class="h-3 w-3 m-2 bg-blue-950 rounded-full"> </div>
-                    <div class="h-3 w-3 m-2 bg-blue-950 rounded-full"> </div>
-                    <div class="h-3 w-3 m-2 bg-blue-950 rounded-full"> </div>
-                </div>
-
-                <div class="mt-9">
-                    <p class="text-md italic text-gray-500 text-center">Our managers will rich to you very soon )</p>
-                </div>
-
-                <div class='flex justify-center items-center mt-12 px-12 '>
-                    <button data-modal-toggle="applyFormError" type="button"  class="block mb-9 rounded-md bg-blue-900 px-10 py-2 text-white cursor-pointer text-center">Back</button>
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-
-</body>
-
-<script>
-    const langButton = document.getElementById('lang-options');
-    const langDropdown = document.getElementById('lang-dropdown');
-  
-    langButton.addEventListener('click', () => {
-      langDropdown.classList.toggle('hidden');
-    });
-</script>
-<script src="https://unpkg.com/flowbite@1.4.4/dist/flowbite.js"></script>
-</html>
+</form>

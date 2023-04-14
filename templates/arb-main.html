@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/css/output.css" rel="stylesheet">
+    <link href="static/css/main.css" rel="stylesheet">
+
+    <!-- Font Family -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body class="w-screen h-screen overflow-hidden" >
+    <div id='contact'>
+
+        <nav class="px-4 lg:px-6 py-2.5">
+            <div class="flex flex-wrap justify-between items-start mx-auto max-w-screen-xl object-fit">
+                <a href="#" class="flex items-center">
+                    <svg  class="mr-3 h-6 sm:h-9" style="fill: rgb(30 27 75);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                        <path d="M640 264v-16c0-8.84-7.16-16-16-16H344v-40h72c17.67 0 32-14.33 32-32V32c0-17.67-14.33-32-32-32H224c-17.67 0-32 14.33-32 32v128c0 17.67 14.33 32 32 32h72v40H16c-8.84 0-16 7.16-16 16v16c0 8.84 7.16 16 16 16h104v40H64c-17.67 0-32 14.33-32 32v128c0 17.67 14.33 32 32 32h160c17.67 0 32-14.33 32-32V352c0-17.67-14.33-32-32-32h-56v-40h304v40h-56c-17.67 0-32 14.33-32 32v128c0 17.67 14.33 32 32 32h160c17.67 0 32-14.33 32-32V352c0-17.67-14.33-32-32-32h-56v-40h104c8.84 0 16-7.16 16-16zM256 128V64h128v64H256zm-64 320H96v-64h96v64zm352 0h-96v-64h96v64z"/>
+                    </svg>
+                </a>
+            <div>
+            
+            <div class="relative inline-block group">
+                <div class="flex flex-wrap justify-end items-start mx-auto max-w-screen-xl">
+                    <button id="lang-options" class="flex items-center focus:outline-none">
+                    <img src="../static/img/ua.jpg" class="mr-3 w-9 h-9 object-fit rounded-full shadow-lg" />
+                    </button>
+                </div>
+                
+                <!-- Lang Options -->
+                <div id="lang-dropdown" class="right-0 mt-2 absolute z-10 hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                    <div class="py-2">
+                    <img onclick="console.log('EN works')" src="../static/img/en.png" class="mt-2 mr-3 w-9 h-9 object-fit rounded-full shadow-lg hover:brightness-75" />
+                    <img onclick="console.log('GE works')" src="../static/img/ge.png" class="mt-2 mr-3 w-9 h-9 object-fit rounded-full shadow-lg hover:brightness-75" />
+                    <img onclick="console.log('UA works')" src="../static/img/ua.jpg" class="mt-2 mr-3 w-9 h-9 object-fit rounded-full shadow-lg hover:brightness-75" />
+                    <img onclick="console.log('RU works')" src="../static/img/ru.png" class="mt-2 mr-3 w-9 h-9 object-fit rounded-full shadow-lg hover:brightness-75" />
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="flex items-center justify-center h-screen bg-bottom">
+            <div class="mx-3 w-full max-w-md main-form p-9 bg-white rounded-2xl shadow dark:bg-gray-700 md:mx-auto md:p-12">
+                
+                    
+        
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    const langButton = document.getElementById('lang-options');
+    const langDropdown = document.getElementById('lang-dropdown');
+  
+    langButton.addEventListener('click', () => {
+      langDropdown.classList.toggle('hidden');
+    });
+</script>
+<script src="https://unpkg.com/flowbite@1.4.4/dist/flowbite.js"></script>
+</html>

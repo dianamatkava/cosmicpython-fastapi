@@ -71,7 +71,16 @@
                     </div>
                     </div>  
                     <div id='subbmit'>
-                        <div class='mb-6'><a onclick='onSendMessage()' class="my-9 rounded-md bg-indigo-900 px-10 py-2 text-white cursor-pointer text-center block w-full">Apply</a></div>
+                        <div class='mb-6'><a onclick="() => { console.log('Send message works')}" class="my-9 rounded-md bg-blue-900 px-10 py-2 text-white cursor-pointer text-center block w-full">Apply</a></div>
+                    </div>
+
+                    <div class="flex">
+                        <div id='success'>
+                            <div class='mb-6'><a onclick="() => { console.log('Success')}" class="mr-3 rounded-full bg-green-900 px-10 py-2 text-white cursor-pointer text-center block w-full">On Success</a></div>
+                        </div>
+                        <div id='error'>
+                            <div class='mb-6'><a onclick="() => { console.log('Error')}" class="mx-3 rounded-full bg-red-900 px-10 py-2 text-white cursor-pointer text-center block w-full">On Error</a></div>
+                        </div>
                     </div>
                     
                 </form>

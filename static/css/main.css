@@ -6,3 +6,9 @@ h1 {
 #contact {
     background-image: url('../img/uber-form.png');
 }
+
+@media (max-width: 1279px) {
+    .applyBtn {
+      display: block;
+    }
+}

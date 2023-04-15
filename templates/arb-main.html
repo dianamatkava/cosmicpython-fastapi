@@ -79,6 +79,59 @@
         form.style.display = 'none'
         details.style.display = 'block'
     }
+
+    var inputs = document.querySelectorAll('input[type="text"]');
+    var submitButton = document.getElementById('applyFormBtn');
+
+    inputs.forEach(function(input) {
+        input.addEventListener('input', function() {
+            var isFilled = true;
+            
+            inputs.forEach(function(input) {
+                if (input.value.trim() === '') {
+                    isFilled = false;
+                }
+            });
+            console.log(isFilled)
+            if (isFilled) {
+                submitButton.removeAttribute('disabled');
+            } else {
+                submitButton.setAttribute('disabled', 'disabled');
+            }
+        });
+    });
+
+    function applyForm() {
+        var inputs = document.querySelectorAll('input[type="text"]');
+        var res = {}
+        for (let input of inputs) {
+            res[input.name] = input.value
+        }
+        $.ajax ({
+            type: 'POST',
+            url: '/',
+            contentType: "application/json",
+            dataType: 'json',
+            data: JSON.stringify(res),
+            success: function(data) {
+                if (data) {
+                    // Validation failed
+                    console.log('HERE')
+                    errorEl = document.getElementById('errorMessage')
+                    errorEl.innerHTML = data['message']
+                    errorEl.style.display = 'block'
+                } else {
+                    // All done!
+
+                }
+                console.log(data)   
+            },
+            error: function() {
+                alert('Unelectable error occurred. Try later')
+            }
+        })
+    }
 </script>
 <script src="https://unpkg.com/flowbite@1.4.4/dist/flowbite.js"></script>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' type='text/javascript'></script>`
 </html>

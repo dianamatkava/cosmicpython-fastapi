@@ -14,8 +14,9 @@
     <title>Document</title>
 </head>
 
-<body class="w-screen h-screen overflow-hidden" >
-    <div id='contact'>
+<body class="w-screen h-screen bg-object-fil md:overflow-hidden" id='contact'> 
+    
+    <div>
 
         <nav class="px-4 lg:px-6 py-2.5">
             <div class="flex flex-wrap justify-between items-start mx-auto max-w-screen-xl object-fit">
@@ -29,7 +30,7 @@
             <div class="relative inline-block group">
                 <div class="flex flex-wrap justify-end items-start mx-auto max-w-screen-xl">
                     <button id="lang-options" class="flex items-center focus:outline-none">
-                    <img src="../static/img/ua.jpg" class="mr-3 w-9 h-9 object-fit rounded-full shadow-lg" />
+                        <img src="../static/img/ua.jpg" class="mr-3 w-9 h-9 object-fit rounded-full shadow-lg" />
                     </button>
                 </div>
                 
@@ -45,12 +46,9 @@
             </div>
         </nav>
 
-        <div class="flex items-center justify-center h-screen bg-bottom">
-            <div class="mx-3 w-full max-w-md main-form p-9 bg-white rounded-2xl shadow dark:bg-gray-700 md:mx-auto md:p-12">
-                
-                    
-        
-            </div>
+        <div class="flex justify-center gap-2 p-4 h-screen bg-bottom md:items-center">
+            <div id='form' class="hidden h-fit p-6 m-6 bg-white rounded-2xl shadow dark:bg-gray-700 md:p-12 xl:block">{% block form %} {% endblock %}</div>
+            <div id='details' class="text-blue-950 md:p-6 md:m-6 ">{% include 'arb-details.html' %}</div>
         </div>
     </div>
 
@@ -63,6 +61,24 @@
     langButton.addEventListener('click', () => {
       langDropdown.classList.toggle('hidden');
     });
+
+
+    function openForm() {
+        const form = document.getElementById('form');   
+        const details = document.getElementById('details'); 
+        const showDesc = document.getElementById('showDesc'); 
+        form.style.display = 'block'
+        details.style.display = 'none'
+        showDesc.style.display = 'block'
+    }
+
+    function showDesc() {
+        const form = document.getElementById('form');   
+        const details = document.getElementById('details'); 
+        const showDesc = document.getElementById('showDesc'); 
+        form.style.display = 'none'
+        details.style.display = 'block'
+    }
 </script>
 <script src="https://unpkg.com/flowbite@1.4.4/dist/flowbite.js"></script>
 </html>

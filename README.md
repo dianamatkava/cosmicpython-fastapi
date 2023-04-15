@@ -6,7 +6,7 @@ Form of traffic arbitration
 ## Create and activate virtual environment:
 ```bash
 python3 -m venv venv
-venv\Scripts\activate (Windows in CMD)
+venv\Scripts\activate (Windows in cmd)
 source venv/bin/activate (Linux)
 ```
 

@@ -46,7 +46,7 @@ def create_app():
         db.create_all()
         
         
-    migrate.init_app(app, db)
+    migrate.init_app(app, db, render_as_batch=True)
     admin.init_app(app)
     
     login_manager = LoginManager()
@@ -60,6 +60,7 @@ def create_app():
             return current_user.is_authenticated
     
     admin.add_view(CustomModelView(CustomerData, db.session))
+    admin.add_view(CustomModelView(Translation, db.session))
     
     @login_manager.user_loader
     def load_user(user_id):

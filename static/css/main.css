@@ -7,6 +7,14 @@ h1 {
     background-image: url('../img/uber-form.png');
 }
 
+
+@media (max-width: 968px) {
+    #contact {
+        background-image: none;
+        background-color: rgba(241, 241, 241, 1);
+    }
+}
+
 @media (max-width: 1279px) {
     .applyBtn {
       display: block;

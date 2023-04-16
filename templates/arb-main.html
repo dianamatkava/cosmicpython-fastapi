@@ -14,7 +14,7 @@
     <title>Document</title>
 </head>
 
-<body class="w-screen h-screen bg-object-fil md:overflow-hidden" id='contact'> 
+<body id='contact' class="w-screen h-screen bg-object-cover overflow-x-hidden xl:overflow-hidden"> 
     
     <div>
 
@@ -46,7 +46,7 @@
             </div>
         </nav>
 
-        <div class="flex justify-center gap-2 p-4 h-screen bg-bottom md:items-center">
+        <div class="flex justify-center gap-2 p-4 bg-bottom md:items-center">
             <div id='form' class="hidden h-fit p-6 m-6 bg-white rounded-2xl shadow dark:bg-gray-700 md:p-12 xl:block">{% block form %} {% endblock %}</div>
             <div id='details' class="text-blue-950 md:p-6 md:m-6 ">{% include 'arb-details.html' %}</div>
         </div>

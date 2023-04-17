@@ -1,5 +1,4 @@
-{
-"arb-translation": [
+translation = [
 	{
 		"id" : 1,
 		"key" : "$_PAGE_FORM_HEADER",
@@ -95,5 +94,85 @@
 		"language_code" : "EN",
 		"is_visible" : 1,
 		"context_key" : "feature_item_2"
+	},
+	{
+		"id" : 13,
+		"key" : "$_DESC_FEATURE_I3",
+		"value" : "Simple and fast design. Registration in the Unified State Register.",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "feature_item_3"
+	},
+	{
+		"id" : 14,
+		"key" : "$_DESC_FEATURE_TITLE",
+		"value" : "Low monthly interest:",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "feature_title"
+	},
+	{
+		"id" : 15,
+		"key" : "$_PAGE_MODAL_HEADER",
+		"value" : "All done!",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "modal_header"
+	},
+	{
+		"id" : 16,
+		"key" : "$_PAGE_MODAL_DESC",
+		"value" : "Our managers will rich to you very soon )",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "modal_desc"
+	},
+	{
+		"id" : 17,
+		"key" : "$_PAGE_MAIN_TITLE",
+		"value" : "Get Mortage in Georgia",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "title"
+	},
+	{
+		"id" : 18,
+		"key" : "$_PAGE_FORM_SHOW_DESC",
+		"value" : "Show description",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "show_desc"
+	},
+	{
+		"id" : 19,
+		"key" : "$_PAGE_DESC_REQ_TITLE",
+		"value" : "Documents for consideration:",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "req_title"
+	},
+	{
+		"id" : 20,
+		"key" : "$_PAGE_DESC_REQ_I1",
+		"value" : "ownership (updated extract from the register \/ registration certificate).",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "req_item1_1"
+	},
+	{
+		"id" : 21,
+		"key" : "$_PAGE_DESC_REQ_I2",
+		"value" : "passport of a citizen of Georgia, for foreign citizens - a passport.",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "req_item1_2"
+	},
+	{
+		"id" : 22,
+		"key" : "$_PAGE_DESC_REQ_I3",
+		"value" : "photos.",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "req_item1_3"
 	}
-]}
+]

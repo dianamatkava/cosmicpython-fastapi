@@ -1,0 +1,99 @@
+{
+"arb-translation": [
+	{
+		"id" : 1,
+		"key" : "$_PAGE_FORM_HEADER",
+		"value" : "Contact details",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "form_header"
+	},
+	{
+		"id" : 2,
+		"key" : "$_PAGE_FORM_FULL_NAME",
+		"value" : "Full Name",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "full_name"
+	},
+	{
+		"id" : 3,
+		"key" : "$_PAGE_FORM_EMAIL",
+		"value" : "Email",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "email"
+	},
+	{
+		"id" : 4,
+		"key" : "$_PAGE_FORM_PHONE",
+		"value" : "Phone Numver",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "phone"
+	},
+	{
+		"id" : 5,
+		"key" : "$_PAGE_FORM_APPLY_BTN",
+		"value" : "Apply",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "apply_btn"
+	},
+	{
+		"id" : 6,
+		"key" : "$_PAGE_FORM_BRN_BACK",
+		"value" : "Back",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "back_btn"
+	},
+	{
+		"id" : 7,
+		"key" : "$_DESC_HEADER_H1",
+		"value" : "LOANS ALL OVER GEORGIA",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "header_1"
+	},
+	{
+		"id" : 8,
+		"key" : "$_DESC_HEADER_H2",
+		"value" : "MONEY FROM A PRIVATE INVESTOR PURCHASED ON REAL ESTATE AND VEHICLE",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "header_2"
+	},
+	{
+		"id" : 9,
+		"key" : "$_DESC_COMMENT_I1",
+		"value" : "Quick decision making, consultation and full legal support.",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "comment_item_1"
+	},
+	{
+		"id" : 10,
+		"key" : "$_DESC_COMMENT_I2",
+		"value" : "Credit terms and amount are set individually.",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "comment_item_2"
+	},
+	{
+		"id" : 11,
+		"key" : "$_DESC_FEATURE_I1",
+		"value" : "We pay up to 50% of the market value of the collateral.",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "feature_item_1"
+	},
+	{
+		"id" : 12,
+		"key" : "$_DESC_FEATURE_I2",
+		"value" : "The term of use is up to 10 years.",
+		"language_code" : "EN",
+		"is_visible" : 1,
+		"context_key" : "feature_item_2"
+	}
+]}

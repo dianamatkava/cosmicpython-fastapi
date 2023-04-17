@@ -17,7 +17,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/static/img/fav/favicon-16x16.png">
     <link rel="manifest" href="/static/img/fav/site.webmanifest">
 
-    <title>Get Mortage in Georgia</title>
+    <title>{{title}}</title>
 </head>
 
 <body id='contact' class="w-screen h-screen bg-object-cover overflow-x-hidden xl:overflow-hidden"> 
@@ -36,17 +36,17 @@
             <div class="relative inline-block group">
                 <div class="flex flex-wrap justify-end items-start mx-auto max-w-screen-xl">
                     <button id="lang-options" class="flex items-center focus:outline-none">
-                        <img src="../static/img/ua.png" class="mr-3 w-9 h-9 object-fit rounded-full shadow-lg" />
+                        <img src="../static/img/{{LANG}}.png" class="mr-3 w-9 h-9 object-fit rounded-full shadow-lg" />
                     </button>
                 </div>
                 
                 <!-- Lang Options -->
                 <div id="lang-dropdown" class="right-0 mt-2 absolute z-10 hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                     <div class="py-2">
-                    <img onclick="console.log('EN works')" src="../static/img/en.png" class="mt-2 mr-3 w-9 h-9 object-fit rounded-full shadow-lg hover:brightness-75" />
-                    <img onclick="console.log('GE works')" src="../static/img/ge.png" class="mt-2 mr-3 w-9 h-9 object-fit rounded-full shadow-lg hover:brightness-75" />
-                    <img onclick="console.log('UA works')" src="../static/img/ua.png" class="mt-2 mr-3 w-9 h-9 object-fit rounded-full shadow-lg hover:brightness-75" />
-                    <img onclick="console.log('RU works')" src="../static/img/ru.png" class="mt-2 mr-3 w-9 h-9 object-fit rounded-full shadow-lg hover:brightness-75" />
+                        <img onclick="console.log('EN works')" src="../static/img/en.png" class="mt-2 mr-3 w-9 h-9 object-fit rounded-full shadow-lg hover:brightness-75" />
+                        <img onclick="console.log('GE works')" src="../static/img/ge.png" class="mt-2 mr-3 w-9 h-9 object-fit rounded-full shadow-lg hover:brightness-75" />
+                        <img onclick="console.log('UA works')" src="../static/img/ua.png" class="mt-2 mr-3 w-9 h-9 object-fit rounded-full shadow-lg hover:brightness-75" />
+                        <img onclick="console.log('RU works')" src="../static/img/ru.png" class="mt-2 mr-3 w-9 h-9 object-fit rounded-full shadow-lg hover:brightness-75" />
                     </div>
                 </div>
             </div>

@@ -1,8 +1,9 @@
 import datetime
 import enum
 
-from sqlalchemy import Boolean, Enum, Column, DateTime, Integer, String
 from flask_serialize import FlaskSerialize
+from sqlalchemy import Boolean, Column, DateTime, Enum, Integer, String
+
 from extensions import db
 
 fs_mixin = FlaskSerialize(db)

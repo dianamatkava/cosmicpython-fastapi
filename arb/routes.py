@@ -5,7 +5,7 @@ from typing import Tuple
 from environs import Env
 from flask import Blueprint, Response, jsonify, render_template, request
 
-from arb.models import CustomerData, Translation, Languages
+from arb.models import CustomerData, Languages, Translation
 from extensions import db
 from shared.validations import validate_email, validate_phone_number
 
@@ -25,7 +25,8 @@ def validate_user_input(data: dict) -> Tuple[bool, dict]:
 
 @arb.route('/', methods=['GET', 'POST'])
 def form():
-    lang_code = env.str('DEFAULT_LANG', default='EN')
+    
+    lang_code = request.data.get('lang', env.str('DEFAULT_LANG', default='EN')).upper()
     lang = Languages.__getattribute__(Languages, lang_code)
     translations = Translation.query.all()
     

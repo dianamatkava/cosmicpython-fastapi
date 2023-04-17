@@ -80,4 +80,10 @@ function applyForm() {
             alert('Unelectable error occurred. Try later')
         }
     })
+};
+
+
+function changeLang(lang) {
+    console.log(lang);
 }
+

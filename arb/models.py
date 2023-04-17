@@ -31,10 +31,10 @@ class Translation(db.Model, fs_mixin):
     __tablename__ = 'arb-translation'
     
     id = Column(Integer(), primary_key=True)
-    key = Column(String(50), unique=True, nullable=False)
+    key = Column(String(50), nullable=False)
     value = Column(String(1000), nullable=False)
     language_code = Column(Enum(Languages), default=Languages.EN, nullable=False)
-    context_key = Column(String(50), unique=True, nullable=False)
+    context_key = Column(String(50), nullable=False)
     is_visible = Column(Boolean, default=True, nullable=True)
     
     __fs_create_fields__ = __fs_update_fields__ = ['value', 'context_key', 'language_code']

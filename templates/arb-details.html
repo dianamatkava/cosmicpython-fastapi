@@ -18,13 +18,7 @@
     </div>
     
     <div>
-        <div class='mb-6'>
-            <button 
-                type="button" 
-                onclick="openForm()"
-                class="hidden my-9 rounded-md bg-blue-900 px-10 py-2 text-white cursor-pointer text-center block ax-w-md m-auto applyBtn slg:block"
-            >{{apply_btn}}</button>
-        </div>
+        <div id='details' class="text-blue-950 md:p-6 md:m-6 ">{% block form %} {% endblock %}</div>
     </div>
     
     <div class="m-6">

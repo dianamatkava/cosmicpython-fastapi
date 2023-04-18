@@ -1,7 +1,4 @@
 venv
-instance
 __pycache__/
 
 static/css/output.css
-
-.env

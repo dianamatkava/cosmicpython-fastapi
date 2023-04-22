@@ -11,7 +11,7 @@ source venv/bin/activate (Linux)
 ```
 
 
-## Install dependensies for backend:
+### Install dependensies for backend:
 ```bash
 pip install -r requirements.txt
 ```

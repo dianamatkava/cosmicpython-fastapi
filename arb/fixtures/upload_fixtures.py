@@ -5,8 +5,14 @@ from ..models import *
 
 
 def upload():
-    for item in translation:
-        tr = Translation(**item)
-        db.session.add(tr)
+    langs = ['EN', 'GE', 'UA', 'RU']
+    id = 0
+    for i in langs:
+        for item in translation:
+            id += 1
+            item['id'] = id
+            item['language_code'] = i
+            tr = Translation(**item)
+            db.session.add(tr)
     db.session.commit()
         

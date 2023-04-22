@@ -68,7 +68,6 @@ function applyForm() {
                 errorEl = document.getElementById('errorMessage');
                 errorEl.innerHTML = data['message'];
                 errorEl.style.display = 'block';
-                document.getElementById('applyForm').style.display = 'block'
 
             } else {
                 // All done!
@@ -84,6 +83,6 @@ function applyForm() {
 
 
 function changeLang(lang) {
-    console.log(lang);
+    console.log();
 }
 

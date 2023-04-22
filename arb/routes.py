@@ -57,4 +57,4 @@ def form(lang: str = LANG):
         except Exception as _ex:
             return Response(status=400, response=_ex)
         return Response(status=200)
-    return render_template('arb-form.html', **context)
+    return render_template('arb-main-form.html', **context)

@@ -1,10 +1,10 @@
 import os
 
 from environs import Env
-from flask import Flask, redirect
+from flask import Flask, redirect, request, url_for
 from flask_admin.contrib.sqla import ModelView
-from flask_login import LoginManager, current_user, login_required
-from werkzeug.wrappers import Response
+from flask_login import LoginManager, current_user
+from werkzeug.wrappers import Request
 
 from arb.models import *
 from auth.models import *
@@ -56,30 +56,33 @@ def create_app():
     def load_user(user_id):
         return User.query.get(int(user_id))
     
+    @app.before_request
+    def protect_admin():
+        if request.path.startswith('/admin'):
+            if not current_user.is_authenticated:
+                return redirect(url_for('auth.login'))
+    
         
-    class ProtectAdminMiddleware:
-        def __init__(self, app):
-            self.app = app
-            self.prefix = '/admin'
+    # class ProtectAdminMiddleware:
+    #     def __init__(self, app):
+    #         self.app = app
+    #         self.prefix = '/admin'
 
-        def __call__(self, environ, start_response):
-            if environ['PATH_INFO'].startswith(self.prefix):
-                print(current_user)
-                # if not current_user or not current_user.is_authenticated:
-                #     URL = environ['SERVER_NAME'] + '/auth/login'
-                #     start_response('301', [('Location', URL)])
-                #     return ["Redirecting to application...".encode()]
-                
-            return self.app(environ, start_response)
+    #     def __call__(self, environ, start_response):
+    #         if environ['PATH_INFO'].startswith(self.prefix):
+    #             if not current_user or not current_user.is_authenticated:
+    #                 URL = environ['SERVER_NAME'] + '/auth/login'
+    #                 start_response('301', [('Location', URL)])
+    #                 return ["Redirecting to application...".encode()]
+    #              
+    #         return self.app(environ, start_response)
         
     # Register admin views
     admin.add_view(ModelView(CustomerData, db.session))
     admin.add_view(ModelView(Translation, db.session))
     
-    
     # Register middleware
-    app.wsgi_app = ProtectAdminMiddleware(app.wsgi_app)
-    
+    # app.wsgi_app = ProtectAdminMiddleware(app.wsgi_app)
     
     # Register blueprints
     from auth.routes import auth as blueprint

@@ -8,7 +8,6 @@ auth = Blueprint('auth', __name__, url_prefix='/auth')
 
 @auth.route('/login')
 def login():
-    print(current_user)
     if current_user.is_authenticated:
         return redirect(url_for('admin.index'))
     return render_template('auth/login.html')

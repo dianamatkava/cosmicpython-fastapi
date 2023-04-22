@@ -56,12 +56,6 @@ def create_app():
     def load_user(user_id):
         return User.query.get(int(user_id))
     
-    
-    # Protect Admin Middleware
-    class CustomModelView(ModelView):
-        @login_required
-        def is_accessible(self):
-            return current_user.is_authenticated
         
     class ProtectAdminMiddleware:
         def __init__(self, app):
@@ -70,14 +64,15 @@ def create_app():
 
         def __call__(self, environ, start_response):
             if environ['PATH_INFO'].startswith(self.prefix):
-                if not current_user or not current_user.is_authenticated:
-                    URL = environ['SERVER_NAME'] + '/login'
-                    start_response('301', [('Location', URL)])
-                    return ["Redirecting to application...".encode()]
+                print(current_user)
+                # if not current_user or not current_user.is_authenticated:
+                #     URL = environ['SERVER_NAME'] + '/auth/login'
+                #     start_response('301', [('Location', URL)])
+                #     return ["Redirecting to application...".encode()]
                 
             return self.app(environ, start_response)
-    
-    # Register admin tables
+        
+    # Register admin views
     admin.add_view(ModelView(CustomerData, db.session))
     admin.add_view(ModelView(Translation, db.session))
     

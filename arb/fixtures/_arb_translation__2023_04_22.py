@@ -354,7 +354,7 @@ translation = [
 	{
 		"id" : 45,
 		"key" : "$_PAGE_FORM_HEADER",
-		"value" : "Контактная информация",
+		"value" : "Контактные данные",
 		"language_code" : "RU",
 		"context_key" : "form_header",
 		"is_visible" : 1

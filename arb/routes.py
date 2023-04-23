@@ -26,24 +26,8 @@ def validate_user_input(data: dict) -> Tuple[bool, dict]:
         return False, {'message': 'Email already exist'}
     return True, ''
 
-@arb.route('/', methods=['GET'])
+@arb.route('/', methods=['GET', 'POST'])
 def redirect_to_home():
-    return redirect(f'/{LANG}')
-
-@arb.route('/<lang>', methods=['GET', 'POST'])
-def form(lang: str = LANG):
-    
-    lang_map = {lang.value: lang for lang in Languages}
-    lang = lang_map.get(lang, False)
-    if not lang:
-        return redirect(url_for('arb.form', lang=LANG))
-    
-    translations = Translation.query.filter_by(language_code=lang)
-    
-    context = {item.context_key: item.value for item in translations}
-    context['LANG'] = lang._value_
-    context['languages'] = lang_map.keys()
-    
     if request.method == "POST":
         
         data = json.load(BytesIO(request.data))
@@ -57,4 +41,20 @@ def form(lang: str = LANG):
         except Exception as _ex:
             return Response(status=400, response=_ex)
         return Response(status=200)
-    return render_template('arb-form.html', **context)
+    return redirect(f'/{LANG}')
+
+@arb.route('/<lang>', methods=['GET'])
+def form(lang: str = LANG):
+    
+    lang_map = {lang.value: lang for lang in Languages}
+    lang = lang_map.get(lang, False)
+    if not lang:
+        return redirect(url_for('arb.form', lang=LANG))
+    
+    translations = Translation.query.filter_by(language_code=lang)
+    
+    context = {item.context_key: item.value for item in translations}
+    context['LANG'] = lang._value_
+    context['languages'] = lang_map.keys()
+    
+    return render_template('arb-main-form.html', **context)

@@ -8,7 +8,7 @@ h1 {
 }
 
 
-@media (max-width: 968px) {
+@media (max-width: 1274px) {
     #contact {
         background-image: none;
         background-color: rgba(241, 241, 241, 1);

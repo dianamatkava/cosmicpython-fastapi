@@ -1,5 +1,5 @@
-# trafficArbitrationForm
-Mortgage traffic arbitration form in Georgia 
+# trafficArbnForm
+[Get loan in Georgia](https://credit-georgia.info/ge) 
 
 11.04.2023
 

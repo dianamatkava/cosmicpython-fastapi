@@ -1,5 +1,5 @@
-# trafficArbnForm
-[Get loan in Georgia](https://credit-georgia.info/ge) 
+# trafficArb
+Get loan in Georgia [hosting](https://credit-georgia.info/ge) 
 
 11.04.2023
 

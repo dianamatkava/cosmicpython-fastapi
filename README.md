@@ -1,5 +1,5 @@
 # trafficArb
-Get loan in Georgia deployed [here](https://credit-georgia.info/ge) 
+"Get loan in Georgia" deployed [here](https://credit-georgia.info/ge) 
 
 11.04.2023
 
@@ -32,12 +32,12 @@ npx tailwindcss -i ./static/css/index.css -o ./static/css/output.css
 npx tailwindcss -i ./static/css/index.css -o ./static/css/output.css --watch
 ```
 
-<!-- ## Init DB:
+## Init DB:
 ```bash
 flask db init
 flask db migrate
 flask db upgrade
-``` -->
+```
 
 # Examples
 [Figma Design](./static/pdf/AbritrageTraffic.pdf)

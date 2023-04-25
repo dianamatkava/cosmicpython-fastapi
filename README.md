@@ -3,7 +3,7 @@
 
 11.04.2023
 
-## Create and activate virtual environment:
+### Create and activate virtual environment:
 ```bash
 python3 -m venv venv
 venv\Scripts\activate (Windows in cmd)

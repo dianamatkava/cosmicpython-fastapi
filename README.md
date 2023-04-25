@@ -1,5 +1,5 @@
 # trafficArb
-Get loan in Georgia [hosting](https://credit-georgia.info/ge) 
+Get loan in Georgia deployed [here](https://credit-georgia.info/ge) 
 
 11.04.2023
 

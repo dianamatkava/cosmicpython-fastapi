@@ -47,3 +47,15 @@ npx tailwindcss -i ./static/css/index.css -o ./static/css/output.css --watch
 
 # Examples
 [Figma Design](./static/pdf/AbritrageTraffic.pdf)
+
+
+# v1.0.0 Release Notes:
+> Client requested to create a single page with contact form and description section for product
+
+### New Features
+* Main page with a form for getting user contact data and a description section for the product, written on **templates (Jinja2)**
+* Incorporated the use of **SQLAlchemy Alembic** for managing DB migration and ORM.
+* Integrated **Flask-Admin** to provide an easy-to-use interface for managing user data and other backend tasks.
+* Added **Flask Auth** to ensure secure user authentication and authorization.
+* Implemented **translation** functionality that supports 4languages (GE, EN, UA, RU).
+* Deployed on **DigitalOcean**

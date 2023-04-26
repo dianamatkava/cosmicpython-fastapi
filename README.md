@@ -1,43 +1,49 @@
 # trafficArb
-"Get loan in Georgia" deployed [here](https://credit-georgia.info/ge) 
+[11.04.2023] "Get loan in Georgia" deployed [>>>](https://credit-georgia.info/ge) 
 
-11.04.2023
-
-### Create and activate virtual environment:
+# Backend Set Up
+##### Create and activate virtual environment:
 ```bash
 python3 -m venv venv
 venv\Scripts\activate (Windows in cmd)
 source venv/bin/activate (Linux)
 ```
 
-
-### Install dependensies for backend:
+##### Install dependensies:
 ```bash
 pip install -r requirements.txt
 ```
-
-## Run server in development mod:
-```bash
-flask --app app --debug run
-```
-
-# Front end
-## Build tailwind css
-``` bash
-npx tailwindcss -i ./static/css/index.css -o ./static/css/output.css
-```
-
-## Watch tailwind css
-``` bash
-npx tailwindcss -i ./static/css/index.css -o ./static/css/output.css --watch
-```
-
-## Init DB:
+##### Init DB:
 ```bash
 flask db init
 flask db migrate
 flask db upgrade
 ```
+
+##### Run server in development mode:
+```bash
+flask --app app --debug run
+```
+
+# Frontend Set Up 
+##### Install dependencies:
+``` bash
+sudo apt-get install npm (Linux)
+```
+(For Windows) Download and install Node.js from the official [website](https://nodejs.org/en/download/)
+``` bash
+npm i tailwindcss
+```
+##### Build tailwind css:
+``` bash
+npx tailwindcss -i ./static/css/index.css -o ./static/css/output.css
+```
+##### Watch for tailwind css updates:
+``` bash
+npx tailwindcss -i ./static/css/index.css -o ./static/css/output.css --watch
+```
+
+
 
 # Examples
 [Figma Design](./static/pdf/AbritrageTraffic.pdf)

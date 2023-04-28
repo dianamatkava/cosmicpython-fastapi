@@ -14,6 +14,10 @@ source venv/bin/activate (Linux)
 ```bash
 pip install -r requirements.txt
 ```
+
+##### Envs:
+> find .env.sample file in root folder and rename to .env
+
 ##### Init DB:
 ```bash
 flask db init

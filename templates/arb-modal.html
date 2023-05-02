@@ -1,12 +1,8 @@
-{% extends "arb-main.html" %}
-
 <div 
-    id="applyForm" 
-    data-modal-show="false" 
-    aria-hidden="true" 
-    class="hidden overflow-x-hidden overflow-y-auto fixed h-modal md:h-full top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center"
+    id="applyForm"
+    class="overflow-x-hidden overflow-y-auto fixed h-screen md:h-full top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center bg-black bg-opacity-75 hidden"
 >
-    <div class="relative w-full max-w-2xl px-4 h-full md:h-auto">
+    <div class="relative w-full max-w-2xl px-4 h-modal flex justify-center align-center m-auto md:h-auto">
         
         <div class="m-12 p-3 bg-white rounded-lg shadow relative dark:bg-gray-700">
             <div class="h-fit">
@@ -14,7 +10,7 @@
             </div>
             
             <div class="mt-12">
-                <h1 class="text-2xl text-blue-950 text-center">All done!</h1>
+                <h1 class="text-2xl text-blue-950 text-center">{{modal_header}}</h1>
             </div>
 
             <div class="mt-6 flex flex-wrap justify-center items-center">
@@ -24,53 +20,14 @@
             </div>
 
             <div class="mt-9">
-                <p class="text-md italic text-gray-500 text-center">Our managers will rich to you very soon )</p>
+                <p class="text-md italic text-gray-500 text-center">{{modal_desc}}</p>
             </div>
 
             <div class='flex justify-center items-center mt-12 px-12 '>
-                <button data-modal-toggle="applyFormError" type="button"  class="block mb-9 rounded-md bg-blue-900 px-10 py-2 text-white cursor-pointer text-center">Back</button>
+                <a onclick="submitSuccess()" type="button" class="block mb-9 rounded-md bg-blue-900 px-10 py-2 text-white cursor-pointer text-center">{{back_btn}}</a>
             </div>
 
         </div>
 
     </div>
 </div>
-
-
-
-<!-- Form modal -->
-    <!-- <div 
-        id="applyForm" 
-        data-modal-show="true" 
-        aria-hidden="true" 
-        class="hidden overflow-x-hidden overflow-y-auto fixed h-modal md:h-full top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center"
-    >
-        <div class="relative w-full max-w-2xl px-4 h-full md:h-auto">
-            
-            <div class="m-12 p-3 bg-white rounded-lg shadow relative dark:bg-gray-700">
-                <div class="h-fit">
-                    <img class="m-auto" src="../static/img/error-modal.png" alt="">
-                </div>
-                
-                <div class="mt-12">
-                    <h1 class="text-3xl text-red-600 text-center">Ops!</h1>
-                </div>
-
-                <div class="mt-6 flex flex-wrap justify-center items-center">
-                    <div class="h-3 w-3 m-2 bg-blue-950 rounded-full"> </div>
-                    <div class="h-3 w-3 m-2 bg-blue-950 rounded-full"> </div>
-                    <div class="h-3 w-3 m-2 bg-blue-950 rounded-full"> </div>
-                </div>
-
-                <div class="mt-9">
-                    <p class="text-md italic text-gray-500 text-center">Default Error message</p>
-                </div>
-
-                <div class='flex justify-center items-center mt-12 px-12 '>
-                    <button data-modal-toggle="applyForm" type="button"  class="block mb-9 rounded-md bg-blue-900 px-10 py-2 text-white cursor-pointer text-center">Back</button>
-                </div>
-
-            </div>
-
-        </div>
-    </div> -->

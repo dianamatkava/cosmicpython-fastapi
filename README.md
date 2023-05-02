@@ -1,5 +1,5 @@
 # trafficArbitrationForm
-Form of traffic arbitration
+Mortgage traffic arbitration form in Georgia 
 
 11.04.2023
 
@@ -11,7 +11,7 @@ source venv/bin/activate (Linux)
 ```
 
 
-## Install dependensies for backend:
+### Install dependensies for backend:
 ```bash
 pip install -r requirements.txt
 ```

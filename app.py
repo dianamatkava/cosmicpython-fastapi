@@ -33,7 +33,7 @@ def create_app():
         SQLALCHEMY_TRACK_MODIFICATIONS = True,
         FLASK_ADMIN_SWATCH = 'cerulean'
     )
-    print(f"DEBAG {app.config.FLASK_DEBUG}")
+    # print(f"DEBAG {app.config.FLASK_DEBUG}")
     
     try:
         os.makedirs(app.instance_path)

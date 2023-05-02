@@ -1,6 +1,6 @@
 venv
 __pycache__/
-instance
+/instance
 .env
 *.swp
 static/css/output.css

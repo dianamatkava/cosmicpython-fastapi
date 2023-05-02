@@ -1,7 +1,10 @@
+:root {
+    color-scheme: only light;
+}
+
 h1 {
     font-family: 'Inter', sans-serif;
 }
-
 
 #contact {
     background-image: url('../img/uber-form.png');

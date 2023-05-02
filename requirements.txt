@@ -4,3 +4,4 @@ Flask-Migrate==4.0.4
 Flask-SQLAlchemy==3.0.3
 Flask-Admin==1.6.1
 Flask-Login==0.6.2   
+flask-serialize==2.1.3

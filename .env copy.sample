@@ -1,0 +1,15 @@
+# Sample
+
+<<<<<<< HEAD:.env.sample
+FLASK_DEBUG = True
+SECRET_KEY = 'supper_secret'
+
+SERVER_NAME = '127.0.0.1:5000'
+
+LANG = 'EN'
+=======
+FLASK_DEBUG = False
+SECRET_KEY = 'KmX#cj?3A7pzzziQNa#dBTr4&bBm879KNM9BFcyC'
+LANG = 'GE'
+SERVER_NAME = 'credit-georgia.info'
+>>>>>>> 5ccb128 (prod updates):.env

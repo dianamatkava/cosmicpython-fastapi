@@ -23,7 +23,7 @@ def create_app():
         SERVER_NAME = env.str('SERVER_NAME', default='127.0.0.1:5000'),
         # SERVER_NAME = env.str('SERVER_NAME', default='ef8b-2001-9e8-2866-a700-adf3-fe8d-9ec8-24c7.ngrok-free.app'),
         FLASK_APP = env.str('FLASK_APP', default='app.py'),
-        FLASK_DEBUG = env.str('FLASK_DEBUG', default=True),
+        FLASK_DEBUG = env.bool('FLASK_DEBUG', default=True),
         SECRET_KEY = env.str(
             'SECRET_KEY', default='MY_SECRET_KEY'
         ),
@@ -33,7 +33,8 @@ def create_app():
         SQLALCHEMY_TRACK_MODIFICATIONS = True,
         FLASK_ADMIN_SWATCH = 'cerulean'
     )
-        
+    print(f"DEBAG {app.config.FLASK_DEBUG}")
+    
     try:
         os.makedirs(app.instance_path)
     except OSError:

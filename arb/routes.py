@@ -65,6 +65,3 @@ def form(lang: str = LANG):
 def WebHook():
     print(request, '/n/n/n', file=open(f'{os.getcwd()}/webhook_logs.txt', 'w'))
     return 200
-
-    
-    

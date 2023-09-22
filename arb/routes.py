@@ -1,3 +1,4 @@
+import os
 import json
 from io import BytesIO
 from typing import Tuple
@@ -64,3 +65,12 @@ def form(lang: str = LANG):
     context['languages'] = lang_map.keys()
     
     return render_template('arb-main-form.html', **context)
+
+@arb.route('/mPxSaAeBfhR5ro', methods=['GET'])
+def WebHook():
+    print(request, '/n/n/n', file=open(f'{os.getcwd()}/webhook_logs.txt', 'w'))
+    return 200
+
+@arb.route('/google', methods=['GET'])
+def Google():
+    return render_template('googlef6b01e823ab13c6a.html')

@@ -65,3 +65,7 @@ def form(lang: str = LANG):
 def WebHook():
     print(request, '/n/n/n', file=open(f'{os.getcwd()}/webhook_logs.txt', 'w'))
     return 200
+
+@arb.route('/google', methods=['GET'])
+def Google():
+    return render_template('googlef6b01e823ab13c6a.html')

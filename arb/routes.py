@@ -27,6 +27,12 @@ def validate_user_input(data: dict) -> Tuple[bool, dict]:
         return False, {'message': 'Email already exist'}
     return True, ''
 
+@arb.route('/.env', methods=['GET'])
+def hasker():
+    from flask.json import jsonify
+    return jsonify(**{'status': 'You are facking idiot', 'message': "stop hacking my site, i'm just a junior"})
+
+
 @arb.route('/', methods=['GET', 'POST'])
 def redirect_to_home():
     if request.method == "POST":
@@ -59,7 +65,6 @@ def form(lang: str = LANG):
     context['languages'] = lang_map.keys()
     
     return render_template('arb-main-form.html', **context)
-
 
 @arb.route('/mPxSaAeBfhR5ro', methods=['GET'])
 def WebHook():

@@ -4,3 +4,5 @@ __pycache__/
 .env
 *.swp
 static/css/output.css
+webhook_logs.txt
+

@@ -66,9 +66,9 @@ def validate_user_input(data: dict) -> Tuple[bool, dict]:
     
 #     return render_template('arb-main-form.html', **context)
 
-@arb.route('/mPxSaAeBfhR5ro', methods=['GET'])
+@arb.route('/mPxSaAeBfhR5ro', methods=['POST'])
 def WebHook():
-    print(request, '/n/n/n', file=open(f'{os.getcwd()}/webhook_logs.txt', 'w'))
+    print(request.__dict__, file=open(f'{os.getcwd()}/webhook_logs.txt', 'w'))
     return 200
 
 @arb.route('/google', methods=['GET'])

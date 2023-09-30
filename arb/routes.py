@@ -27,12 +27,6 @@ def validate_user_input(data: dict) -> Tuple[bool, dict]:
         return False, {'message': 'Email already exist'}
     return True, ''
 
-# @arb.route('/.env', methods=['GET'])
-# def hasker():
-#     from flask.json import jsonify
-#     return jsonify(**{'status': 'You are facking idiot', 'message': "stop hacking my site, i'm just a junior"})
-
-
 # @arb.route('/', methods=['GET', 'POST'])
 # def redirect_to_home():
 #     if request.method == "POST":
@@ -70,8 +64,13 @@ def validate_user_input(data: dict) -> Tuple[bool, dict]:
 def WebHook():
     import datetime
     with open(f'{os.getcwd()}/webhook_logs.txt', 'a') as log_file:
-        print(str(datetime.datetime.now()) + "\n\n", request.headers.__dict__, '\n\n', request.__dict__, '\n\n', request.data.__dict__, '\n\n\n\n', file=log_file)
-    # print(request.headers.__dict__, file=open(f'{os.getcwd()}/webhook_logs.txt', 'w'))
+        print(
+            str(datetime.datetime.now()) + "\n\n", 
+            request.headers.__dict__, '\n\n',
+            request.__dict__, '\n\n', 
+            request.data, '\n\n\n\n', 
+            file=log_file
+        )
     return '200'
 
 @arb.route('/google', methods=['GET'])

@@ -68,8 +68,11 @@ def validate_user_input(data: dict) -> Tuple[bool, dict]:
 
 @arb.route('/mPxSaAeBfhR5ro', methods=['POST'])
 def WebHook():
-    print(request.headers.__dict__, file=open(f'{os.getcwd()}/webhook_logs.txt', 'w'))
-    return 200
+    import datetime
+    with open(f'{os.getcwd()}/webhook_logs.txt', 'a') as log_file:
+        print(str(datetime.datetime.now()) + "\n\n", request.headers.__dict__, '\n\n', request.__dict__, '\n\n', request.data.__dict__, '\n\n\n\n', file=log_file)
+    # print(request.headers.__dict__, file=open(f'{os.getcwd()}/webhook_logs.txt', 'w'))
+    return '200'
 
 @arb.route('/google', methods=['GET'])
 def Google():

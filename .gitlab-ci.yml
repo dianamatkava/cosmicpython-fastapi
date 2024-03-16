@@ -23,7 +23,7 @@ lint:
   script:
     - pip install poetry
     - poetry install --no-root
-    - poetry run pylint ./* --output-format=json:lint.json,colorized
+    - poetry run pylint ./* --output-format=json:lint.json,colorized --no-exit
     - poetry run python ./pylint-ci.py lint.json gitlab.json
   artifacts:
     name: "PyLint Atr name"

@@ -75,4 +75,5 @@ def WebHook():
 
 @arb.route('/google', methods=['GET'])
 def Google():
+    test = []
     return render_template('googlef6b01e823ab13c6a.html')

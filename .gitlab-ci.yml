@@ -13,6 +13,8 @@ stages:
 #     paths:
 #       - "build/"
 
+include:
+  - template: Jobs/Code-Quality.gitlab-ci.yml
 
 
 lint:

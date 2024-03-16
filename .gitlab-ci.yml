@@ -1,27 +1,14 @@
-stages:
-  - build
-  - lint
-  - code_quality
-
-
-# build:
-#   stage: build
-#   image: python
-#   script:
-#     - pip install poetry
-#     - poetry install --no-root
-#   artifacts:
-#     paths:
-#       - "build/"
-
 include:
   - template: Jobs/Code-Quality.gitlab-ci.yml
 
+stages:
+  - build
+  - code_quality
+  - lint
+  - test
 
 lint:
-  stage: code_quality
-  # needs:
-  #   - build
+  stage: lint
   image: python:3.11
   script:
     - pip install poetry

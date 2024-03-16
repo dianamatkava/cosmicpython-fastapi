@@ -22,7 +22,7 @@ lint:
   image: python:3.11
   script:
     - pip install poetry
-    - poetry add pylint
+    - poetry install --no-root
     - poetry run pylint ./* --output-format=json:lint.json,colorized
     - poetry run python ./pylint-ci.py lint.json gitlab.json
   artifacts:

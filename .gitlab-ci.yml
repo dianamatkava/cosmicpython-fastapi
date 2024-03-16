@@ -19,7 +19,7 @@ include:
 
 
 lint:
-  stage: lint
+  stage: code_quality
   # needs:
   #   - build
   image: python:3.11

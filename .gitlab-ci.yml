@@ -3,22 +3,22 @@ stages:
   - lint
 
 
-build:
-  stage: build
-  image: python
-  script:
-    - pip install poetry
-    - poetry install --no-root
-  artifacts:
-    paths:
-      - "build/"
+# build:
+#   stage: build
+#   image: python
+#   script:
+#     - pip install poetry
+#     - poetry install --no-root
+#   artifacts:
+#     paths:
+#       - "build/"
 
 
 
 lint:
   stage: lint
-  needs:
-    - build
+  # needs:
+  #   - build
   image: python:3.11
   script:
     - pip install poetry

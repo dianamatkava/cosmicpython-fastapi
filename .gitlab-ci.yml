@@ -11,7 +11,7 @@ build:
     - poetry install --no-root
   artifacts:
     paths:
-      - "build/"
+      - build/*
 
 
 

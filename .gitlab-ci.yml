@@ -17,6 +17,8 @@ build:
 
 lint:
   stage: lint
+  needs:
+    - build
   image: python
   script:
     - ls -la

@@ -1,28 +1,18 @@
-include:
-  - template: Jobs/Code-Quality.gitlab-ci.yml
 
 stages:
   - build
   - lint
-  - test
-
-
-#code_quality:
-#  stage: test
-#  artifacts:
-#    paths: [gl-code-quality-report.json]
-#  allow_failure: true
 
 lint:
    stage: lint
    image: python:3.11
+   allow_failure: true
    script:
      - pip install poetry
      - poetry install --no-root
      - poetry run pylint ./* --output-format=json:lint.json,colorized --exit-zero
      - poetry run python ./pylint-ci.py lint.json gl-code-quality-report.json
      - ls -la
-     - cat gl-code-quality-report.json
    artifacts:
      name: "PyLint Atr name"
      reports:

@@ -18,8 +18,8 @@ arb = Blueprint('arb', __name__, url_prefix='/')
 LANG = env.str('DEFAULT_LANG', default='EN').lower()
 
 
-def validate_user_input(data: dict, test=1, test2=3) -> Tuple[bool, dict]:
-    get_name = 1234
+def validate_user_input(data: dict, some_param=234) -> Tuple[bool, dict]:
+    test = []
     if not validate_email(data['email']):
         return False, {'message': 'Email not valid'}
     if not validate_phone_number(data['phone']):

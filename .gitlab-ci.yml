@@ -9,7 +9,7 @@ build:
   script:
     - pip install poetry
     - poetry shell
-    - poetry install
+    - poetry install --no-root
   artifacts:
     paths:
       - "build/"

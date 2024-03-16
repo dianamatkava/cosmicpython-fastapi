@@ -11,16 +11,18 @@ build:
     - poetry install --no-root
   artifacts:
     paths:
-      - build/*
+      - "build/"
 
 
 
 lint:
   stage: lint
-  image: python
+  needs:
+    - build
+  image: python:3.11
   script:
-    - poetry run pylint ./build/* --output-format=json:lint.json,colorized
-    - poetry run python ./build/pylint-ci.py lint.json gitlab.json
+    - poetry run pylint ./* --output-format=json:lint.json,colorized
+    - poetry run python ./pylint-ci.py lint.json gitlab.json
   artifacts:
     name: "PyLint Atr name"
     reports:

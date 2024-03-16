@@ -10,7 +10,7 @@ lint:
    script:
      - pip install poetry
      - poetry install --no-root
-     - poetry run pylint ./* --output-format=json:lint.json,colorized --exit-zero
+     - poetry run pylint ./fail-pylint.py --output-format=json:lint.json,colorized --exit-zero
      - poetry run python ./pylint-ci.py lint.json gl-code-quality-report.json
      - cat gl-code-quality-report.json
      - mkdir $CI_COMMIT_SHA

@@ -19,7 +19,40 @@ LANG = env.str('DEFAULT_LANG', default='EN').lower()
 
 
 def validate_user_input(data: dict, test=1, test2=3) -> Tuple[bool, dict]:
+
+
+    ## Fail Code Climate
     get_name = 1234
+    if get_name == 1:
+        return True, ''
+    if get_name == 3:
+        return True, ''
+    if get_name == 4:
+        return True, ''
+    if get_name == 5:
+        return True, ''
+    if get_name == 16:
+        return True, ''
+    if get_name == 36:
+        return True, ''
+    if get_name == 46:
+        return True, ''
+    if get_name == 56:
+        return True, ''
+    if get_name == 33:
+        return True, ''
+    if get_name == 43:
+        return True, ''
+    if get_name == 53:
+        return True, ''
+    if get_name == 163:
+        return True, ''
+    if get_name == 363:
+        return True, ''
+    if get_name == 463:
+        return True, ''
+    if get_name == 563:
+        return True, ''
     if not validate_email(data['email']):
         return False, {'message': 'Email not valid'}
     if not validate_phone_number(data['phone']):

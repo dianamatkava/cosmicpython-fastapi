@@ -20,10 +20,11 @@ lint:
      - pip install poetry
      - poetry install --no-root
      - poetry run pylint ./* --output-format=json:lint.json,colorized --exit-zero
-     - poetry run python ./pylint-ci.py lint.json gitlab.json
+     - poetry run python ./pylint-ci.py lint.json gl-code-quality-report.json
      - ls -la
+     - cat gl-code-quality-report.json
    artifacts:
      name: "PyLint Atr name"
      reports:
-       codequality: /gitlab.json
+       codequality: gl-code-quality-report.json
      expire_in: 7days

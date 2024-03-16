@@ -10,11 +10,13 @@ lint:
    script:
      - pip install poetry
      - poetry install --no-root
-     - poetry run pylint ./* --output-format=json:lint.json,colorized --exit-zero
+     - poetry run pylint ./fail-pylint.py --output-format=json:lint.json,colorized --exit-zero
      - poetry run python ./pylint-ci.py lint.json gl-code-quality-report.json
-     - ls -la
+     - cat gl-code-quality-report.json
+     - mkdir $CI_COMMIT_SHA
+     - mv ./gl-code-quality-report.json ./$CI_COMMIT_SHA/gl-code-quality-report.json
    artifacts:
      name: "PyLint Atr name"
      reports:
-       codequality: gl-code-quality-report.json
+       codequality: $CI_COMMIT_SHA/gl-code-quality-report.json
      expire_in: 7days

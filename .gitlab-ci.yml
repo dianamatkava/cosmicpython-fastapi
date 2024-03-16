@@ -8,7 +8,6 @@ build:
   image: python
   script:
     - pip install poetry
-    - poetry shell
     - poetry install --no-root
   artifacts:
     paths:
@@ -20,8 +19,8 @@ lint:
   stage: lint
   image: python
   script:
-    - pylint ./build/* --output-format=json:lint.json,colorized
-    - python ./build/pylint-ci.py lint.json gitlab.json
+    - poetry run pylint ./build/* --output-format=json:lint.json,colorized
+    - poetry run python ./build/pylint-ci.py lint.json gitlab.json
   artifacts:
     name: "PyLint Atr name"
     reports:

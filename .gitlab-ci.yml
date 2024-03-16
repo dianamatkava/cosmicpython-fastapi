@@ -3,21 +3,27 @@ include:
 
 stages:
   - build
-  - code_quality
   - lint
   - test
 
-lint:
-  stage: lint
-  image: python:3.11
-  script:
-    - pip install poetry
-    - poetry install --no-root
-    - poetry run pylint ./* --output-format=json:lint.json,colorized --exit-zero
-    - poetry run python ./pylint-ci.py lint.json gitlab.json
-    - ls -la
+
+code_quality:
+  stage: test
   artifacts:
-    name: "PyLint Atr name"
-    reports:
-      codequality: /gitlab.json
-    expire_in: 7days
+    paths: [gl-code-quality-report.json]
+  allow_failure: true
+
+# lint:
+#   stage: lint
+#   image: python:3.11
+#   script:
+#     - pip install poetry
+#     - poetry install --no-root
+#     - poetry run pylint ./* --output-format=json:lint.json,colorized --exit-zero
+#     - poetry run python ./pylint-ci.py lint.json gitlab.json
+#     - ls -la
+#   artifacts:
+#     name: "PyLint Atr name"
+#     reports:
+#       codequality: /gitlab.json
+#     expire_in: 7days

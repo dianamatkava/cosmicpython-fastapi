@@ -17,3 +17,8 @@ def test1():
 def test2():
     test = 0
     return
+
+
+def cd_test2():
+    test = 0
+    return

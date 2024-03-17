@@ -5,6 +5,8 @@ stages:
 
 lint:
    stage: lint
+   when: always
+   cache: {}
    image: python:3.11
    allow_failure: true
    script:
@@ -12,7 +14,6 @@ lint:
      - poetry install --no-root
      - poetry run pylint ./fail-pylint.py --output-format=json:lint.json,colorized --exit-zero
      - poetry run python ./pylint-ci.py lint.json gl-code-quality-report.json
-     - cat gl-code-quality-report.json
      - mkdir $CI_COMMIT_SHA
      - mv ./gl-code-quality-report.json ./$CI_COMMIT_SHA/gl-code-quality-report.json
    artifacts:

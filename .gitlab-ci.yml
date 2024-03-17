@@ -5,6 +5,7 @@ stages:
 
 lint:
    stage: lint
+   when: always
    image: python:3.11
    allow_failure: true
    script:

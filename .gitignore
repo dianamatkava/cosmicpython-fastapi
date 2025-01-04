@@ -5,4 +5,4 @@ __pycache__/
 *.swp
 static/css/output.css
 webhook_logs.txt
-/idea
+.idea

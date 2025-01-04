@@ -13,7 +13,7 @@ class MyIteratorWithNext:
         if self.index >= len(self.iterable):
             raise StopIteration()
         value = self.iterable[self.index]
-        self.index += 1
+        self.index += 2
         return value
 
 
@@ -23,6 +23,9 @@ class MyIterable:
 
     def __iter__(self):
         return iter(self.data)
+
+    def __str__(self):
+        return str(self.data)
 
 
 class MySequence(Sequence):
@@ -54,6 +57,7 @@ def validate_iterator(iterable, iterator_class):
     iterator = iterator_class(iterable)
     try:
         for _ in iterator:
+            print(iterator_class.__name__, ' - ', _)
             pass
         print(f"{iterator_class.__name__} is a valid iterator.")
     except Exception as e:
@@ -67,15 +71,19 @@ def validate_iterable(iterable_class):
             iterator = iter(iterable)
             list(iterator)  # Exhaust iterator to test
             print(f"{iterable_class.__name__} is a valid iterable.")
+            return True
         except StopIteration:
             print(f"{iterable_class.__name__} satisfies Iterable but is a valid iterable.")
+            return False
     except TypeError as e:
         missing_methods = Iterable.__abstractmethods__ - set(dir(iterable_class))
         print(f"{iterable_class.__name__} is not a valid Iterable: {missing_methods or e}")
+        return False
 
 
 if __name__ == "__main__":
-    validate_iterable(ValidIterable)
-    validate_iterable(WrongIterable)
+    assert validate_iterable(ValidIterable) is True
+    assert validate_iterable(WrongIterable) is False
+
     validate_iterator([1, 2, 3], MyIteratorWithNext)
     validate_iterator(MySequence(ValidIterable(1, 2, 3)), MyIteratorWithNext)

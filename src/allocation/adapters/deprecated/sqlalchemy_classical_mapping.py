@@ -4,7 +4,7 @@
 from sqlalchemy import Column, Integer, String, Table, MetaData, DateTime
 
 from sqlalchemy.orm import mapper
-from src.models.allocation import OrderLineModel, OrderModel, BatchModel, CustomerModel, ProductModel
+from src.domain.allocation import OrderLineModel, OrderModel, BatchModel, CustomerModel, ProductModel
 
 metadata = MetaData()
 

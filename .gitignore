@@ -1,9 +1,11 @@
+.env
 venv
 __pycache__/
-/instance
-.env
-*.swp
-static/css/output.css
-webhook_logs.txt
 .idea
-./control-flow
+*.swp
+/instance
+static/css/output.css
+
+control-flow
+webhook_logs.txt
+*.db

@@ -1,8 +1,8 @@
 from sqlalchemy import text
 from sqlmodel import Session
 
-from cruds.product_crud import ProductCrud
-from db.orm_models import Product
+from src.allocation.adapters.repository import ProductCrud
+from src.allocation.adapters.orm_models import Product
 
 
 def test_create_product(session: Session, product_crud: ProductCrud):

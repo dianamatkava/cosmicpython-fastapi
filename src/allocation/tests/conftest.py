@@ -4,13 +4,13 @@ import pytest
 from sqlalchemy import create_engine
 from sqlmodel import SQLModel, Session
 
-from cruds.product_crud import ProductCrud
-from services.batch_service import BatchService
+from src.allocation.adapters.repository import ProductCrud
+from src.allocation.services.batch_service import BatchService
 
 
 @pytest.fixture(scope="session")
 def engine():
-    sqlite_file_name = "database.testing.db"
+    sqlite_file_name = "database.testing.adapters"
     sqlite_url = f"sqlite:///{sqlite_file_name}"
     engine = create_engine(sqlite_url, connect_args={"check_same_thread": False}, echo=True)
 

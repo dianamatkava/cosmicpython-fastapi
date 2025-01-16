@@ -1,7 +1,7 @@
 from sqlalchemy import text
 
-from conftest import session
-from src.db.orm_models import Product
+from src.allocation.tests.conftest import session
+from src.allocation.adapters.orm_models import Product
 
 
 def test_get_products(session):
@@ -21,3 +21,5 @@ def test_get_products(session):
     ]
 
     assert session.query(Product).all() == expected_products
+
+

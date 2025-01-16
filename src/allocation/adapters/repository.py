@@ -1,7 +1,7 @@
 # The Repository pattern is an abstraction over persistent storage
 from sqlmodel import Session
 
-from db.orm_models import Product
+from src.allocation.adapters.orm_models import Product
 
 
 class ProductCrud:

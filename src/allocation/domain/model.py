@@ -2,16 +2,12 @@ from dataclasses import dataclass
 from datetime import date
 from typing import NewType, Set, Optional
 
-Quantity = NewType("Quantity", int)
-Sku = NewType("Sku", str)
-Reference = NewType("Reference", str)
-
 
 class ProductModel:
-    sku: Sku
+    sku: str
     name: str
 
-    def __init__(self, sku: Sku, name: str) -> None:
+    def __init__(self, sku: str, name: str) -> None:
         self.sku = sku
         self.name = name
 
@@ -23,7 +19,7 @@ class OrderLineModel:
 
     order_id: str
     product: ProductModel  # FK
-    qty: Quantity
+    qty: int
 
     def __str__(self):
         return f'{self.qty} units of {self.product.name}'
@@ -38,23 +34,23 @@ class CustomerModel:
 
 class OrderModel:
     customer: CustomerModel | None  # FK
-    ref: Reference
+    ref: str
     order_line: list
 
-    def __init__(self, ref: Reference, order_line: list, customer: CustomerModel = None):
+    def __init__(self, ref: str, order_line: list, customer: CustomerModel = None):
         self.ref = ref
         self.order_line = order_line
         self.customer = customer
 
 
 class BatchModel:
-    ref: Reference
+    ref: str
     product: ProductModel
     eta: date | None
-    _purchased_quantity: Quantity  # initial quantity
+    _purchased_quantity: int  # initial quantity
     _allocations: Set[OrderLineModel]
 
-    def __init__(self, ref: Reference, product: ProductModel, qty: Quantity, eta: Optional[date]):
+    def __init__(self, ref: str, product: ProductModel, qty: int, eta: Optional[date]):
         self.ref = ref
         self.product = product
         self.eta = eta

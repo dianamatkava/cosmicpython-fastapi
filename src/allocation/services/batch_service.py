@@ -1,6 +1,6 @@
 from typing import List
 
-from src.allocation.domain.allocation import OrderLineModel, BatchModel
+from src.allocation.domain.model import OrderLineModel, BatchModel
 
 
 class OutOfStock(Exception):

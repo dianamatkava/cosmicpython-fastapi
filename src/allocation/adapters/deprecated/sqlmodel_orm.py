@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlmodel import SQLModel, Field
+from sqlmodel_orm import SQLModel, Field
 
 
 class Product(SQLModel, table=True):

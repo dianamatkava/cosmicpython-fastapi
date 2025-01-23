@@ -1,35 +1,23 @@
-import os
-
 import pytest
 from sqlalchemy import create_engine
-from sqlmodel import SQLModel, Session
+from sqlalchemy.orm import clear_mappers, sessionmaker
 
-from src.allocation.adapters.repository import ProductCrud
+from src.allocation.adapters.orm import metadata
+from src.allocation.adapters.repository import SqlAlchemyRepository
 from src.allocation.services.batch_service import BatchService
 
 
-@pytest.fixture(scope="session")
-def engine():
-    sqlite_file_name = "database.testing.adapters"
-    sqlite_url = f"sqlite:///{sqlite_file_name}"
-    engine = create_engine(sqlite_url, connect_args={"check_same_thread": False}, echo=True)
-
-    yield engine
-
-    SQLModel.metadata.drop_all(engine)
-    if os.path.exists(sqlite_file_name):  # Delete the SQLite file
-        os.remove(sqlite_file_name)
+@pytest.fixture()
+def in_memory_db():
+    engine = create_engine("sqlite:///:memory:")
+    metadata.create_all(engine)
+    return engine
 
 
-@pytest.fixture(scope="session", autouse=True)
-def setup_database(engine):
-    SQLModel.metadata.create_all(engine)
-
-
-@pytest.fixture(scope="function")
-def session(engine):
-    with Session(engine) as session:
-        yield session
+@pytest.fixture
+def session(in_memory_db):
+    yield sessionmaker(bind=in_memory_db)()
+    clear_mappers()
 
 
 @pytest.fixture(name='batch_service')
@@ -37,7 +25,7 @@ def get_batch_service():
     return BatchService()
 
 
-@pytest.fixture(name="product_crud")
-def get_product_crud(session):
-    return ProductCrud(session)
+@pytest.fixture(name="sql_repository")
+def get_sql_repository(session):
+    return SqlAlchemyRepository(session)
 

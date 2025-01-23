@@ -1,24 +1,17 @@
-from sqlalchemy import text
 from sqlmodel import Session
 
-from src.allocation.adapters.repository import ProductCrud
-from src.allocation.adapters.orm_models import Product
+from src.allocation.adapters.repository import SqlAlchemyRepository
+from src.allocation.domain import model
 
 
-def test_create_product(session: Session, product_crud: ProductCrud):
-    product_crud.create("BUE-TABLE")
-    products = session.query(Product).all()
-    expected_products = [Product(name="BUE-TABLE", id=1)]
-    assert expected_products == products
+def test_repository_can_save_a_batch(session: Session, sql_repository: SqlAlchemyRepository):
+    product = model.ProductModel(sku="RUSTY-SOAPDISH", name="Rusty SO")
+    batch = model.BatchModel("batch1", product, 100, eta=None)
 
+    sql_repository.add(batch)
+    session.commit()
 
-def test_get_product(session: Session, product_crud: ProductCrud):
-    insert_query = text("""
-        INSERT INTO product (name) VALUES 
-        ("RED-CHAIR")
-    """)
-    session.execute(insert_query)
-
-    product = product_crud.get_by_id(id=1)
-    expected_product = Product(id=1, name="RED-CHAIR")
-    assert expected_product == product
+    rows = session.execute(
+        'SELECT reference, sku, _purchased_quantity, eta FROM "batches"'
+    )
+    assert list(rows) == [("batch1", "RUSTY-SOAPDISH", 100, None)]

@@ -2,7 +2,7 @@ from typing import Annotated, Any
 
 from fastapi import Depends, FastAPI
 
-from src.allocation.adapters.orm_models import Product
+from src.allocation.adapters.sqlmodel import Product
 from src.allocation.conf import get_session, create_db_and_tables
 
 app = FastAPI()

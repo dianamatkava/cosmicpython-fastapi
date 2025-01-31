@@ -1,8 +1,8 @@
 from datetime import date, timedelta
 import pytest
 
-from src.allocation.services.batch_service import BatchService, OutOfStock
-from src.allocation.domain.model import ProductModel, BatchModel, OrderLineModel
+from src.services.batch_service import BatchService, OutOfStock
+from src.domain.model import ProductModel, BatchModel, OrderLineModel
 
 
 def make_batch_and_line(batch_qty: int, line_qty: int, batch_eta: date = date.today()):

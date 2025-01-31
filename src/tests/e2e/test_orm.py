@@ -1,7 +1,7 @@
 from sqlalchemy import text
 
-from src.allocation.tests.conftest import session
-from src.allocation.domain import model
+from src.tests.conftest import session
+from src.domain import model
 
 
 def test_get_products(session):

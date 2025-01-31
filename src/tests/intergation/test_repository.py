@@ -1,7 +1,7 @@
 from sqlmodel import Session
 
-from src.allocation.adapters.repository import SqlAlchemyRepository
-from src.allocation.domain import model
+from src.adapters.repository import SqlAlchemyRepository
+from src.domain import model
 
 
 def test_repository_can_save_a_batch(session: Session, sql_repository: SqlAlchemyRepository):

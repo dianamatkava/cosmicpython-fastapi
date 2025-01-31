@@ -2,9 +2,9 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import clear_mappers, sessionmaker
 
-from src.allocation.adapters.orm import metadata
-from src.allocation.adapters.repository import SqlAlchemyRepository
-from src.allocation.services.batch_service import BatchService
+from src.adapters.orm import metadata
+from src.adapters.repository import SqlAlchemyRepository
+from src.services.batch_service import BatchService
 
 
 @pytest.fixture()

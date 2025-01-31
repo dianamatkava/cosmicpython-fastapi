@@ -1,9 +1,9 @@
-# The Repository pattern is an abstraction over persistent storage
+# The Repository pattern is an abstraction over persistent storage1
 import abc
 from typing import List
 
 from sqlmodel import Session
-from src.allocation.domain import model
+from src.domain import model
 
 
 class AbstractRepository(abc.ABC):

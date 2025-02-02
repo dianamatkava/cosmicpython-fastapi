@@ -1,41 +1,27 @@
-from sqlalchemy import Column, Integer, String, Table, MetaData, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Table, MetaData, Date, ForeignKey
 from sqlalchemy.orm import registry, relationship
 
 from src.domain import model
 
 metadata = MetaData()
 
-customer = Table(
-    'customer',
-    metadata,
-    Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('address', String(255), nullable=False),
-    Column('name', String(255), nullable=False),
-)
-
-product = Table(
-    'product',
-    metadata,
-    Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("name", String(255)),
-    Column("sku", String(255), unique=True),
-)
-
 order_lines = Table(
     "order_lines",
     metadata,
     Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("product_id", ForeignKey("product.id")),
+    Column("sku", String(255)),
     Column("qty", Integer, nullable=False),
-    Column("orderid", String(255))
+    Column("orderid", String(255)),
 )
 
 batches = Table(
-    'batches',
+    "batches",
     metadata,
-    Column('id', Integer, primary_key=True, autoincrement=True),
-    Column("product_id", ForeignKey("product.id")),
-    Column('eta', DateTime, nullable=True)
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("reference", String(255)),
+    Column("sku", String(255)),
+    Column("_purchased_quantity", Integer, nullable=False),
+    Column("eta", Date, nullable=True),
 )
 
 allocations = Table(
@@ -54,7 +40,6 @@ mapper_registry = registry()
 # what SQLAlchemy calls a classical mapping:
 
 lines_mapper = mapper_registry.map_imperatively(model.OrderLineModel, order_lines)
-product_mapper = mapper_registry.map_imperatively(model.ProductModel, product)
 mapper_registry.map_imperatively(
     model.BatchModel,
     batches,
@@ -66,4 +51,3 @@ mapper_registry.map_imperatively(
         ),
     },
 )
-

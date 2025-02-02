@@ -5,7 +5,7 @@ from fastapi import APIRouter, WebSocket, Query, WebSocketException, Depends, HT
 from fastapi.responses import HTMLResponse
 from starlette import status
 
-from src.routes.page import html
+from src.routes.chat_page import html
 
 router = APIRouter(prefix='/websocket')
 

@@ -2,13 +2,12 @@ from datetime import date, timedelta
 import pytest
 
 from src.services.batch_service import BatchService, OutOfStock
-from src.domain.model import ProductModel, BatchModel, OrderLineModel
+from src.domain.model import BatchModel, OrderLineModel
 
 
 def make_batch_and_line(batch_qty: int, line_qty: int, batch_eta: date = date.today()):
-    product = ProductModel('1', "BLUE-VASE")
-    batch = BatchModel('1', product, qty=batch_qty, eta=batch_eta)
-    order_line = OrderLineModel('1', product, qty=line_qty)
+    batch = BatchModel('1', "BLUE-VASE", qty=batch_qty, eta=batch_eta)
+    order_line = OrderLineModel('1', "BLUE-VASE", qty=line_qty)
 
     return batch, order_line
 
@@ -35,10 +34,8 @@ def test_can_allocate_if_available_equal_to_required():
 
 
 def test_can_not_allocate_if_sku_dont_match():
-    product = ProductModel(1, "BLUE-VASE")
-    product_2 = ProductModel(2, "WHITE-CHAIR")
-    batch = BatchModel('1', product, qty=20, eta=date.today())
-    order_line = OrderLineModel(1, product_2, qty=2)
+    batch = BatchModel('1', "BLUE-VASE", qty=20, eta=date.today())
+    order_line = OrderLineModel("1", "WHITE-CHAIR", qty=2)
 
     assert batch.can_allocate(order_line) is False
 
@@ -64,10 +61,9 @@ def test_deallocate_allocated_lines():
 
 
 def test_prefers_current_stock_batches_to_shipments(batch_service):
-    product = ProductModel("1", "BLUE-VASE")
-    in_stock_batch = BatchModel("1", product, qty=100, eta=None)
-    shipment_batch = BatchModel("2", product, qty=100, eta=date.today())
-    line = OrderLineModel(1, product, 10)
+    in_stock_batch = BatchModel("1", "BLUE-VASE", qty=100, eta=None)
+    shipment_batch = BatchModel("2", "BLUE-VASE", qty=100, eta=date.today())
+    line = OrderLineModel('1', "BLUE-VASE", 10)
 
     batch_service.allocate(line, [in_stock_batch, shipment_batch])
 
@@ -76,11 +72,10 @@ def test_prefers_current_stock_batches_to_shipments(batch_service):
 
 
 def test_prefers_earlier_batches(batch_service: BatchService):
-    product = ProductModel("1", "BLUE-VASE")
-    earlier = BatchModel("1", product, qty=100, eta=date.today())
-    medium = BatchModel("1", product, qty=100, eta=date.today() + timedelta(days=2))
-    latest = BatchModel("2", product, qty=100, eta=date.today() + timedelta(days=4))
-    line = OrderLineModel('1', product, 10)
+    earlier = BatchModel("1", "BLUE-VASE", qty=100, eta=date.today())
+    medium = BatchModel("1", "BLUE-VASE", qty=100, eta=date.today() + timedelta(days=2))
+    latest = BatchModel("2", "BLUE-VASE", qty=100, eta=date.today() + timedelta(days=4))
+    line = OrderLineModel('1', "BLUE-VASE", 10)
 
     batch_service.allocate(line, [latest, medium, earlier])
 
@@ -90,10 +85,9 @@ def test_prefers_earlier_batches(batch_service: BatchService):
 
 
 def test_returns_allocated_batch_ref(batch_service: BatchService):
-    product = ProductModel("1", "BLUE-VASE")
-    in_stock_batch = BatchModel("1", product, qty=100, eta=None)
-    shipment_batch = BatchModel("2", product, qty=100, eta=date.today())
-    line = OrderLineModel('1', product, 10)
+    in_stock_batch = BatchModel("1", "BLUE-VASE", qty=100, eta=None)
+    shipment_batch = BatchModel("2", "BLUE-VASE", qty=100, eta=date.today())
+    line = OrderLineModel('1', "BLUE-VASE", 10)
 
     allocation = batch_service.allocate(line, [in_stock_batch, shipment_batch])
 
@@ -101,11 +95,10 @@ def test_returns_allocated_batch_ref(batch_service: BatchService):
 
 
 def test_raises_out_of_stock_exception_if_cannot_allocate(batch_service: BatchService):
-    product = ProductModel("1", "BLUE-VASE")
-    batch = BatchModel("1", product, qty=10, eta=None)
-    order_line = OrderLineModel('1', product, 10)
+    batch = BatchModel("1", "BLUE-VASE", qty=10, eta=None)
+    order_line = OrderLineModel('1', "BLUE-VASE", 10)
 
     batch_service.allocate(order_line, [batch])
 
     with pytest.raises(OutOfStock):
-        batch_service.allocate(OrderLineModel('1', product, 1), [batch])
+        batch_service.allocate(OrderLineModel('1', "BLUE-VASE", 1), [batch])

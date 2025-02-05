@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import clear_mappers, sessionmaker
 
 from src.adapters.orm import metadata
-from src.adapters.repository import SqlAlchemyRepository
+from src.adapters.repository import BatchRepository
 from src.services.batch_service import BatchService
 
 
@@ -27,5 +27,5 @@ def get_batch_service():
 
 @pytest.fixture(name="sql_repository")
 def get_sql_repository(session):
-    return SqlAlchemyRepository(session)
+    return BatchRepository(session)
 

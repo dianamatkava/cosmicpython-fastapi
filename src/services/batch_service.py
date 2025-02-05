@@ -1,5 +1,8 @@
 from typing import List
 
+from sqlmodel import Session
+
+from src.adapters.repository import BatchRepository
 from src.domain.model import OrderLineModel, BatchModel
 
 
@@ -9,8 +12,15 @@ class OutOfStock(Exception):
 
 class BatchService:
 
-    @staticmethod
-    def allocate(order_line: OrderLineModel, batches: List[BatchModel]) -> str:
+    session: Session
+    batch_repository: BatchRepository
+
+    def __init__(self, session: Session, batch_repository: BatchRepository):
+        self.session = session
+        self.batch_repository = batch_repository
+
+    def allocate(self, order_line: OrderLineModel) -> str:
+        batches = self.batch_repository.list()
         try:
             batch = next(b for b in sorted(batches) if b.can_allocate(order_line))
         except StopIteration as e:
@@ -18,4 +28,8 @@ class BatchService:
             raise OutOfStock() from e
 
         batch.allocate(order_line)
-        return batch.ref
+        return batch.reference
+
+    def deallocate(self, order_line, batch_reference: str):
+        batch = self.batch_repository.get(batch_reference)
+        batch.deallocate(order_line)

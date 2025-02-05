@@ -20,7 +20,7 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
 
-class SqlAlchemyRepository(AbstractRepository):
+class BatchRepository(AbstractRepository):
 
     session: Session
 

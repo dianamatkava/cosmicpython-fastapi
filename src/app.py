@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 
 from src.conf import create_db_and_tables
@@ -13,3 +15,10 @@ app.include_router(allocations_router)
 def on_startup():
     create_db_and_tables()
 
+
+class AppSettings:
+    BASE_APP_URL = os.getenv("BASE_APP_URL", "http://localhost:8080/")
+
+
+def get_settings():
+    return AppSettings()

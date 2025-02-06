@@ -3,6 +3,7 @@ from typing import List
 from sqlmodel import Session
 
 from src.adapters.repository import BatchRepository
+from src.domain import model
 from src.domain.model import OrderLineModel, BatchModel
 
 
@@ -18,6 +19,9 @@ class BatchService:
     def __init__(self, session: Session, batch_repository: BatchRepository):
         self.session = session
         self.batch_repository = batch_repository
+
+    def get_allocations(self) -> List[model.BatchModel]:
+        return self.batch_repository.list()
 
     def allocate(self, order_line: OrderLineModel) -> str:
         batches = self.batch_repository.list()

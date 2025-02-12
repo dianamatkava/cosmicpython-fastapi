@@ -17,7 +17,7 @@ def on_startup():
 
 
 class AppSettings:
-    BASE_APP_URL = os.getenv("BASE_APP_URL", "http://localhost:8080/")
+    BASE_APP_URL = os.getenv("BASE_APP_URL", "http://127.0.0.1:8000")
 
 
 def get_settings():

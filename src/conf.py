@@ -1,3 +1,6 @@
+from typing import Annotated, Any
+
+from fastapi import Depends
 from sqlalchemy import create_engine
 from sqlmodel import SQLModel, Session
 
@@ -19,7 +22,7 @@ def get_session():
         yield session
 
 
-def get_batch_service(session: Session) -> BatchService:
+def get_batch_service(session: Annotated[Any, Depends(get_session)]) -> BatchService:
     return BatchService(
         session=session,
         batch_repository=BatchRepository(session)

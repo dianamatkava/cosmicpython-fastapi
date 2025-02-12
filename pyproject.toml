@@ -16,6 +16,9 @@ uvicorn = "^0.34.0"
 fastapi-cli = "^0.0.7"
 mypy = "^1.13.0"
 pylint = "^3.3.2"
+factory-boy = "^3.3.3"
+requests = "^2.32.3"
+httpx = "^0.28.1"
 
 
 [build-system]

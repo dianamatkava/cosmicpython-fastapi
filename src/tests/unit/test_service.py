@@ -4,7 +4,7 @@ import pytest
 
 from src.domain import model
 from src.domain.model import BatchModel
-from src.routes.schemas.allocations import AllocationsAllocateIn
+from src.routes.schemas.allocations import AllocationsAllocateIn, OrderLineSchema
 from src.services.batch_service import BatchService, OutOfStock
 from src.tests.conftest import FakeRepository
 
@@ -77,3 +77,36 @@ def test_raises_out_of_stock_exception_if_cannot_allocate(batch_service: BatchSe
     with pytest.raises(OutOfStock):
         batch_service.allocate(AllocationsAllocateIn(order_id='1', sku="BLUE-VASE", qty=1))
 
+
+def test_returns_batches_with_allocations(batch_service: BatchService, fake_repository: FakeRepository):
+    batch_1 = BatchModel("1", "BLUE-VASE", qty=100, eta=date.today())
+    batch_2 = BatchModel("2", "RED_CHAIR", qty=100, eta=date.today() + timedelta(days=2))
+    fake_repository.build([batch_1, batch_2])
+
+    line_1 = AllocationsAllocateIn(order_id='1', sku="BLUE-VASE", qty=10)
+    line_2 = AllocationsAllocateIn(order_id='2', sku="BLUE-VASE", qty=30)
+    batch_service.allocate(line_1)
+    batch_service.allocate(line_2)
+
+    batches = batch_service.get_allocations()
+    batches.items.sort(key=lambda x: x.reference)
+
+    assert batches.total == 2
+    assert len(batches.items) == 2
+
+    assert batches.items[0].reference == batch_1.reference
+    assert batches.items[0].sku == batch_1.sku
+    assert batches.items[0].eta == batch_1.eta
+    assert batches.items[0].available_quantity == batch_1.available_quantity
+    assert batches.items[0].allocated_quantity == batch_1.allocated_quantity
+    assert batches.items[0].allocations == [
+        OrderLineSchema(**line_1.model_dump()),
+        OrderLineSchema(**line_2.model_dump())
+    ]
+
+    assert batches.items[1].reference == batch_2.reference
+    assert batches.items[1].sku == batch_2.sku
+    assert batches.items[1].eta == batch_2.eta
+    assert batches.items[1].available_quantity == batch_2.available_quantity
+    assert batches.items[1].allocated_quantity == batch_2.allocated_quantity
+    assert batches.items[1].allocations == []

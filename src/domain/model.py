@@ -49,6 +49,10 @@ class BatchModel:
         return self.eta > other.eta
 
     @property
+    def allocations(self) -> set[OrderLineModel]:
+        return self._allocations
+
+    @property
     def allocated_quantity(self) -> int:
         return sum([allocation.qty for allocation in self._allocations])
 

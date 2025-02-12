@@ -16,11 +16,11 @@ router = APIRouter(prefix="/allocations")
     status_code=status.HTTP_200_OK,
     response_model=AllocationsOut
 )
-def home(
+def get_allocations(
     body: Annotated[AllocationsAllocateIn, Body()],
     batch_service: Annotated[Any, Depends(get_batch_service)]
 ) -> AllocationsOut:
-    return batch_service.allocate(body)
+    return batch_service.get_allocations(body)
 
 
 @router.post(
@@ -28,7 +28,7 @@ def home(
     status_code=status.HTTP_201_CREATED,
     response_model=AllocationsAllocateOut
 )
-def home(
+def allocate_order_line(
     body: Annotated[AllocationsAllocateIn, Body(...)],
     batch_service: Annotated[Any, Depends(get_batch_service)]
 ) -> AllocationsAllocateOut:
@@ -40,7 +40,7 @@ def home(
     status_code=status.HTTP_200_OK,
     response_model=AllocationsAllocateOut
 )
-def home(
+def deallocate_order_line(
     body: Annotated[AllocationsDeallocateIn, Body(...)],
     batch_service: Annotated[Any, Depends(get_batch_service)]
 ) -> AllocationsAllocateOut:

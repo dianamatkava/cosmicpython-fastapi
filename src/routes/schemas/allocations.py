@@ -14,8 +14,15 @@ class BatchSchema(BaseModel):
     reference: str
     sku: str
     eta: date | None
-    quantity: int
+    available_quantity: int
+    allocated_quantity: int
     allocations: List[OrderLineSchema]
+
+
+class AllocationsListOut(BaseModel):
+    items: List[BatchSchema]
+    total: int
+    offset: int
 
 
 class AllocationsOut(BaseModel):

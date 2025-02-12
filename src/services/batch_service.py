@@ -4,7 +4,8 @@ from sqlmodel import Session
 
 from src.adapters.repository import BatchRepository
 from src.domain import model
-from src.routes.schemas.allocations import AllocationsAllocateIn
+from src.routes.schemas.allocations import AllocationsAllocateIn, BatchSchema, AllocationsListOut
+from src.services.transformers.batch_service import transform_batch_to_batch_schema
 
 
 class OutOfStock(Exception):
@@ -20,8 +21,9 @@ class BatchService:
         self.session = session
         self.batch_repository = batch_repository
 
-    def get_allocations(self) -> List[model.BatchModel]:
-        return self.batch_repository.list()
+    def get_allocations(self) -> AllocationsListOut:
+        batches = self.batch_repository.list()
+        return AllocationsListOut(items=[transform_batch_to_batch_schema(b) for b in batches], total=len(batches), offset=10)
 
     def allocate(self, order_line: AllocationsAllocateIn) -> str:
         order_line = model.OrderLineModel(**order_line.model_dump())

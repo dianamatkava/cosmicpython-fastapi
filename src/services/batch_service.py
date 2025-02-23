@@ -1,4 +1,5 @@
-from typing import List
+from datetime import date
+from typing import List, Optional
 
 from sqlmodel import Session
 
@@ -20,6 +21,10 @@ class BatchService:
     def __init__(self, session: Session, batch_repository: BatchRepository):
         self.session = session
         self.batch_repository = batch_repository
+
+    def add_batch(self, ref: str, sku: str, qty: int, eta: Optional[date]) -> None:
+        self.batch_repository.add(model.BatchModel(ref, sku, qty, eta))
+        self.session.commit()
 
     def get_allocations(self) -> AllocationsListOut:
         batches = self.batch_repository.list()

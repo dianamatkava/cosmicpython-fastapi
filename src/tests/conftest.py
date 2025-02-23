@@ -1,6 +1,6 @@
 import pytest
 from sqlalchemy import create_engine
-from sqlalchemy.orm import clear_mappers, sessionmaker
+from sqlalchemy.orm import sessionmaker
 from starlette.testclient import TestClient
 
 from src.adapters.orm import metadata
@@ -25,7 +25,6 @@ def in_memory_db():
 @pytest.fixture
 def session(in_memory_db):
     yield sessionmaker(bind=in_memory_db)()
-    clear_mappers()
 
 
 @pytest.fixture(name="sql_repository")
@@ -41,6 +40,9 @@ class FakeSession:
 
 
 class FakeRepository(AbstractRepository):
+
+    def __init__(self, batches):
+        self._batches = set(batches)
 
     def build(self, batches):
         self._batches = set(batches)

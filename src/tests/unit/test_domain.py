@@ -51,7 +51,7 @@ def test_can_only_deallocate_allocated_lines():
     assert batch.available_quantity == 20
 
 
-def test_deallocate_allocated_lines():
+def test_deallocate():
     batch, order_line = make_batch_and_line(20, 2)
     batch.allocate(order_line)
     batch.deallocate(order_line)

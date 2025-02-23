@@ -37,6 +37,7 @@ class Allocations(BaseModel):
 class AllocationsAllocateIn(OrderLineSchema):
     ''''''
 
+
 class AllocationsAllocateOut(BaseModel):
     batch_reference: str
 

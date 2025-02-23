@@ -1,4 +1,5 @@
 from datetime import datetime, date, timedelta
+from typing import Optional
 
 import pytest
 
@@ -7,6 +8,15 @@ from src.domain.model import BatchModel
 from src.routes.schemas.allocations import AllocationsAllocateIn, OrderLineSchema
 from src.services.batch_service import BatchService, OutOfStock
 from src.tests.conftest import FakeRepository
+
+
+class BatchFactory:
+
+    def __init__(self, fake_repository: FakeRepository):
+        self.fake_repository = fake_repository
+
+    def for_batch(self, ref: str, sku: str, qty: int, eta: Optional[date]):
+        return self.fake_repository([model.BatchModel(ref, sku, qty, eta)])
 
 
 def test_batch_allocates_when_has_space(batch_service: BatchService, fake_repository: FakeRepository):

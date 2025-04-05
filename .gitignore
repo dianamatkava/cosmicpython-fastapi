@@ -6,7 +6,7 @@ __pycache__/
 /instance
 static/css/output.css
 
-control-flow
+src/units/control-flow
 webhook_logs.txt
 *.db
 */units

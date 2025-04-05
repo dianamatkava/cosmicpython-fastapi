@@ -3,11 +3,9 @@ import os
 from fastapi import FastAPI
 
 from src.conf import create_db_and_tables
-from src.routes.websocket import router as websocket_router
 from src.routes.allocations import router as allocations_router
 
 app = FastAPI()
-app.include_router(websocket_router)
 app.include_router(allocations_router)
 
 

@@ -7,6 +7,9 @@ from src.domain import model
 
 
 class AbstractRepository(abc.ABC):
+
+    session: Session
+
     @abc.abstractmethod
     def add(self, batch: model.BatchModel):
         raise NotImplementedError

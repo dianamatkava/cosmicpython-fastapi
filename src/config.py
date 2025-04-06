@@ -10,4 +10,4 @@ def get_postgres_uri():
 
 
 def get_sqlite_uri():
-    return f"sqlite:///:memory:"
+    return f"sqlite:///document.db"  # :memory:

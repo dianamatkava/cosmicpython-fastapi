@@ -3,6 +3,7 @@ from typing import Optional
 
 import pytest
 
+from src.adapters.uow import UnitOfWork
 from src.domain import model
 from src.domain.model import BatchModel
 from src.routes.schemas.allocations import AllocationsAllocateIn, OrderLineSchema
@@ -19,19 +20,19 @@ class BatchFactory:
         return self.fake_repository([model.BatchModel(ref, sku, qty, eta)])
 
 
-def test_batch_allocates_when_has_space(batch_service: BatchService, fake_repository: FakeRepository):
+def test_batch_allocates_when_has_space(batch_service: BatchService, fake_uof: UnitOfWork):
     sku = "BLUE_VASE"
     batch_1 = model.BatchModel('batch1', sku=sku, eta=datetime.strptime("2011-01-01", "%Y-%m-%d"), qty=10)
     batch_2 = model.BatchModel('batch2', sku=sku, eta=datetime.strptime("2011-01-10", "%Y-%m-%d"), qty=10)
 
-    fake_repository.build([batch_1, batch_2])
+    fake_uof.batch_repo.build([batch_1, batch_2])
 
     order_line_1 = AllocationsAllocateIn(order_id="order_1", sku=sku, qty=10)
     order_line_2 = AllocationsAllocateIn(order_id="order_2", sku=sku, qty=10)
 
     res = batch_service.allocate(order_line_1)
     assert res == batch_1.reference
-    assert batch_service.session.committed is True
+    assert batch_service.uof.session.committed is True
 
     res = batch_service.allocate(order_line_2)
     assert res == batch_2.reference

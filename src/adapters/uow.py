@@ -30,9 +30,9 @@ class AbstractUnitOfWork(abc.ABC):
 
 class UnitOfWork(AbstractUnitOfWork):
 
-    def __init__(self, session_factory=DEFAULT_SESSION_FACTORY, batch_repo=BatchRepository):
+    def __init__(self, session_factory=DEFAULT_SESSION_FACTORY, batch_repo=AbstractRepository):
         self.session_factory = session_factory
-        self.batch_repo = batch_repo
+        self.batch_repo = batch_repo  # type: ignore
 
     def __enter__(self):
         self.session: Session = self.session_factory()

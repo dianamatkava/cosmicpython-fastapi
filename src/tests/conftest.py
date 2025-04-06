@@ -21,11 +21,12 @@ def setup_client(sqlite_db):
         yield client
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def sqlite_db():
     engine = create_engine(get_sqlite_uri(), connect_args={"check_same_thread": False}, poolclass=StaticPool)
     metadata.create_all(engine)
     yield engine
+    metadata.drop_all(engine)
     engine.dispose()
 
 
@@ -56,14 +57,18 @@ def get_sql_repository(session):
 
 class FakeSession:
     committed = False
+    rolledback = False
 
     def commit(self):
         self.committed = True
 
+    def rollback(self):
+        self.rolledback = True
+
 
 class FakeRepository(AbstractRepository):
 
-    def __init__(self, batches=()):
+    def __init__(self, batches=(), *args, **kwargs):
         self._batches = set(batches)
 
     def build(self, batches):
@@ -90,8 +95,8 @@ def get_fake_session() -> FakeSession:
 
 
 @pytest.fixture(name='fake_uof')
-def get_fake_uof(fake_session: FakeSession, fake_repository: FakeRepository) -> UnitOfWork:
-    return UnitOfWork(session_factory=lambda: fake_session, batch_repo=fake_repository)
+def get_fake_uof(fake_session: FakeSession) -> UnitOfWork:
+    return UnitOfWork(session_factory=lambda: fake_session, batch_repo=FakeRepository)
 
 
 @pytest.fixture(name='batch_service')

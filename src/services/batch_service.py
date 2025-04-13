@@ -1,9 +1,6 @@
 from datetime import date
 from typing import Optional
 
-from sqlmodel import Session
-
-from src.adapters.repository import BatchRepository
 from src.adapters.uow import AbstractUnitOfWork
 from src.domain import model
 from src.routes.schemas.allocations import AllocationsAllocateIn, AllocationsListOut

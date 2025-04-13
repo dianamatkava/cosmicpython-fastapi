@@ -1,4 +1,4 @@
-"""deprecated"""
+"""Declarative mapping."""
 
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base

@@ -19,6 +19,7 @@ pylint = "^3.3.2"
 factory-boy = "^3.3.3"
 requests = "^2.32.3"
 httpx = "^0.28.1"
+psycopg2 = "^2.9.10"
 
 
 [build-system]

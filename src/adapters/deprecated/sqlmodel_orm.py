@@ -1,3 +1,5 @@
+"""SQLModel."""
+
 from typing import Optional
 
 from sqlmodel_orm import SQLModel, Field

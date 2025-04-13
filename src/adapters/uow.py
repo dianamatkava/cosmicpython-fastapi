@@ -3,12 +3,14 @@ import abc
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from src.adapters.repository import AbstractRepository, BatchRepository
-from src.config import get_sqlite_uri
+from src.adapters.repository import AbstractRepository
+from src.settings import get_settings
 
-connect_args = {"check_same_thread": False}
-engine = create_engine(get_sqlite_uri(), connect_args=connect_args)
-DEFAULT_SESSION_FACTORY = sessionmaker(bind=engine)
+settings = get_settings()
+
+DEFAULT_SESSION_FACTORY = sessionmaker(
+    bind=create_engine(settings.DB_URL)
+)
 
 
 class AbstractUnitOfWork(abc.ABC):

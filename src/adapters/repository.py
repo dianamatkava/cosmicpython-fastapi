@@ -1,9 +1,9 @@
-# The Repository pattern is an abstraction over persistent storage1
+# The Repository pattern is an abstraction over persistent storage
 import abc
 from typing import List
 
 from sqlmodel import Session
-from src.domain import model
+from src.domain import batch_domain_model as domain
 
 
 class AbstractRepository(abc.ABC):
@@ -15,15 +15,19 @@ class AbstractRepository(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def add(self, batch: model.BatchModel):
+    def add(self, batch: domain.BatchModel):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get(self, reference) -> model.BatchModel:
+    def get(self, reference) -> domain.BatchModel:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def list(self) -> List[model.BatchModel]:
+    def delete(self, reference) -> None:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def list(self) -> List[domain.BatchModel]:
         raise NotImplementedError
 
 
@@ -34,11 +38,14 @@ class BatchRepository(AbstractRepository):
     def __init__(self, session: Session):
         self.session = session
 
-    def get(self, reference: str) -> model.BatchModel:
-        return self.session.query(model.BatchModel).filter_by(reference=reference).one()
+    def get(self, reference: str) -> domain.BatchModel:
+        return self.session.query(domain.BatchModel).filter_by(reference=reference).one()
 
-    def add(self, batch: model.BatchModel) -> None:
+    def add(self, batch: domain.BatchModel) -> None:
         self.session.add(batch)
 
-    def list(self) -> List[model.BatchModel]:
-        return self.session.query(model.BatchModel).all()
+    def list(self) -> List[domain.BatchModel]:
+        return self.session.query(domain.BatchModel).all()
+
+    def delete(self, reference: str) -> None:
+        self.session.query(domain.BatchModel).filter_by(reference=reference).delete()

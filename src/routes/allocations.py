@@ -8,7 +8,7 @@ from src.conf import get_batch_service
 from src.routes.schemas.allocations import AllocationsAllocateIn, AllocationsDeallocateIn, AllocationsOut, \
     AllocationsAllocateOut
 
-router = APIRouter(prefix="/allocations")
+router = APIRouter(prefix="/allocation")
 
 
 @router.get(

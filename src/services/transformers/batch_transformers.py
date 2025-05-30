@@ -1,4 +1,4 @@
-from src.domain import model
+from src.domain import batch_domain_model
 from src.routes.schemas.allocations import BatchSchema, OrderLineSchema
 
 

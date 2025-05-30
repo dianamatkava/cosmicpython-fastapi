@@ -3,7 +3,7 @@ import abc
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from src.adapters.repository import AbstractRepository
+from src.adapters.repository import AbstractRepository, BatchRepository
 from src.settings import get_settings
 
 settings = get_settings()
@@ -32,7 +32,7 @@ class AbstractUnitOfWork(abc.ABC):
 
 class UnitOfWork(AbstractUnitOfWork):
 
-    def __init__(self, session_factory=DEFAULT_SESSION_FACTORY, batch_repo=AbstractRepository):
+    def __init__(self, session_factory=DEFAULT_SESSION_FACTORY, batch_repo: AbstractRepository = BatchRepository):
         self.session_factory = session_factory
         self.batch_repo = batch_repo  # type: ignore
 

@@ -2,7 +2,7 @@ from sqlalchemy import text
 from sqlmodel import Session
 
 from src.adapters.repository import BatchRepository
-from src.domain import model
+from src.domain import batch_domain_model
 
 
 def test_repository_can_save_a_batch(session: Session, sql_repository: BatchRepository):

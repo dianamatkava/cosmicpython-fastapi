@@ -3,7 +3,7 @@
 from sqlalchemy import Column, Integer, String, Table, MetaData, Date, ForeignKey
 from sqlalchemy.orm import registry, relationship, mapper
 
-from src.domain import model
+from src.domain import batch_domain_model
 
 metadata = MetaData()
 

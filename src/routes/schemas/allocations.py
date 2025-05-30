@@ -1,7 +1,7 @@
 from datetime import date
-from typing import List
+from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, RootModel
 
 
 class OrderLineSchema(BaseModel):
@@ -30,8 +30,15 @@ class AllocationsOut(BaseModel):
     order_line: OrderLineSchema
 
 
-class Allocations(BaseModel):
-    items: List[BatchSchema]
+class BatchesListOut(RootModel[List[BatchSchema]]):
+    """Model represent list of batches."""
+
+
+class BatchesCreationModelIn(BaseModel):
+    ref: str
+    sku: str
+    eta: Optional[date]
+    qty: int
 
 
 class AllocationsAllocateIn(OrderLineSchema):

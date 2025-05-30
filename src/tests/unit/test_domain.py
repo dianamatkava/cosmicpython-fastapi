@@ -1,6 +1,6 @@
 from datetime import date
 
-from src.domain.model import BatchModel, OrderLineModel
+from src.domain.batch_domain_model import BatchModel, OrderLineModel
 
 
 def make_batch_and_line(batch_qty: int, line_qty: int, batch_eta: date = date.today()):

@@ -20,8 +20,14 @@ factory-boy = "^3.3.3"
 requests = "^2.32.3"
 httpx = "^0.28.1"
 psycopg2 = "^2.9.10"
+pytest-dotenv = "^0.5.2"
+sqlalchemy-utils = "^0.41.2"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.pytest.ini_options]
+env_files = ["src/.env.test"]

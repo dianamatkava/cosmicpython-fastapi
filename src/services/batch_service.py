@@ -34,6 +34,7 @@ class BatchService:
     def delete_batch(self, ref: str) -> None:
         with self.uof as uof:
             uof.batch_repo.delete(reference=ref)
+            uof.commit()
 
     def get_allocations(self) -> AllocationsListOut:
         with self.uof as uof:

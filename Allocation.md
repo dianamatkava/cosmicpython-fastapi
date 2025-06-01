@@ -1,10 +1,12 @@
-Some Notes on Allocation
+# Domain Requirements - Allocation
 
 A product is identified by a SKU, pronounced "skew," which is short for stock-keeping unit. Customers place orders. An order is identified by an order reference and comprises multiple order lines, where each line has a SKU and a quantity. For example:
 
+```text
 10 units of RED-CHAIR
 
 1 unit of TASTELESS-LAMP
+```
 
 The purchasing department orders small batches of stock. A batch of stock has a unique ID called a reference, a SKU, and a quantity.
 

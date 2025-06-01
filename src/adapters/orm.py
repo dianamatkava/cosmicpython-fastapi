@@ -1,9 +1,8 @@
 """Classical mapping."""
 
 from sqlalchemy import Column, Integer, String, Table, MetaData, Date, ForeignKey
-from sqlalchemy.orm import registry, relationship, mapper
-
-from src.domain import batch_domain_model
+from sqlalchemy.orm import registry, relationship
+from src.domain import batch_domain_model as domain
 
 metadata = MetaData()
 
@@ -50,9 +49,9 @@ def start_mappers():
     # explicit mapper for how to convert between the schema and our domain model,
     # what SQLAlchemy calls a classical mapping:
 
-    lines_mapper = mapper_registry.map_imperatively(model.OrderLineModel, order_lines)
+    lines_mapper = mapper_registry.map_imperatively(domain.OrderLineModel, order_lines)
     mapper_registry.map_imperatively(
-        model.BatchModel,
+        domain.BatchModel,
         batches,
         properties={
             "_allocations": relationship(

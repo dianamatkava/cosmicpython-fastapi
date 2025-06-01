@@ -45,7 +45,7 @@ def test_happy_path_returns_201_and_allocated_batch(pg_session: Session, client:
 
     order_line_1 = AllocationsAllocateIn(order_id="order_1", sku=sku, qty=10)
 
-    res = client.post("/allocations", json=order_line_1.model_dump())
+    res = client.post("/allocation", json=order_line_1.model_dump())
     assert res.status_code == status.HTTP_201_CREATED
     assert res.json()["batch_reference"] == ref
     assert AllocationsAllocateOut.model_validate(res.json())
@@ -56,4 +56,4 @@ def test_unhappy_path_returns_400_and_error_message(client: TestClient):
     order_line_1 = AllocationsAllocateIn(order_id="order_1", sku='sku', qty=10)
 
     with pytest.raises(OutOfStock):
-        client.post("/allocations", json=order_line_1.model_dump())
+        client.post("/allocation", json=order_line_1.model_dump())

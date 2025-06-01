@@ -2,11 +2,11 @@ from sqlalchemy import text
 from sqlmodel import Session
 
 from src.adapters.repository import BatchRepository
-from src.domain import batch_domain_model
+from src.domain import batch_domain_model as domain
 
 
 def test_repository_can_save_a_batch(session: Session, sql_repository: BatchRepository):
-    batch = model.BatchModel("batch1", "RUSTY-SOAPDISH", 100, eta=None)
+    batch = domain.BatchModel("batch1", "RUSTY-SOAPDISH", 100, eta=None)
 
     sql_repository.add(batch)
     session.commit()
@@ -19,9 +19,9 @@ def test_repository_can_save_a_batch(session: Session, sql_repository: BatchRepo
 
 def test_can_save_batch_with_allocations(session: Session, sql_repository: BatchRepository):
     # arrange
-    order_line_1 = model.OrderLineModel('1', 'BLUE-VASE', 50)
-    order_line_2 = model.OrderLineModel('2', 'BLUE-VASE', 15)
-    batch = model.BatchModel('batch1', 'BLUE-VASE', 200, None)
+    order_line_1 = domain.OrderLineModel('1', 'BLUE-VASE', 50)
+    order_line_2 = domain.OrderLineModel('2', 'BLUE-VASE', 15)
+    batch = domain.BatchModel('batch1', 'BLUE-VASE', 200, None)
     batch.allocate(order_line_1)
     batch.allocate(order_line_2)
 
@@ -64,18 +64,18 @@ def test_can_get_batch_with_allocations(session: Session, sql_repository: BatchR
 
     # act
     batch = sql_repository.get("batch1")
-    expected_batch = model.BatchModel("batch1", "BLUE_VASE", 25, None)
+    expected_batch = domain.BatchModel("batch1", "BLUE_VASE", 25, None)
 
     # assert
     assert batch.sku == expected_batch.sku
     assert batch.reference == expected_batch.reference
     assert batch._purchased_quantity == expected_batch._purchased_quantity
-    assert batch._allocations == {model.OrderLineModel("1", "BLUE_VASE", 25)}
+    assert batch._allocations == {domain.OrderLineModel("1", "BLUE_VASE", 25)}
 
 
 def test_repository_can_get_a_batch(session: Session, sql_repository: BatchRepository):
-    batch = model.BatchModel("batch1", "RUSTY-SOAPDISH", 100, eta=None)
-    batch2 = model.BatchModel("batch2", "BLUE_VASE", 50, eta=None)
+    batch = domain.BatchModel("batch1", "RUSTY-SOAPDISH", 100, eta=None)
+    batch2 = domain.BatchModel("batch2", "BLUE_VASE", 50, eta=None)
 
     sql_repository.add(batch)
     sql_repository.add(batch2)
@@ -86,8 +86,8 @@ def test_repository_can_get_a_batch(session: Session, sql_repository: BatchRepos
 
 
 def test_repository_can_list_batches(session: Session, sql_repository: BatchRepository):
-    batch = model.BatchModel("batch1", "RUSTY-SOAPDISH", 100, eta=None)
-    batch2 = model.BatchModel("batch2", "BLUE_VASE", 50, eta=None)
+    batch = domain.BatchModel("batch1", "RUSTY-SOAPDISH", 100, eta=None)
+    batch2 = domain.BatchModel("batch2", "BLUE_VASE", 50, eta=None)
 
     sql_repository.add(batch)
     sql_repository.add(batch2)

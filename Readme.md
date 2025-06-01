@@ -1,0 +1,1 @@
+![Application Infrastructure Diagram](./assets/img.png)

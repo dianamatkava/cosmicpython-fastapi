@@ -12,7 +12,7 @@ class AbstractRepository(abc.ABC):
 
     @abc.abstractmethod
     def __init__(self, session: Session):
-        pass
+        self.session = session
 
     @abc.abstractmethod
     def add(self, batch: domain.BatchModel):

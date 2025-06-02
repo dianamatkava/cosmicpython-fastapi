@@ -61,4 +61,4 @@ def get_fake_uof(fake_session: FakeSession) -> UnitOfWork:
 
 @pytest.fixture(name='batch_service')
 def get_batch_service(fake_uof: UnitOfWork) -> BatchService:
-    return BatchService(uof=fake_uof)
+    return BatchService(uow=fake_uof)

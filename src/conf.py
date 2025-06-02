@@ -11,4 +11,4 @@ def get_unit_of_work() -> UnitOfWork:
 
 
 def get_batch_service(uof: Annotated[Any, Depends(get_unit_of_work)]) -> BatchService:
-    return BatchService(uof=uof)
+    return BatchService(uow=uof)

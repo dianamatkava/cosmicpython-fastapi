@@ -1,6 +1,17 @@
 from datetime import date
+from typing import Optional
 
 from src.domain.batch_domain_model import BatchModel, OrderLineModel
+from src.tests.conftest import FakeRepository
+
+
+class BatchFactory:
+
+    def __init__(self, fake_repository: FakeRepository) -> None:
+        self.fake_repository = fake_repository
+
+    def for_batch(self, ref: str, sku: str, qty: int, eta: Optional[date]) -> None:
+        return self.fake_repository([BatchModel(ref, sku, qty, eta)])
 
 
 def make_batch_and_line(batch_qty: int, line_qty: int, batch_eta: date = date.today()):

@@ -20,12 +20,14 @@ class AbstractUnitOfWork(abc.ABC):
     def __enter__(self) -> 'AbstractUnitOfWork':
         return self
 
-    def __exit__(self, *args):
-        self.rollback()
+    def __exit__(self, *args):  # enherited methods
+        pass
 
+    @abc.abstractmethod  # enforce method overwrites
     def commit(self):
         raise NotImplementedError
 
+    @abc.abstractmethod
     def rollback(self):
         raise NotImplementedError
 

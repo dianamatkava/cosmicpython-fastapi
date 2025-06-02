@@ -11,3 +11,5 @@ src/units/control-flow
 webhook_logs.txt
 *.db
 */units
+
+*_cache/

@@ -1,7 +1,7 @@
 """business logic, Accepts only primitives or a minimal DTO"""
 
 from datetime import date
-from typing import Optional, List
+from typing import Optional, List, Tuple
 
 from src.allocations.adapters.uow import AbstractUnitOfWork
 from src.allocations.domain import batch_domain_model as domain
@@ -42,7 +42,7 @@ class BatchService:
         batches = self.get_batches()
         return [alloc for batch in batches for alloc in batch.allocations]
 
-    def allocate(self, order_line: AllocationSchemaDTO) -> str:
+    def allocate(self, order_line: AllocationSchemaDTO) -> Tuple[str, str]:
         with self.uow as uow:
             order_line_model = domain.OrderLineModel(**order_line.model_dump())
             batches = uow.batch_repo.list()
@@ -56,7 +56,7 @@ class BatchService:
 
             batch.allocate(order_line_model)
             uow.commit()
-        return batch.reference
+        return batch.reference, order_line.order_id
 
     def deallocate(self, order_id: str, batch_reference: str):
         with self.uow as uow:

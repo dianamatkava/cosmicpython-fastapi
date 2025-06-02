@@ -7,10 +7,10 @@ from src.allocations.routes.allocations import router as allocations_router
 from src.allocations.routes.batchs import router as batch_router
 
 app = FastAPI()
+router = APIRouter(prefix="", tags=["main"])
+
 app.include_router(allocations_router)
 app.include_router(batch_router)
-
-router = APIRouter(prefix="")
 app.include_router(router)
 
 

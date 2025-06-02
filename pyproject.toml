@@ -38,8 +38,8 @@ env_files = ["src/.env.test"]
 files = ["src"]
 mypy_path = ["src"]
 exclude = [
-    "^src/units/.*",
-    "^src/adapters/__deprecated/.*",
-    "^assets/.*"
+  "^src/units/.*",
+  "^src/.*/__deprecated/.*",
+  "^assets/.*",
 ]
 ignore_missing_imports=true

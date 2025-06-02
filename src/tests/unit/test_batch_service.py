@@ -6,7 +6,7 @@ from sqlalchemy.exc import NoResultFound
 from src.adapters.repository import AbstractRepository
 from src.adapters.uow import AbstractUnitOfWork
 from src.domain import batch_domain_model as domain
-from src.routes.schemas.allocations import OrderLineSchema
+from src.services.schemas import AllocationSchemaDTO
 from src.services.batch_service import BatchService, OutOfStock
 
 
@@ -40,12 +40,14 @@ class FakeBatchRepository(AbstractRepository):
 
 class FakeUoW(AbstractUnitOfWork):
     committed: bool | None = False
+    batch_repo: Type[AbstractRepository]  # type: ignore
 
     def __init__(
         self, batch_repo: Type[AbstractRepository] = FakeBatchRepository
     ) -> None:
         self.batch_repo_cls: Type[AbstractRepository] = batch_repo
         self.batch_repo: AbstractRepository
+        self.batch_repo = self.batch_repo_cls  # type: ignore
 
     def commit(self) -> None:
         self.committed = True
@@ -70,8 +72,8 @@ def get_batch_service(uow: FakeUoW):
 
 
 @pytest.fixture(name="order_line")
-def get_order_line() -> OrderLineSchema:
-    return OrderLineSchema(order_id="1", sku="sku1", qty=5)
+def get_order_line() -> AllocationSchemaDTO:
+    return AllocationSchemaDTO(order_id="1", sku="sku1", qty=5)
 
 
 def test_add_batch(uow: FakeUoW, batch_service: BatchService):
@@ -136,7 +138,7 @@ def test_delete_batch_when_not_found(batch_service: BatchService):
 
 
 def test_allocate_can_allocate(
-    order_line: OrderLineSchema, uow: FakeUoW, batch_service: BatchService
+    order_line: AllocationSchemaDTO, uow: FakeUoW, batch_service: BatchService
 ):
     # arrange
     expected_ref = "ref3"
@@ -160,7 +162,7 @@ def test_allocate_can_allocate(
 
 
 def test_allocate_when_out_of_stock(
-    order_line: OrderLineSchema, uow: FakeUoW, batch_service: BatchService
+    order_line: AllocationSchemaDTO, uow: FakeUoW, batch_service: BatchService
 ):
     # arrange
     batch_service.add_batch("ref1", order_line.sku, qty=2)
@@ -170,7 +172,7 @@ def test_allocate_when_out_of_stock(
 
 
 def test_deallocate(
-    order_line: OrderLineSchema, uow: FakeUoW, batch_service: BatchService
+    order_line: AllocationSchemaDTO, uow: FakeUoW, batch_service: BatchService
 ):
     # arrange
     ref = "ref1"
@@ -181,7 +183,7 @@ def test_deallocate(
     assert domain.OrderLineModel(**order_line.model_dump()) in batch.allocations
 
     # act
-    batch_service.deallocate(order_line, ref)
+    batch_service.deallocate(order_id=order_line.order_id, batch_reference=ref)
 
     # assert
     batch = batch_service.get_batche_by_ref(ref)

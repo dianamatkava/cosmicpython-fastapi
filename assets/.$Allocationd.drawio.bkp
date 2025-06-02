@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.2 Chrome/134.0.6998.178 Electron/35.1.2 Safari/537.36" version="26.2.2">
   <diagram name="Page-1" id="8yxQzXgcwRmqOZLbL2iT">
-    <mxGraphModel dx="889" dy="684" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1223" dy="940" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -294,6 +294,12 @@
         </mxCell>
         <mxCell id="fTHeJymzalpuEbBS8ZTM-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="xqlagRpHaZFe84Ld7Fl1-84" target="xqlagRpHaZFe84Ld7Fl1-85">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fTHeJymzalpuEbBS8ZTM-15" value="&lt;span style=&quot;font-size: 19px;&quot;&gt;Which approach is better and when to use what?&amp;nbsp;&lt;br&gt;For my point of view, providing annotated parameters (Model) is better, because validation error will be raised in case of wrong input.&amp;nbsp;&lt;br&gt;&lt;br&gt;there will be only 1 error tyle (ValidationError), while in case of full paramiters, there can be multiple errors, like argument missing, type error, key error and so on.&lt;br&gt;&lt;br&gt;From another point of view, I use modes for routers, so the data is already validated and I kind of can beleave them. But still not sure.&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1740" y="530" width="770" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="fTHeJymzalpuEbBS8ZTM-16" value="&lt;span style=&quot;font-size: 19px;&quot;&gt;Which approach is better and when to use what?&amp;nbsp;&lt;br&gt;For my point of view, providing annotated parameters (Model) is better, because validation error will be raised in case of wrong input.&amp;nbsp;&lt;br&gt;&lt;br&gt;there will be only 1 error tyle (ValidationError), while in case of full paramiters, there can be multiple errors, like argument missing, type error, key error and so on.&lt;br&gt;&lt;br&gt;From another point of view, I use modes for routers, so the data is already validated and I kind of can beleave them. But still not sure.&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1740" y="780" width="770" height="230" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

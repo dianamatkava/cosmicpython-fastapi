@@ -1,10 +1,11 @@
+"""business logic, Accepts only primitives or a minimal DTO"""
+
 from datetime import date
 from typing import Optional, List
 
 from src.adapters.uow import AbstractUnitOfWork
 from src.domain import batch_domain_model as domain
-from src.routes.schemas.allocations import AllocationsListOut, OrderLineSchema
-from src.services.transformers.batch_transformers import transform_batch_to_batch_schema
+from src.services.schemas import AllocationSchemaDTO
 
 
 class OutOfStock(Exception):
@@ -37,16 +38,11 @@ class BatchService:
             uow.batch_repo.delete(reference=ref)
             uow.commit()
 
-    def get_allocations(self) -> AllocationsListOut:
-        with self.uow as uow:
-            batches = uow.batch_repo.list()
-        return AllocationsListOut(
-            items=[transform_batch_to_batch_schema(b) for b in batches],
-            total=len(batches),
-            offset=10,
-        )
+    def get_allocations(self) -> List[domain.OrderLineModel]:
+        batches = self.get_batches()
+        return [alloc for batch in batches for alloc in batch.allocations]
 
-    def allocate(self, order_line: OrderLineSchema) -> str:
+    def allocate(self, order_line: AllocationSchemaDTO) -> str:
         with self.uow as uow:
             order_line_model = domain.OrderLineModel(**order_line.model_dump())
             batches = uow.batch_repo.list()
@@ -55,16 +51,23 @@ class BatchService:
                     b for b in sorted(batches) if b.can_allocate(order_line_model)
                 )
             except StopIteration as e:
-                print(f"Error allocating batches: {e}")
+                print(f"Error allocating batches: {e=}")
                 raise OutOfStock() from e
 
             batch.allocate(order_line_model)
             uow.commit()
         return batch.reference
 
-    def deallocate(self, order_line: OrderLineSchema, batch_reference: str):
+    def deallocate(self, order_id: str, batch_reference: str):
         with self.uow as uow:
-            order_line_model = domain.OrderLineModel(**order_line.model_dump())
             batch = uow.batch_repo.get(batch_reference)
+            try:
+                order_line_model = next(
+                    allocation
+                    for allocation in batch.allocations
+                    if allocation.order_id == order_id
+                )
+            except StopIteration:
+                raise ModuleNotFoundError
             batch.deallocate(order_line_model)
             uow.commit()

@@ -14,10 +14,11 @@ from sqlmodel import Session
 from starlette import status
 from starlette.testclient import TestClient
 
-from src.routes.schemas.allocations import (
-    AllocationsAllocateIn,
-    AllocationsAllocateOut,
-    BatchesCreationModelIn,
+from src.routes.schemas.allocations.request_models import (
+    BatchesCreationModelRequestModel,
+)
+from src.routes.schemas.allocations.response_models import (
+    AllocationsAllocateResponseModel,
 )
 from src.services.batch_service import OutOfStock
 from src.settings import get_settings
@@ -40,7 +41,7 @@ def random_batchref(name=""):
 def create_batch(
     ref: str, sku: str, eta: Optional[date], qty: int, client: TestClient
 ) -> None:
-    batch = BatchesCreationModelIn(ref=ref, sku=sku, eta=eta, qty=qty)
+    batch = BatchesCreationModelRequestModel(ref=ref, sku=sku, eta=eta, qty=qty)
     res = client.post(
         "/batch",
         content=batch.model_dump_json(),
@@ -70,17 +71,13 @@ def test_happy_path_returns_201_and_allocated_batch(
         client=client,
     )
 
-    order_line_1 = AllocationsAllocateIn(order_id="order_1", sku=sku, qty=10)
-
-    res = client.post("/allocation", json=order_line_1.model_dump())
+    res = client.post("/allocation", json={"order_id": "order_1"})
     assert res.status_code == status.HTTP_201_CREATED
     assert res.json()["batch_reference"] == ref
-    assert AllocationsAllocateOut.model_validate(res.json())
+    assert AllocationsAllocateResponseModel.model_validate(res.json())
 
 
 @pytest.mark.usefixtures("postgres_db")
 def test_unhappy_path_returns_400_and_error_message(client: TestClient):
-    order_line_1 = AllocationsAllocateIn(order_id="order_1", sku="sku", qty=10)
-
     with pytest.raises(OutOfStock):
-        client.post("/allocation", json=order_line_1.model_dump())
+        client.post("/allocation", json={"order_id": "order_1"})

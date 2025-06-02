@@ -1,43 +1,49 @@
-from typing import Annotated, Any
+from typing import Annotated, List
 
-from fastapi import APIRouter
-from fastapi import Depends, Body
+from fastapi import APIRouter, Depends, Body, Path
+from pydantic import TypeAdapter
 from starlette import status
 
 from src.conf import get_batch_service
-from src.routes.schemas.allocations import (
-    AllocationsAllocateIn,
-    AllocationsDeallocateIn,
-    AllocationsOut,
-    AllocationsAllocateOut,
+from src.routes.schemas.allocations.request_models import OrderLineModelRequestModel
+from src.routes.schemas.allocations.response_models import (
+    AllocationsAllocateResponseModel,
 )
+from src.services.schemas import AllocationSchemaDTO
+from src.services.batch_service import BatchService
 
-router = APIRouter(prefix="/allocation")
+router = APIRouter(prefix="/allocations")
 
 
-@router.get("", status_code=status.HTTP_200_OK, response_model=AllocationsOut)
+@router.get(
+    "", status_code=status.HTTP_200_OK, response_model=List[AllocationSchemaDTO]
+)
 def get_allocations(
-    body: Annotated[AllocationsAllocateIn, Body()],
-    batch_service: Annotated[Any, Depends(get_batch_service)],
-) -> AllocationsOut:
-    return batch_service.get_allocations(body)
+    batch_service: Annotated[BatchService, Depends(get_batch_service)],
+) -> List[AllocationSchemaDTO]:
+    return TypeAdapter(List[AllocationSchemaDTO]).validate_python(
+        batch_service.get_allocations(), from_attributes=True
+    )
 
 
 @router.post(
-    "", status_code=status.HTTP_201_CREATED, response_model=AllocationsAllocateOut
+    "",
+    status_code=status.HTTP_201_CREATED,
+    response_model=AllocationsAllocateResponseModel,
 )
 def allocate_order_line(
-    body: Annotated[AllocationsAllocateIn, Body(...)],
-    batch_service: Annotated[Any, Depends(get_batch_service)],
-) -> AllocationsAllocateOut:
-    return AllocationsAllocateOut(batch_reference=batch_service.allocate(body))
+    body: Annotated[OrderLineModelRequestModel, Body(...)],
+    batch_service: Annotated[BatchService, Depends(get_batch_service)],
+) -> AllocationsAllocateResponseModel:
+    return AllocationsAllocateResponseModel(reference=batch_service.allocate(body))
 
 
 @router.delete(
-    "", status_code=status.HTTP_200_OK, response_model=AllocationsAllocateOut
+    "/{order_id}/batch/{ref}", status_code=status.HTTP_200_OK, response_model=None
 )
 def deallocate_order_line(
-    body: Annotated[AllocationsDeallocateIn, Body(...)],
-    batch_service: Annotated[Any, Depends(get_batch_service)],
-) -> AllocationsAllocateOut:
-    return AllocationsAllocateOut(batch_reference=batch_service.deallocate(body))
+    order_id: Annotated[str, Path(...)],
+    ref: Annotated[str, Path(...)],
+    batch_service: Annotated[BatchService, Depends(get_batch_service)],
+) -> None:
+    batch_service.deallocate(order_id=order_id, batch_reference=ref)

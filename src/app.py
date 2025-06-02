@@ -3,7 +3,7 @@ from sqlalchemy.orm import clear_mappers
 
 from src.adapters.orm import start_mappers
 from src.routes.allocations import router as allocations_router
-from src.routes.batch import router as batch_router
+from src.routes.batchs import router as batch_router
 
 app = FastAPI()
 app.include_router(allocations_router)

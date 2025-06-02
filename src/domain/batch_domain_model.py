@@ -1,3 +1,5 @@
+"""Contains 'pure' business logic models."""
+
 from dataclasses import dataclass
 from datetime import date
 from typing import Set, Optional

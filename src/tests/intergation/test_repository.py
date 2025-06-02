@@ -12,16 +12,18 @@ def test_repository_can_save_a_batch(session: Session, sql_repository: BatchRepo
     session.commit()
 
     rows = session.execute(
-        text('SELECT reference, sku, _purchased_quantity, eta FROM batches')
+        text("SELECT reference, sku, _purchased_quantity, eta FROM batches")
     )
     assert list(rows) == [("batch1", "RUSTY-SOAPDISH", 100, None)]
 
 
-def test_can_save_batch_with_allocations(session: Session, sql_repository: BatchRepository):
+def test_can_save_batch_with_allocations(
+    session: Session, sql_repository: BatchRepository
+):
     # arrange
-    order_line_1 = domain.OrderLineModel('1', 'BLUE-VASE', 50)
-    order_line_2 = domain.OrderLineModel('2', 'BLUE-VASE', 15)
-    batch = domain.BatchModel('batch1', 'BLUE-VASE', 200, None)
+    order_line_1 = domain.OrderLineModel("1", "BLUE-VASE", 50)
+    order_line_2 = domain.OrderLineModel("2", "BLUE-VASE", 15)
+    batch = domain.BatchModel("batch1", "BLUE-VASE", 200, None)
     batch.allocate(order_line_1)
     batch.allocate(order_line_2)
 
@@ -37,29 +39,42 @@ def test_can_save_batch_with_allocations(session: Session, sql_repository: Batch
     assert row._allocations == {order_line_1, order_line_2}
 
 
-def test_can_get_batch_with_allocations(session: Session, sql_repository: BatchRepository):
+def test_can_get_batch_with_allocations(
+    session: Session, sql_repository: BatchRepository
+):
     # arrange
     session.execute(
-        text("INSERT INTO order_lines (sku, qty, order_id) VALUES (:sku, :qty, :order_id)"),
-        {"sku": "BLUE_VASE", "qty": 25, "order_id": "1"}
+        text(
+            "INSERT INTO order_lines (sku, qty, order_id) VALUES (:sku, :qty, :order_id)"
+        ),
+        {"sku": "BLUE_VASE", "qty": 25, "order_id": "1"},
     )
     session.execute(
-        text("INSERT INTO batches (reference, sku, _purchased_quantity, eta) VALUES (:reference, :sku, :_purchased_quantity, :eta)"),
-        {"reference": "batch1", "sku": "BLUE_VASE", "_purchased_quantity": 25, "eta": None}
+        text(
+            "INSERT INTO batches (reference, sku, _purchased_quantity, eta) VALUES (:reference, :sku, :_purchased_quantity, :eta)"
+        ),
+        {
+            "reference": "batch1",
+            "sku": "BLUE_VASE",
+            "_purchased_quantity": 25,
+            "eta": None,
+        },
     )
 
     [[batch_id]] = session.execute(
         text("SELECT b.id FROM batches b WHERE reference=:reference"),
-        {"reference": "batch1"}
+        {"reference": "batch1"},
     )
     [[order_line_id]] = session.execute(
         text("SELECT o.id FROM order_lines o WHERE order_id=:order_id"),
-        {"order_id": "1"}
+        {"order_id": "1"},
     )
 
     session.execute(
-        text("INSERT INTO allocations (orderline_id, batch_id) VALUES (:orderline_id, :batch_id)"),
-        {"orderline_id": order_line_id, "batch_id": batch_id}
+        text(
+            "INSERT INTO allocations (orderline_id, batch_id) VALUES (:orderline_id, :batch_id)"
+        ),
+        {"orderline_id": order_line_id, "batch_id": batch_id},
     )
 
     # act
@@ -97,4 +112,3 @@ def test_repository_can_list_batches(session: Session, sql_repository: BatchRepo
     assert len(rows) == 2
     assert batch in rows
     assert batch2 in rows
-

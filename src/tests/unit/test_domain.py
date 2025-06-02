@@ -1,22 +1,25 @@
 from datetime import date
-from typing import Optional
+from typing import Optional, Type
 
 from src.domain.batch_domain_model import BatchModel, OrderLineModel
 from src.tests.conftest import FakeRepository
 
 
 class BatchFactory:
+    fake_repository: Type[FakeRepository]
 
-    def __init__(self, fake_repository: FakeRepository) -> None:
+    def __init__(self, fake_repository: Type[FakeRepository]) -> None:
         self.fake_repository = fake_repository
 
-    def for_batch(self, ref: str, sku: str, qty: int, eta: Optional[date]) -> None:
+    def for_batch(
+        self, ref: str, sku: str, qty: int, eta: Optional[date]
+    ) -> FakeRepository:
         return self.fake_repository([BatchModel(ref, sku, qty, eta)])
 
 
 def make_batch_and_line(batch_qty: int, line_qty: int, batch_eta: date = date.today()):
-    batch = BatchModel('1', "BLUE-VASE", qty=batch_qty, eta=batch_eta)
-    order_line = OrderLineModel('1', "BLUE-VASE", qty=line_qty)
+    batch = BatchModel("1", "BLUE-VASE", qty=batch_qty, eta=batch_eta)
+    order_line = OrderLineModel("1", "BLUE-VASE", qty=line_qty)
 
     return batch, order_line
 
@@ -43,7 +46,7 @@ def test_can_allocate_if_available_equal_to_required():
 
 
 def test_can_not_allocate_if_sku_dont_match():
-    batch = BatchModel('1', "BLUE-VASE", qty=20, eta=date.today())
+    batch = BatchModel("1", "BLUE-VASE", qty=20, eta=date.today())
     order_line = OrderLineModel("1", "WHITE-CHAIR", qty=2)
 
     assert batch.can_allocate(order_line) is False

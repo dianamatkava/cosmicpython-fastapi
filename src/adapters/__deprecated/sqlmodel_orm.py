@@ -18,7 +18,7 @@ class Customer(SQLModel, table=True):
 
 class Order(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    customer_id: int = Field(foreign_key='customer.id')
+    customer_id: int = Field(foreign_key="customer.id")
 
 
 class OrderLine(SQLModel, table=True):

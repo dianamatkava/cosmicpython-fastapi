@@ -23,7 +23,6 @@ class FakeSession:
 
 
 class FakeRepository(AbstractRepository):
-
     def __init__(self, batches=(), *args, **kwargs):
         self._batches = set(batches)
 
@@ -44,21 +43,21 @@ class FakeRepository(AbstractRepository):
         return self._batches.remove(batch)
 
 
-@pytest.fixture(name='fake_repository')
+@pytest.fixture(name="fake_repository")
 def get_fake_repository() -> FakeRepository:
     return FakeRepository()
 
 
-@pytest.fixture(name='fake_session')
+@pytest.fixture(name="fake_session")
 def get_fake_session() -> FakeSession:
     return FakeSession()
 
 
-@pytest.fixture(name='fake_uof')
+@pytest.fixture(name="fake_uof")
 def get_fake_uof(fake_session: FakeSession) -> UnitOfWork:
     return UnitOfWork(session_factory=lambda: fake_session, batch_repo=FakeRepository)
 
 
-@pytest.fixture(name='batch_service')
+@pytest.fixture(name="batch_service")
 def get_batch_service(fake_uof: UnitOfWork) -> BatchService:
     return BatchService(uow=fake_uof)

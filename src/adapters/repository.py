@@ -2,12 +2,12 @@
 import abc
 from typing import List
 
-from sqlmodel import Session
+from sqlalchemy.orm import Session
+
 from src.domain import batch_domain_model as domain
 
 
 class AbstractRepository(abc.ABC):
-
     session: Session
 
     @abc.abstractmethod
@@ -32,14 +32,15 @@ class AbstractRepository(abc.ABC):
 
 
 class BatchRepository(AbstractRepository):
-
     session: Session
 
     def __init__(self, session: Session):
         self.session = session
 
     def get(self, reference: str) -> domain.BatchModel:
-        return self.session.query(domain.BatchModel).filter_by(reference=reference).one()
+        return (
+            self.session.query(domain.BatchModel).filter_by(reference=reference).one()
+        )
 
     def add(self, batch: domain.BatchModel) -> None:
         self.session.add(batch)

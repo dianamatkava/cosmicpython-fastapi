@@ -1,4 +1,4 @@
-from typing import List, Set
+from typing import List, Set, Optional, Type
 
 import pytest
 from sqlalchemy.exc import NoResultFound
@@ -13,7 +13,7 @@ from src.services.batch_service import BatchService, OutOfStock
 class FakeBatchRepository(AbstractRepository):
     db: Set[domain.BatchModel] = set()
 
-    def __init__(self, initial_db: set = None):
+    def __init__(self, initial_db: Optional[Set] = None):
         self.db = initial_db if initial_db else set()
 
     def add(self, batch: domain.BatchModel) -> None:
@@ -27,7 +27,9 @@ class FakeBatchRepository(AbstractRepository):
 
     def delete(self, reference: str) -> None:
         try:
-            batch_to_delete = next(batch for batch in self.db if batch.reference == reference)
+            batch_to_delete = next(
+                batch for batch in self.db if batch.reference == reference
+            )
         except StopIteration:
             raise NoResultFound
         self.db.remove(batch_to_delete)
@@ -37,11 +39,13 @@ class FakeBatchRepository(AbstractRepository):
 
 
 class FakeUoW(AbstractUnitOfWork):
-    batch_repo = AbstractRepository
-    committed = False
+    committed: bool | None = False
 
-    def __init__(self, batch_repo: AbstractRepository = FakeBatchRepository) -> None:
-        self.batch_repo = batch_repo
+    def __init__(
+        self, batch_repo: Type[AbstractRepository] = FakeBatchRepository
+    ) -> None:
+        self.batch_repo_cls: Type[AbstractRepository] = batch_repo
+        self.batch_repo: AbstractRepository
 
     def commit(self) -> None:
         self.committed = True
@@ -51,7 +55,7 @@ class FakeUoW(AbstractUnitOfWork):
 
 
 @pytest.fixture(name="uow")
-def get_fake_uow(batch_repo: FakeBatchRepository):
+def get_fake_uow(batch_repo: Type[AbstractRepository]):
     return FakeUoW(batch_repo=batch_repo)
 
 
@@ -67,16 +71,12 @@ def get_batch_service(uow: FakeUoW):
 
 @pytest.fixture(name="order_line")
 def get_order_line() -> OrderLineSchema:
-    return OrderLineSchema(
-        order_id="1",
-        sku="sku1",
-        qty=5
-    )
+    return OrderLineSchema(order_id="1", sku="sku1", qty=5)
 
 
 def test_add_batch(uow: FakeUoW, batch_service: BatchService):
     # act
-    batch_service.add_batch("ref1", 'sku1', qty=10)
+    batch_service.add_batch("ref1", "sku1", qty=10)
     # assert
     assert uow.committed is True
 
@@ -84,9 +84,9 @@ def test_add_batch(uow: FakeUoW, batch_service: BatchService):
 def test_get_batche_by_ref(batch_service: BatchService):
     # arrange
     ref = "ref1"
-    batch_service.add_batch("ref1", 'sku1', qty=10)
+    batch_service.add_batch("ref1", "sku1", qty=10)
     # act
-    res = batch_service.get_batche_by_ref('ref1')
+    res = batch_service.get_batche_by_ref("ref1")
     # assert
     assert isinstance(res, domain.BatchModel)
     assert res.reference == ref
@@ -95,13 +95,13 @@ def test_get_batche_by_ref(batch_service: BatchService):
 def test_get_batche_by_ref_not_found(batch_service: BatchService):
     # act &  assert
     with pytest.raises(NoResultFound):
-        batch_service.get_batche_by_ref('ref1')
+        batch_service.get_batche_by_ref("ref1")
 
 
 def test_get_batches(batch_service: BatchService):
     # arrange
-    batch_service.add_batch("ref1", 'sku1', qty=10)
-    batch_service.add_batch("ref2", 'sku2', qty=10)
+    batch_service.add_batch("ref1", "sku1", qty=10)
+    batch_service.add_batch("ref2", "sku2", qty=10)
     # act
     res = batch_service.get_batches()
     # assert
@@ -120,7 +120,7 @@ def test_delete_batch(uow: FakeUoW, batch_service: BatchService):
     # arrange
     assert uow.committed is False
     ref = "ref1"
-    batch_service.add_batch(ref, 'sku1', qty=10)
+    batch_service.add_batch(ref, "sku1", qty=10)
     # act
     batch_service.delete_batch(ref)
     # assert
@@ -132,15 +132,17 @@ def test_delete_batch(uow: FakeUoW, batch_service: BatchService):
 def test_delete_batch_when_not_found(batch_service: BatchService):
     # act &  assert
     with pytest.raises(NoResultFound):
-        batch_service.delete_batch('ref1')
+        batch_service.delete_batch("ref1")
 
 
-def test_allocate_can_allocate(order_line: OrderLineSchema, uow: FakeUoW, batch_service: BatchService):
+def test_allocate_can_allocate(
+    order_line: OrderLineSchema, uow: FakeUoW, batch_service: BatchService
+):
     # arrange
     expected_ref = "ref3"
     assert uow.committed is False
     for i in range(1, 4):
-        batch_service.add_batch(f"ref{i}", order_line.sku, qty=i*2)
+        batch_service.add_batch(f"ref{i}", order_line.sku, qty=i * 2)
 
     # act
     res = batch_service.allocate(order_line)
@@ -157,15 +159,19 @@ def test_allocate_can_allocate(order_line: OrderLineSchema, uow: FakeUoW, batch_
     assert batch.allocated_quantity == 5
 
 
-def test_allocate_when_out_of_stock(order_line: OrderLineSchema, uow: FakeUoW, batch_service: BatchService):
+def test_allocate_when_out_of_stock(
+    order_line: OrderLineSchema, uow: FakeUoW, batch_service: BatchService
+):
     # arrange
-    batch_service.add_batch(f"ref1", order_line.sku, qty=2)
+    batch_service.add_batch("ref1", order_line.sku, qty=2)
     # act & assert
     with pytest.raises(OutOfStock):
         batch_service.allocate(order_line)
 
 
-def test_deallocate(order_line: OrderLineSchema, uow: FakeUoW, batch_service: BatchService):
+def test_deallocate(
+    order_line: OrderLineSchema, uow: FakeUoW, batch_service: BatchService
+):
     # arrange
     ref = "ref1"
     batch_service.add_batch(ref, order_line.sku, qty=10)
@@ -180,4 +186,3 @@ def test_deallocate(order_line: OrderLineSchema, uow: FakeUoW, batch_service: Ba
     # assert
     batch = batch_service.get_batche_by_ref(ref)
     assert len(batch.allocations) == 0
-

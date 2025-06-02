@@ -42,7 +42,7 @@ class BatchesCreationModelIn(BaseModel):
 
 
 class AllocationsAllocateIn(OrderLineSchema):
-    ''''''
+    """"""
 
 
 class AllocationsAllocateOut(BaseModel):
@@ -50,7 +50,7 @@ class AllocationsAllocateOut(BaseModel):
 
 
 class AllocationsDeallocateIn(OrderLineSchema):
-    ''''''
+    """"""
 
 
 class AllocationsDeallocateOut(BaseModel):

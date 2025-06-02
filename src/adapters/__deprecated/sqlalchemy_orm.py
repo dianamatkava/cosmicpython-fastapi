@@ -27,7 +27,7 @@ class OrderLine(Base):
     id = Column(Integer, primary_key=True)
     sku = Column(String(250))
     qty = Integer(String(250))
-    order_id = Column(Integer, ForeignKey('order.id'))
+    order_id = Column(Integer, ForeignKey("order.id"))
     order = relationship(Order)
 
 
@@ -36,5 +36,3 @@ class Batch(Base):
     ref = Column(Integer, primary_key=True)
     product = relationship(Product)
     sku = Column(DateTime(), nullable=True)
-
-

@@ -10,7 +10,7 @@ product = Table(
     "products",
     metadata,
     Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("sku", String(255))
+    Column("sku", String(255)),
 )
 
 order_lines = Table(

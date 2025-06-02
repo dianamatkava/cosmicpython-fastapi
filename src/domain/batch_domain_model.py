@@ -10,7 +10,7 @@ class OrderLineModel:
     qty: int
 
     def __str__(self):
-        return f'{self.qty} units of {self.sku}'
+        return f"{self.qty} units of {self.sku}"
 
 
 class BatchModel:
@@ -28,7 +28,7 @@ class BatchModel:
         self._allocations = set()
 
     def __str__(self):
-        return f'{self.available_quantity} {self.sku}'
+        return f"{self.available_quantity} {self.sku}"
 
     # Batch is entity object
     # Entity described by ref
@@ -41,7 +41,7 @@ class BatchModel:
     def __hash__(self):
         return hash(self.reference)
 
-    def __gt__(self, other: 'BatchModel') -> bool:
+    def __gt__(self, other: "BatchModel") -> bool:
         if self.eta is None:
             return False
         if other.eta is None:

@@ -22,6 +22,8 @@ httpx = "^0.28.1"
 psycopg2 = "^2.9.10"
 pytest-dotenv = "^0.5.2"
 sqlalchemy-utils = "^0.41.2"
+pre-commit = "^4.2.0"
+ruff = "^0.11.12"
 
 
 [build-system]
@@ -31,3 +33,13 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 env_files = ["src/.env.test"]
+
+[tool.mypy]
+files = ["src"]
+mypy_path = ["src"]
+exclude = [
+    "^src/units/.*",
+    "^src/adapters/__deprecated/.*",
+    "^assets/.*"
+]
+ignore_missing_imports=true

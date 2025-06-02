@@ -1,14 +1,8 @@
 import pytest
 from sqlalchemy import create_engine, Engine
-from sqlalchemy.orm import sessionmaker, clear_mappers, Session
-from sqlalchemy_utils import database_exists, create_database
-from starlette.testclient import TestClient
+from sqlalchemy.orm import sessionmaker, clear_mappers
 
 from src.adapters.orm import metadata, start_mappers
-from src.adapters.repository import BatchRepository, AbstractRepository
-from src.adapters.uow import UnitOfWork
-from src.app import app
-from src.services.batch_service import BatchService
 from src.settings import get_settings
 
 settings = get_settings()

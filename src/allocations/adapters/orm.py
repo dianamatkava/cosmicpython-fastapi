@@ -10,7 +10,9 @@ product = Table(
     "products",
     metadata,
     Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("sku", String(255)),
+    Column(
+        "sku", String(255), unique=True, doc="Assigned by vendor, manufacturer, or ERP"
+    ),
 )
 
 order_lines = Table(
@@ -26,7 +28,12 @@ batches = Table(
     "batches",
     metadata,
     Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("reference", String(255)),
+    Column(
+        "reference",
+        String(255),
+        unique=True,
+        doc="Purchasing team (upstream ERP/PO system) assigns a batch/PO-number",
+    ),
     Column("sku", String(255)),
     Column("_purchased_quantity", Integer, nullable=False),
     Column("eta", Date, nullable=True),
@@ -36,7 +43,7 @@ allocations = Table(
     "allocations",
     metadata,
     Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("orderline_id", ForeignKey("order_lines.id")),
+    Column("orderline_id", ForeignKey("order_lines.id"), unique=True),
     Column("batch_id", ForeignKey("batches.id")),
 )
 

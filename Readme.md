@@ -9,7 +9,6 @@ Below is an overview of the Allocation Service’s architecture, showing how eac
 1. [High-Level Architecture](#high-level-architecture)
 2. [Folder Structure](#folder-structure)
 3. [Layered Breakdown](#layered-breakdown)
-
    * [1. Domain Layer](#1-domain-layer)
    * [2. Adapters & Persistence Layer](#2-adapters--persistence-layer)
    * [3. Services Layer](#3-services-layer)
@@ -518,20 +517,18 @@ def delete_batch(ref: str, service: BatchService = Depends()):
 1. **Install dependencies**
 
    ```bash
-   pip install -r requirements.txt
-   # or, if using Poetry:
    poetry install
    ```
 
 2. **Set up the database**
+   * Configure your `DATABASE_URL` in `.env` and `alembic.ini` (e.g. `postgresql://user:pass@localhost:5432/allocation_db`).
+   * Run migrations using Alembic:
 
-   * Configure your `DATABASE_URL` in `.env` (e.g. `postgresql://user:pass@localhost:5432/allocation_db`).
-   * Run migrations (if using Alembic) or let SQLModel auto-create tables:
-
-     ```python
-     # Example code snippet to create tables at startup:
-     from allocations.adapters.orm import create_tables
-     create_tables()
+     ```shell
+     # Create migration
+     alembic revision --autogenerate -m "your message"
+     # Apply migration
+     alembic upgrade head
      ```
 
 3. **Run the server**

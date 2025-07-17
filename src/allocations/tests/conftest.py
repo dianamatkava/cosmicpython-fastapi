@@ -1,14 +1,17 @@
 import pytest
 from sqlalchemy.orm import Session
 
-from src.allocations.adapters.repository import BatchRepository, AbstractRepository
+from src.allocations.adapters.repository import (
+    ProductStockRepository,
+    AbstractRepository,
+)
 from src.allocations.adapters.uow import UnitOfWork
 from src.allocations.services.batch_service import BatchService
 
 
 @pytest.fixture(name="sql_repository")
 def get_sql_repository(session: Session):
-    return BatchRepository(session)
+    return ProductStockRepository(session)
 
 
 class FakeSession:

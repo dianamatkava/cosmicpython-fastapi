@@ -16,6 +16,7 @@ from starlette.testclient import TestClient
 
 from src.allocations.routes.schemas.allocations.request_models import (
     BatchesCreationModelRequestModel,
+    OrderLineModelRequestModel,
 )
 from src.allocations.routes.schemas.allocations.response_models import (
     AllocationsAllocateResponseModel,
@@ -71,13 +72,23 @@ def test_happy_path_returns_201_and_allocated_batch(
         client=client,
     )
 
-    res = client.post("/allocation", json={"order_id": "order_1"})
+    res = client.post(
+        "/allocations",
+        data=OrderLineModelRequestModel(
+            order_id="order_1", sku=sku, qty=10
+        ).model_dump_json(),  # type: ignore
+    )
     assert res.status_code == status.HTTP_201_CREATED
-    assert res.json()["batch_reference"] == ref
+    assert res.json()["reference"] == ref
     assert AllocationsAllocateResponseModel.model_validate(res.json())
 
 
 @pytest.mark.usefixtures("postgres_db")
 def test_unhappy_path_returns_400_and_error_message(client: TestClient):
     with pytest.raises(OutOfStock):
-        client.post("/allocation", json={"order_id": "order_1"})
+        client.post(
+            "/allocations",
+            data=OrderLineModelRequestModel(
+                order_id="order_1", sku="sku", qty=10
+            ).model_dump_json(),  # type: ignore
+        )

@@ -2,7 +2,7 @@ from datetime import date
 from typing import Optional, Type
 
 from src.allocations.domain.batch_domain_model import BatchModel, OrderLineModel
-from src.tests.conftest import FakeRepository
+from src.allocations.tests.conftest import FakeRepository
 
 
 class BatchFactory:

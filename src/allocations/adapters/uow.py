@@ -4,7 +4,10 @@ from typing import Self, Type
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from src.allocations.adapters.repository import AbstractRepository, BatchRepository
+from src.allocations.adapters.repository import (
+    AbstractRepository,
+    ProductStockRepository,
+)
 from src.settings import get_settings
 
 settings = get_settings()
@@ -34,7 +37,7 @@ class UnitOfWork(AbstractUnitOfWork):
     def __init__(
         self,
         session_factory=DEFAULT_SESSION_FACTORY,
-        batch_repo: Type[AbstractRepository] = BatchRepository,
+        batch_repo: Type[AbstractRepository] = ProductStockRepository,
     ):
         self.session_factory = session_factory
         self._batch_repo_cls = batch_repo

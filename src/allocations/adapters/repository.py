@@ -31,7 +31,7 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
 
-class BatchRepository(AbstractRepository):
+class ProductStockRepository(AbstractRepository):
     session: Session
 
     def __init__(self, session: Session):

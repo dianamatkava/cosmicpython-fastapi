@@ -151,9 +151,9 @@ def test_allocate_can_allocate(
 
     # assert
     assert uow.committed is True
-    assert res == expected_ref
+    assert res == (expected_ref, "1")
 
-    batch = batch_service.get_batche_by_ref(res)
+    batch = batch_service.get_batche_by_ref(res[0])
     assert len(batch.allocations) == 1
     assert domain.OrderLineModel(**order_line.model_dump()) in batch.allocations
     assert batch.available_quantity == 1

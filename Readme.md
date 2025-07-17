@@ -6,7 +6,8 @@ Below is an overview of the Allocation Service’s architecture, showing how eac
 
 ## Table of Contents
 
-1. [High-Level Architecture](#high-level-architecture)
+1. [Project Requirement](#project-requirement)
+2. [High-Level Architecture](#high-level-architecture)
 2. [Folder Structure](#folder-structure)
 3. [Layered Breakdown](#layered-breakdown)
    * [1. Domain Layer](#1-domain-layer)
@@ -18,6 +19,26 @@ Below is an overview of the Allocation Service’s architecture, showing how eac
 4. [Error Flow & Exception Handling](#error-flow--exception-handling)
 5. [How It All Works Together](#how-it-all-works-together)
 6. [Getting Started & Usage](#getting-started--usage)
+
+---
+## Project Requirement
+This project is a warehouse management tool that separates customer orders from warehouse inventory through an “Allocation” bounded context:
+
+1. **Order Capture**
+   - Front-end/check-out service turns a cart into an `Order` with one or more `OrderLine(s)` (SKU + quantity).
+
+2. **Warehouse Inventory**
+   - Warehouse tracks `Batch` entities (unique reference, SKU, quantity, optional ETA).
+   - Batches may be in-stock or inbound (with future ETA).
+
+3. **Allocation Rules**
+   - Match each `OrderLine` to one or more `Batch`es.
+   - Never allocate more units than a batch’s available quantity.
+   - Prevent double-allocation of the same line.
+   - Prefer in-stock batches over inbound; among inbounds, choose the earliest ETA.
+
+4. **Fulfillment Handoff**
+   - After allocation, the Warehouse Management System generates pick-lists and reserves stock by batch reference.
 
 ---
 

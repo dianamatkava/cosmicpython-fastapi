@@ -1,11 +1,13 @@
 from sqlalchemy import text
 from sqlmodel import Session
 
-from src.allocations.adapters.repository import BatchRepository
+from src.allocations.adapters.repository import ProductStockRepository
 from src.allocations.domain import batch_domain_model as domain
 
 
-def test_repository_can_save_a_batch(session: Session, sql_repository: BatchRepository):
+def test_repository_can_save_a_batch(
+    session: Session, sql_repository: ProductStockRepository
+):
     batch = domain.BatchModel("batch1", "RUSTY-SOAPDISH", 100, eta=None)
 
     sql_repository.add(batch)
@@ -18,7 +20,7 @@ def test_repository_can_save_a_batch(session: Session, sql_repository: BatchRepo
 
 
 def test_can_save_batch_with_allocations(
-    session: Session, sql_repository: BatchRepository
+    session: Session, sql_repository: ProductStockRepository
 ):
     # arrange
     order_line_1 = domain.OrderLineModel("1", "BLUE-VASE", 50)
@@ -40,7 +42,7 @@ def test_can_save_batch_with_allocations(
 
 
 def test_can_get_batch_with_allocations(
-    session: Session, sql_repository: BatchRepository
+    session: Session, sql_repository: ProductStockRepository
 ):
     # arrange
     session.execute(
@@ -88,7 +90,9 @@ def test_can_get_batch_with_allocations(
     assert batch._allocations == {domain.OrderLineModel("1", "BLUE_VASE", 25)}
 
 
-def test_repository_can_get_a_batch(session: Session, sql_repository: BatchRepository):
+def test_repository_can_get_a_batch(
+    session: Session, sql_repository: ProductStockRepository
+):
     batch = domain.BatchModel("batch1", "RUSTY-SOAPDISH", 100, eta=None)
     batch2 = domain.BatchModel("batch2", "BLUE_VASE", 50, eta=None)
 
@@ -100,7 +104,9 @@ def test_repository_can_get_a_batch(session: Session, sql_repository: BatchRepos
     assert row is batch
 
 
-def test_repository_can_list_batches(session: Session, sql_repository: BatchRepository):
+def test_repository_can_list_batches(
+    session: Session, sql_repository: ProductStockRepository
+):
     batch = domain.BatchModel("batch1", "RUSTY-SOAPDISH", 100, eta=None)
     batch2 = domain.BatchModel("batch2", "BLUE_VASE", 50, eta=None)
 

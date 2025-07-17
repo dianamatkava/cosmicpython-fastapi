@@ -6,14 +6,15 @@ from src.allocations.domain import batch_domain_model as domain
 
 metadata = MetaData()
 
-product = Table(
-    "products",
+product_stock = Table(
+    "product_stocks",
     metadata,
     Column("id", Integer, primary_key=True, autoincrement=True),
     Column(
         "sku", String(255), unique=True, doc="Assigned by vendor, manufacturer, or ERP"
     ),
 )
+
 
 order_lines = Table(
     "order_lines",

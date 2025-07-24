@@ -1,20 +1,9 @@
 """Contains 'pure' business logic models."""
 
-from dataclasses import dataclass
 from datetime import date
 from typing import Set, Optional
 
-from src.allocations.services.batch_service import OutOfStock
-
-
-@dataclass(unsafe_hash=True)
-class OrderLineModel:
-    order_id: str
-    sku: str
-    qty: int
-
-    def __str__(self):
-        return f"{self.qty} units of {self.sku}"
+from src.orders.domain.order_line_model import OrderLineModel
 
 
 class BatchModel:
@@ -81,22 +70,3 @@ class BatchModel:
         if order_line in self._allocations:
             return True
         return False
-
-
-class ProductAggregate:
-    sku: str
-    version_number: int
-    batches: Set[BatchModel]
-
-    def __init__(self, sku):
-        self.sku = sku
-
-    def allocate(self, order_line: OrderLineModel) -> str:
-        try:
-            batch = next(
-                b for b in sorted(self.batches) if b.can_deallocate(order_line)
-            )
-            batch.allocate(order_line)
-            return batch.reference
-        except StopIteration:
-            raise OutOfStock(f"Out of stock for sku {order_line.sku}")

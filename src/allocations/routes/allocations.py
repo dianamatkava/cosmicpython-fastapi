@@ -12,7 +12,7 @@ from src.allocations.routes.schemas.allocations.response_models import (
     AllocationsAllocateResponseModel,
 )
 from src.allocations.services.schemas import AllocationSchemaDTO
-from src.allocations.services.batch_service import BatchService
+from src.allocations.services.allocation_service import AllocationService
 
 router = APIRouter(prefix="/allocations", tags=["allocations"])
 
@@ -21,14 +21,14 @@ router = APIRouter(prefix="/allocations", tags=["allocations"])
     "", status_code=status.HTTP_200_OK, response_model=List[AllocationSchemaDTO]
 )
 def get_allocations(
-    batch_service: Annotated[BatchService, Depends(get_batch_service)],
+    allocation_service: Annotated[AllocationService, Depends(get_batch_service)],
 ) -> List[AllocationSchemaDTO]:
     """
     Lists all current order line allocations in the system.
     Returns an empty list if no allocations exist.
     """
     return TypeAdapter(List[AllocationSchemaDTO]).validate_python(
-        batch_service.get_allocations(), from_attributes=True
+        allocation_service.get_allocations(), from_attributes=True
     )
 
 
@@ -42,14 +42,14 @@ def allocate_order_line(
         OrderLineModelRequestModel,
         Body(..., description="The order line details to allocate"),
     ],
-    batch_service: Annotated[BatchService, Depends(get_batch_service)],
+    allocation_service: Annotated[AllocationService, Depends(get_batch_service)],
 ) -> AllocationsAllocateResponseModel:
     """
     Allocates an order line to the most suitable batch.
     Will raise an error if no suitable batch is found or if the requested quantity
     cannot be satisfied by available batches.
     """
-    ref, order_id = batch_service.allocate(body)
+    ref, order_id = allocation_service.allocate(body)
     return AllocationsAllocateResponseModel(reference=ref, order_id=order_id)
 
 
@@ -63,11 +63,11 @@ def deallocate_order_line(
     ref: Annotated[
         str, Path(..., description="The reference of the batch to deallocate")
     ],
-    batch_service: Annotated[BatchService, Depends(get_batch_service)],
+    allocation_service: Annotated[AllocationService, Depends(get_batch_service)],
 ) -> None:
     """
     Removes an order line allocation from a specific batch.
     Will return 404 if either the order or batch is not found.
     The freed quantity becomes available for future allocations.
     """
-    batch_service.deallocate(order_id=order_id, batch_reference=ref)
+    allocation_service.deallocate(order_id=order_id, batch_reference=ref)

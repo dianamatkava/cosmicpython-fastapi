@@ -3,8 +3,6 @@ from typing import Optional, Annotated
 
 from pydantic import BaseModel, Field
 
-from src.allocations.services.schemas import AllocationSchemaDTO
-
 
 class BatchesCreationModelRequestModel(BaseModel):
     """Batch creation schema request model."""
@@ -20,13 +18,3 @@ class BatchesCreationModelRequestModel(BaseModel):
         ),
     ]
     qty: Annotated[int, Field(description="Quantity of the product.")]
-
-
-class OrderLineModelRequestModel(AllocationSchemaDTO):
-    """Order line schema request model."""
-
-    order_id: Annotated[str, Field(description="Order unique ID.")]
-    sku: Annotated[
-        str, Field(description="SKU (Stock Keeping Unit) of the product to allocate.")
-    ]
-    qty: Annotated[int, Field(description="Quantity of the product to allocate.")]

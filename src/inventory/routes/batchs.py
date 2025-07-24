@@ -5,15 +5,15 @@ from fastapi import Depends, Body
 from pydantic import TypeAdapter
 from starlette import status
 
-from src.allocations.conf import get_batch_service
-from src.allocations.routes.schemas.allocations.request_models import (
+from src.inventory.conf import get_batch_service
+from src.inventory.routes.schemas.request_models import (
     BatchesCreationModelRequestModel,
 )
-from src.allocations.routes.schemas.allocations.response_models import (
+from src.inventory.routes.schemas.response_models import (
     BatchesListResponseModel,
 )
-from src.allocations.services.schemas import BatchSchemaDTO
-from src.allocations.services.batch_service import BatchService
+from src.inventory.services.schemas import BatchSchemaDTO
+from src.inventory.services.batch_service import BatchService
 
 router = APIRouter(prefix="/batch", tags=["batch"])
 

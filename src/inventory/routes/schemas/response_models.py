@@ -1,9 +1,9 @@
 from datetime import date
 from typing import List, Annotated
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 
-from src.allocations.services.schemas import BatchSchemaDTO, AllocationSchemaDTO
+from src.inventory.services.schemas import BatchSchemaDTO, AllocationSchemaDTO
 
 
 class BatchesListResponseModel(BatchSchemaDTO):
@@ -26,10 +26,3 @@ class BatchesListResponseModel(BatchSchemaDTO):
     allocations: Annotated[
         List[AllocationSchemaDTO], Field(description="List of allocations.")
     ]
-
-
-class AllocationsAllocateResponseModel(BaseModel):
-    """Model represent allocation response."""
-
-    reference: Annotated[str, Field(description="Allocated batch unique ID.")]
-    order_id: Annotated[str, Field(description="Allocated order unique ID.")]

@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Optional, Type
 
-from src.allocations.domain.batch_domain_model import BatchModel, OrderLineModel
+from src.allocations.domain.product_model import BatchModel, OrderLineModel
 from src.allocations.tests.conftest import FakeRepository
 
 

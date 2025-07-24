@@ -4,7 +4,7 @@ from datetime import date
 from typing import Optional, List, Tuple
 
 from src.allocations.adapters.uow import AbstractAllocationsUnitOfWork
-from src.allocations.domain import batch_domain_model as domain
+from src.allocations.domain import product_model as domain
 from src.allocations.services.schemas import AllocationSchemaDTO
 
 
@@ -12,7 +12,7 @@ class OutOfStock(Exception):
     """OutOfStock Exception"""
 
 
-class BatchService:
+class AllocationService:
     uow: AbstractAllocationsUnitOfWork
 
     def __init__(self, uow: AbstractAllocationsUnitOfWork):

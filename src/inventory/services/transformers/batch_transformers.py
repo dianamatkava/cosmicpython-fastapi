@@ -1,4 +1,4 @@
-from src.allocations.domain import batch_domain_model as domain
+from src.allocations.domain import product_model as domain
 from src.allocations.services.schemas import AllocationSchemaDTO, BatchSchemaDTO
 
 

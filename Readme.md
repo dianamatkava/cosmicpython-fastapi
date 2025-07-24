@@ -148,7 +148,7 @@ src/
   * Does *not* know anything about HTTP or databases—pure Python classes (or SQLModel models that include Python business logic).
 
 ```python
-# Example (simplified) from order_line_model.py
+# Example (simplified) from product_model.py
 
 from typing import List, Optional
 from datetime import date
@@ -267,7 +267,7 @@ class UnitOfWork:
     * Helper functions that convert between domain objects (`Batch`, `Allocation`) and DTOs (`BatchSchemaDTO`, `AllocationSchemaDTO`).
 
 ```python
-# Example from services/order_line_service.py
+# Example from services/product_service.py
 
 from typing import List
 from ..adapters.uow import UnitOfWork

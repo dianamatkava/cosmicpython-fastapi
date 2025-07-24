@@ -6,7 +6,7 @@ from src.allocations.adapters.repository import (
     AbstractRepository,
 )
 from src.allocations.adapters.uow import AllocationsUnitOfWork
-from src.allocations.services.batch_service import BatchService
+from src.allocations.services.allocation_service import BatchService
 
 
 @pytest.fixture(name="sql_repository")

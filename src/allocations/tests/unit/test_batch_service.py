@@ -5,9 +5,9 @@ from sqlalchemy.exc import NoResultFound
 
 from src.allocations.adapters.repository import AbstractRepository
 from src.allocations.adapters.uow import AbstractUnitOfWork
-from src.allocations.domain import batch_domain_model as domain
+from src.allocations.domain import product_model as domain
 from src.allocations.services.schemas import AllocationSchemaDTO
-from src.allocations.services.batch_service import BatchService, OutOfStock
+from src.allocations.services.allocation_service import BatchService, OutOfStock
 
 
 class FakeBatchRepository(AbstractRepository):

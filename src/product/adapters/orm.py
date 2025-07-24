@@ -3,17 +3,19 @@
 from sqlalchemy import Column, Integer, String, Table, MetaData
 from sqlalchemy.orm import registry
 
-from src.allocations.domain import order_line_model as domain
-
 metadata = MetaData()
 
-order_lines = Table(
-    "order_lines",
+
+product_aggregate = Table(
+    "product_aggregates",
     metadata,
-    Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("order_id", String(255)),
-    Column("sku", String(255), doc="Reference to an product"),
-    Column("qty", Integer, nullable=False),
+    Column(
+        "sku",
+        String(255),
+        primary_key=True,
+        doc="Product identifier assigned by vendor, manufacturer, or ERP",
+    ),
+    Column("version_number", Integer, doc="Version number for consistency boundaries"),
 )
 
 
@@ -26,4 +28,7 @@ def start_mappers():
     # Inverting Database Dependency ORM from Domain model
     # Following is the configuration for how to convert between the schema and domain model
 
-    mapper_registry.map_imperatively(domain.OrderLineModel, order_lines)
+    mapper_registry.map_imperatively(
+        ProductModel,
+        product_aggregate,
+    )

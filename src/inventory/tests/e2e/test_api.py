@@ -21,7 +21,7 @@ from src.allocations.routes.schemas.allocations.request_models import (
 from src.allocations.routes.schemas.allocations.response_models import (
     AllocationsAllocateResponseModel,
 )
-from src.allocations.services.batch_service import OutOfStock
+from src.allocations.services.allocation_service import OutOfStock
 from src.settings import get_settings
 
 settings = get_settings()

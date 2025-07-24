@@ -2,7 +2,7 @@ from sqlalchemy import text
 from sqlmodel import Session
 
 from src.allocations.adapters.repository import ProductStockRepository
-from src.allocations.domain import batch_domain_model as domain
+from src.allocations.domain import product_model as domain
 
 
 def test_repository_can_save_a_batch(

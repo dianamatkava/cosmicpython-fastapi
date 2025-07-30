@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Path
 from starlette import status
 
-router = APIRouter(prefix="/allocations", tags=["allocations"])
+router = APIRouter(prefix="/order_line", tags=["order_line"])
 
 
 @router.get("/{order_id}", status_code=status.HTTP_200_OK)

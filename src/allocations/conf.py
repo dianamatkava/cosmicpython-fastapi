@@ -2,13 +2,15 @@ from typing import Annotated, Any
 
 from fastapi import Depends
 
-from src.allocations.adapters.uow import AllocationsUnitOfWork
-from src.allocations.services.allocation_service import BatchService
+from src.allocations.adapters.uow import BatchAllocationsUnitOfWork
+from src.allocations.services.allocation_service import AllocationService
 
 
-def get_unit_of_work() -> AllocationsUnitOfWork:
-    return AllocationsUnitOfWork()
+def get_unit_of_work() -> BatchAllocationsUnitOfWork:
+    return BatchAllocationsUnitOfWork()
 
 
-def get_batch_service(uof: Annotated[Any, Depends(get_unit_of_work)]) -> BatchService:
-    return BatchService(uow=uof)
+def get_allocation_service(
+    uof: Annotated[Any, Depends(get_unit_of_work)],
+) -> AllocationService:
+    return AllocationService(uow=uof)

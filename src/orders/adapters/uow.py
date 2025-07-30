@@ -15,8 +15,8 @@ DEFAULT_SESSION_FACTORY = sessionmaker(bind=create_engine(settings.DB_URL))
 
 class OrderLine(AbstractUnitOfWork):
     """
-    Context Manager for database operations.
-    The Unit of Work pattern manages database changes as a single atomic transaction.
+    Context Manager for adapters operations.
+    The Unit of Work pattern manages adapters changes as a single atomic transaction.
     Manages session life cycle.
     """
 

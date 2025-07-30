@@ -15,8 +15,8 @@ DEFAULT_SESSION_FACTORY = sessionmaker(bind=create_engine(settings.DB_URL))
 
 class BatchAllocationsUnitOfWork(AbstractUnitOfWork):
     """
-    Context Manager for database operations.
-    The Unit of Work pattern manages database changes as a single atomic transaction.
+    Context Manager for adapters operations.
+    The Unit of Work pattern manages adapters changes as a single atomic transaction.
     Manages session life cycle.
     """
 
@@ -26,7 +26,7 @@ class BatchAllocationsUnitOfWork(AbstractUnitOfWork):
         product_repo: Type[AbstractRepository] = BatchAllocationsRepository,
     ):
         self.session_factory = session_factory
-        self.product_repo: product_repo
+        self.product_repo = product_repo()
 
     def __enter__(self) -> Self:
         self.session: Session = self.session_factory()

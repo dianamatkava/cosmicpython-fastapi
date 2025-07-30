@@ -5,32 +5,15 @@ from fastapi import Depends, Body
 from pydantic import TypeAdapter
 from starlette import status
 
+from src.allocations.services.schemas import BatchSchemaDTO
 from src.inventory.conf import get_batch_service
-from src.inventory.routes.schemas.request_models import (
+from src.inventory.routes.schemas.request_models.batch import (
     BatchesCreationModelRequestModel,
 )
-from src.inventory.routes.schemas.response_models import (
-    BatchesListResponseModel,
-)
-from src.inventory.services.schemas import BatchSchemaDTO
+from src.inventory.routes.schemas.response_models.batch import BatchesListResponseModel
 from src.inventory.services.batch_service import BatchService
 
 router = APIRouter(prefix="/batch", tags=["batch"])
-
-
-@router.post("", status_code=status.HTTP_201_CREATED, response_model=None)
-def add_batch(
-    body: Annotated[
-        BatchesCreationModelRequestModel,
-        Body(..., description="The batch details to create"),
-    ],
-    batch_service: Annotated[BatchService, Depends(get_batch_service)],
-) -> None:
-    """
-    Creates a new batch in the inventory system.
-    If a batch with the same reference already exists, it will be rejected.
-    """
-    batch_service.add_batch(ref=body.ref, sku=body.sku, qty=body.qty, eta=body.eta)
 
 
 @router.get(
@@ -62,6 +45,21 @@ def get_batch(
     return TypeAdapter(BatchSchemaDTO).validate_python(
         batch_service.get_batche_by_ref(ref), from_attributes=True
     )
+
+
+@router.post("", status_code=status.HTTP_201_CREATED, response_model=None)
+def add_batch(
+    body: Annotated[
+        BatchesCreationModelRequestModel,
+        Body(..., description="The batch details to create"),
+    ],
+    batch_service: Annotated[BatchService, Depends(get_batch_service)],
+) -> None:
+    """
+    Creates a new batch in the inventory system.
+    If a batch with the same reference already exists, it will be rejected.
+    """
+    batch_service.add_batch(ref=body.ref, sku=body.sku, qty=body.qty, eta=body.eta)
 
 
 @router.delete("/{ref}", status_code=status.HTTP_200_OK, response_model=None)

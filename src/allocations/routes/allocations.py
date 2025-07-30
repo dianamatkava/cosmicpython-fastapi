@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Body, Path
 from pydantic import TypeAdapter
 from starlette import status
 
-from src.allocations.conf import get_batch_service
+from src.allocations.conf import get_allocation_service
 from src.allocations.routes.schemas.allocations.request_models import (
     OrderLineModelRequestModel,
 )
@@ -21,7 +21,7 @@ router = APIRouter(prefix="/allocations", tags=["allocations"])
     "", status_code=status.HTTP_200_OK, response_model=List[AllocationSchemaDTO]
 )
 def get_allocations(
-    allocation_service: Annotated[AllocationService, Depends(get_batch_service)],
+    allocation_service: Annotated[AllocationService, Depends(get_allocation_service)],
 ) -> List[AllocationSchemaDTO]:
     """
     Lists all current order line allocations in the system.
@@ -42,7 +42,7 @@ def allocate_order_line(
         OrderLineModelRequestModel,
         Body(..., description="The order line details to allocate"),
     ],
-    allocation_service: Annotated[AllocationService, Depends(get_batch_service)],
+    allocation_service: Annotated[AllocationService, Depends(get_allocation_service)],
 ) -> AllocationsAllocateResponseModel:
     """
     Allocates an order line to the most suitable batch.
@@ -63,7 +63,7 @@ def deallocate_order_line(
     ref: Annotated[
         str, Path(..., description="The reference of the batch to deallocate")
     ],
-    allocation_service: Annotated[AllocationService, Depends(get_batch_service)],
+    allocation_service: Annotated[AllocationService, Depends(get_allocation_service)],
 ) -> None:
     """
     Removes an order line allocation from a specific batch.

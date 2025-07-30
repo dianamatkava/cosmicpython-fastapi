@@ -3,9 +3,10 @@
 from datetime import date
 from typing import Optional, List, Tuple
 
-from src.allocations.adapters.uow import AbstractAllocationsUnitOfWork
-from src.allocations.domain import product_model as domain
+from src.allocations.domain.batch_domain_model import BatchModel
 from src.allocations.services.schemas import AllocationSchemaDTO
+from src.orders.domain.order_line_model import OrderLineModel
+from src.shared.uow import AbstractUnitOfWork
 
 
 class OutOfStock(Exception):
@@ -13,23 +14,23 @@ class OutOfStock(Exception):
 
 
 class AllocationService:
-    uow: AbstractAllocationsUnitOfWork
+    uow: AbstractUnitOfWork
 
-    def __init__(self, uow: AbstractAllocationsUnitOfWork):
+    def __init__(self, uow: AbstractUnitOfWork):
         self.uow = uow
 
     def add_batch(
         self, ref: str, sku: str, qty: int, eta: Optional[date] = None
     ) -> None:
         with self.uow as uow:
-            uow.product_repo.add(domain.BatchModel(ref, sku, qty, eta))
+            uow.product_repo.add(BatchModel(ref, sku, qty, eta))
             uow.commit()
 
-    def get_batche_by_ref(self, ref: str) -> domain.BatchModel:
+    def get_batche_by_ref(self, ref: str) -> BatchModel:
         with self.uow as uow:
             return uow.product_repo.get(reference=ref)
 
-    def get_batches(self) -> List[domain.BatchModel]:
+    def get_batches(self) -> List[BatchModel]:
         with self.uow as uow:
             return uow.product_repo.list()
 
@@ -38,13 +39,13 @@ class AllocationService:
             uow.product_repo.delete(reference=ref)
             uow.commit()
 
-    def get_allocations(self) -> List[domain.OrderLineModel]:
+    def get_allocations(self) -> List[OrderLineModel]:
         batches = self.get_batches()
         return [alloc for batch in batches for alloc in batch.allocations]
 
     def allocate(self, order_line: AllocationSchemaDTO) -> Tuple[str, str]:
         with self.uow as uow:
-            order_line_model = domain.OrderLineModel(**order_line.model_dump())
+            order_line_model = OrderLineModel(**order_line.model_dump())
             batches = uow.product_repo.list()
             try:
                 batch = next(

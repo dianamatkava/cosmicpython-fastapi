@@ -10,5 +10,7 @@ def get_order_line_uow():
     return OrderLineUnitOfWork()
 
 
-def get_order_line_service(uow: Annotated[OrderLineUnitOfWork, Depends(get_order_line_uow)]):
+def get_order_line_service(
+    uow: Annotated[OrderLineUnitOfWork, Depends(get_order_line_uow)],
+):
     return OrderLineService(uow=uow)

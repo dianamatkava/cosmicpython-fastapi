@@ -1,13 +1,15 @@
 """business logic, Accepts only primitives or a minimal DTO"""
 
-from typing import Any, List
+from typing import List
 
 from src.orders.adapters.uow import OrderLineUnitOfWork
 from src.orders.domain.order_line_model import OrderLineModel
 from src.orders.services.schemas import OrderLineSchemaDTO
 
 
-def transform_order_line_dto_to_domain(order_line: OrderLineSchemaDTO) -> OrderLineModel:
+def transform_order_line_dto_to_domain(
+    order_line: OrderLineSchemaDTO,
+) -> OrderLineModel:
     return OrderLineModel()
 
 

@@ -8,7 +8,8 @@ from src.orders.services.schemas.order_line_dto import OrderLineSchemaDTO
 class OrderLineCreateRequestModel(OrderLineSchemaDTO):
     """Order line create request model."""
 
-    order_id: ClassVar[None] = None
+    id: ClassVar[None] = None
+    order_id: Annotated[str, Field(description="Associated order unique ID.")]
     sku: Annotated[
         str,
         Field(..., description="SKU (Stock Keeping Unit) of the product to allocate."),

@@ -571,7 +571,7 @@ def delete_batch(ref: str, service: BatchService = Depends()):
    pytest src/allocations/tests/integration
 
    # End-to-End
-   pytest src/allocations/tests/e2e
+   pytest src/allocations/tests/contract
    ```
 
 ---

@@ -2,11 +2,13 @@ import pytest
 from sqlalchemy import create_engine, Engine
 from sqlalchemy.orm import sessionmaker, clear_mappers
 from sqlalchemy_utils import database_exists, create_database
+from sqlmodel import Session
 from starlette.testclient import TestClient
 
 from src.adapters.orm_mappers import start_mappers
 from src.allocations.adapters.orm import metadata
 from src.app import app
+from src.inventory.domain.product_model import ProductModel
 from src.settings import get_settings
 
 
@@ -86,3 +88,11 @@ class FakeSession:
 @pytest.fixture(name="fake_session")
 def get_fake_session() -> FakeSession:
     return FakeSession()
+
+
+@pytest.fixture(name="product")
+def create_product(session: Session) -> ProductModel:
+    product = ProductModel(sku="RED_CHAIR")
+    session.add(product)
+    session.commit()
+    return product

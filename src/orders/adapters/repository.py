@@ -14,10 +14,8 @@ class OrderLineRepository(AbstractRepository[domain.OrderLineModel]):
     def __init__(self, session: Session):
         self.session = session
 
-    def get(self, order_id: str) -> Type[domain.OrderLineModel]:
-        return (
-            self.session.query(domain.OrderLineModel).filter_by(order_id=order_id).one()
-        )
+    def get(self, id: int) -> Type[domain.OrderLineModel]:
+        return self.session.query(domain.OrderLineModel).filter_by(id=id).one()
 
     def add(self, order_line: domain.OrderLineModel) -> None:
         self.session.add(order_line)
@@ -25,5 +23,5 @@ class OrderLineRepository(AbstractRepository[domain.OrderLineModel]):
     def list(self) -> List[Type[domain.OrderLineModel]]:
         return self.session.query(domain.OrderLineModel).all()
 
-    def delete(self, order_id: str) -> None:
-        self.session.query(domain.OrderLineModel).filter_by(order_id=order_id).delete()
+    def delete(self, id: int) -> None:
+        self.session.query(domain.OrderLineModel).filter_by(id=id).delete()

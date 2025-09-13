@@ -14,14 +14,16 @@ router = APIRouter(prefix="/order_line", tags=["order_line"])
 
 
 @router.get(
-    "/{order_id}", status_code=status.HTTP_200_OK, response_model=OrderLineResponseModel
+    "/{order_line_id}",
+    status_code=status.HTTP_200_OK,
+    response_model=OrderLineResponseModel,
 )
 def get_order_line_by_id(
-    order_id: Annotated[str, Path(..., description="Identifier of the order.")],
+    order_line_id: Annotated[str, Path(..., description="Identifier of the order.")],
     order_line_service: Annotated[OrderLineService, Depends(get_order_line_service)],
 ) -> OrderLineResponseModel:
     return TypeAdapter(OrderLineResponseModel).validate_python(
-        order_line_service.get_order_line(order_id=order_id), from_attributes=True
+        order_line_service.get_order_line(id=order_line_id), from_attributes=True
     )
 
 
@@ -47,14 +49,16 @@ def create_order_line(
     ],
 ) -> OrderLineResponseModel:
     return TypeAdapter(OrderLineResponseModel).validate_python(
-        order_line_service.create_order_line(sku=body.sku, qty=body.qty),
+        order_line_service.create_order_line(body),
         from_attributes=True,
     )
 
 
-@router.delete("/{order_id}", status_code=status.HTTP_200_OK)
+@router.delete("/{order_line_id}", status_code=status.HTTP_200_OK)
 def delete_order_line(
-    order_id: Annotated[str, Path(..., description="Identifier of the order line.")],
+    order_line_id: Annotated[
+        str, Path(..., description="Identifier of the order line.")
+    ],
     order_line_service: Annotated[OrderLineService, Depends(get_order_line_service)],
 ) -> None:
-    order_line_service.delete_order_line(order_id=order_id)
+    order_line_service.delete_order_line(id=order_line_id)

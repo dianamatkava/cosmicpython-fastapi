@@ -48,3 +48,6 @@ class OrderLineUnitOfWork(AbstractUnitOfWork):
 
     def commit(self):
         self.session.commit()
+
+    def flush(self):
+        self.session.flush()

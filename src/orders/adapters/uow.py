@@ -13,12 +13,14 @@ settings = get_settings()
 DEFAULT_SESSION_FACTORY = sessionmaker(bind=create_engine(settings.DB_URL))
 
 
-class OrderLine(AbstractUnitOfWork):
+class OrderLineUnitOfWork(AbstractUnitOfWork):
     """
     Context Manager for adapters operations.
     The Unit of Work pattern manages adapters changes as a single atomic transaction.
     Manages session life cycle.
     """
+
+    order_line_repo: OrderLineRepository
 
     def __init__(
         self,
@@ -26,10 +28,11 @@ class OrderLine(AbstractUnitOfWork):
         order_line_repo: Type[AbstractRepository] = OrderLineRepository,
     ):
         self.session_factory = session_factory
-        self.order_line_repo: order_line_repo
+        self.order_line_repo_cls = order_line_repo
 
     def __enter__(self) -> Self:
         self.session: Session = self.session_factory()
+        self.order_line_repo = self.order_line_repo_cls(self.session)
         return super().__enter__()
 
     def __exit__(self, *args):

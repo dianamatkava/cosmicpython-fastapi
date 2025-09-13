@@ -1,36 +1,19 @@
-from typing import Annotated, List
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, Body, Path
-from pydantic import TypeAdapter
 from starlette import status
 
 from src.allocations.conf import get_allocation_service
 from src.allocations.routes.schemas.allocations.request_models import (
-    OrderLineModelRequestModel,
+    AllocationRequestModel,
 )
 from src.allocations.routes.schemas.allocations.response_models import (
     AllocationsAllocateResponseModel,
 )
-from src.allocations.services.schemas import AllocationSchemaDTO
 from src.allocations.services.allocation_service import AllocationService
 
 router = APIRouter(prefix="/allocations", tags=["allocations"])
 # TODO: Internal Auth
-
-
-@router.get(
-    "", status_code=status.HTTP_200_OK, response_model=List[AllocationSchemaDTO]
-)
-def get_allocations(
-    allocation_service: Annotated[AllocationService, Depends(get_allocation_service)],
-) -> List[AllocationSchemaDTO]:
-    """
-    Lists all current order line allocations in the system.
-    Returns an empty list if no allocations exist.
-    """
-    return TypeAdapter(List[AllocationSchemaDTO]).validate_python(
-        allocation_service.get_allocations(), from_attributes=True
-    )
 
 
 @router.post(
@@ -40,7 +23,7 @@ def get_allocations(
 )
 def allocate_order_line(
     body: Annotated[
-        OrderLineModelRequestModel,
+        AllocationRequestModel,
         Body(..., description="The order line details to allocate"),
     ],
     allocation_service: Annotated[AllocationService, Depends(get_allocation_service)],
@@ -50,16 +33,16 @@ def allocate_order_line(
     Will raise an error if no suitable batch is found or if the requested quantity
     cannot be satisfied by available batches.
     """
-    ref, order_id = allocation_service.allocate(body)
+    ref, order_id = allocation_service.allocate(body.order_line_id)
     return AllocationsAllocateResponseModel(reference=ref, order_id=order_id)
 
 
 @router.delete(
-    "/{order_id}/batch/{ref}", status_code=status.HTTP_200_OK, response_model=None
+    "/{order_line_id}/batch/{ref}", status_code=status.HTTP_200_OK, response_model=None
 )
 def deallocate_order_line(
-    order_id: Annotated[
-        str, Path(..., description="The ID of the order to deallocate")
+    order_line_id: Annotated[
+        int, Path(..., description="The ID of the order line to deallocate")
     ],
     ref: Annotated[
         str, Path(..., description="The reference of the batch to deallocate")
@@ -71,4 +54,4 @@ def deallocate_order_line(
     Will return 404 if either the order or batch is not found.
     The freed quantity becomes available for future allocations.
     """
-    allocation_service.deallocate(order_id=order_id, batch_reference=ref)
+    allocation_service.deallocate(order_line_id=order_line_id, ref=ref)

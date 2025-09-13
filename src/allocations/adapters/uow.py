@@ -3,17 +3,18 @@ from typing import Self, Type
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from src.allocations.adapters.repository import BatchAllocationsRepository
+from src.allocations.adapters.repository import ProductAggregateRepository
+from src.orders.adapters.repository import OrderLineRepository
 from src.settings import get_settings
 from src.shared.repository import AbstractRepository
 from src.shared.uow import AbstractUnitOfWork
 
 settings = get_settings()
 
-DEFAULT_SESSION_FACTORY = sessionmaker(bind=create_engine(settings.DB_URL))
+DEFAULT_SESSION_FACTORY = sessionmaker(bind=create_engine(settings.DB_URL, echo=True))
 
 
-class BatchAllocationsUnitOfWork(AbstractUnitOfWork):
+class ProductAggregateUnitOfWork(AbstractUnitOfWork):
     """
     Context Manager for adapters operations.
     The Unit of Work pattern manages adapters changes as a single atomic transaction.
@@ -23,13 +24,17 @@ class BatchAllocationsUnitOfWork(AbstractUnitOfWork):
     def __init__(
         self,
         session_factory=DEFAULT_SESSION_FACTORY,
-        product_repo: Type[AbstractRepository] = BatchAllocationsRepository,
+        product_aggregate_repo: Type[AbstractRepository] = ProductAggregateRepository,
+        order_line_repo: Type[AbstractRepository] = OrderLineRepository,
     ):
         self.session_factory = session_factory
-        self.product_repo = product_repo()
+        self.product_aggregate_repo_cls = product_aggregate_repo
+        self.order_line_repo_cls = order_line_repo
 
     def __enter__(self) -> Self:
         self.session: Session = self.session_factory()
+        self.product_aggregate_repo = self.product_aggregate_repo_cls(self.session)
+        self.order_line_repo = self.order_line_repo_cls(self.session)
         return super().__enter__()
 
     def __exit__(self, *args):
@@ -39,4 +44,5 @@ class BatchAllocationsUnitOfWork(AbstractUnitOfWork):
         self.session.rollback()
 
     def commit(self):
+        print(">>>> commit")
         self.session.commit()

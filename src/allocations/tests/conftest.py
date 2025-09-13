@@ -5,7 +5,7 @@ from src.allocations.adapters.repository import (
     ProductStockRepository,
     AbstractRepository,
 )
-from src.allocations.adapters.uow import AllocationsUnitOfWork
+from src.allocations.adapters.uow import ProductAggregateUnitOfWork
 from src.allocations.services.allocation_service import BatchService
 
 
@@ -57,12 +57,12 @@ def get_fake_session() -> FakeSession:
 
 
 @pytest.fixture(name="fake_uof")
-def get_fake_uof(fake_session: FakeSession) -> AllocationsUnitOfWork:
-    return AllocationsUnitOfWork(
-        session_factory=lambda: fake_session, batch_repo=FakeRepository
+def get_fake_uof(fake_session: FakeSession) -> ProductAggregateUnitOfWork:
+    return ProductAggregateUnitOfWork(
+        session_factory=lambda: fake_session, product_aggregate_repo=FakeRepository
     )
 
 
 @pytest.fixture(name="batch_service")
-def get_batch_service(fake_uof: AllocationsUnitOfWork) -> BatchService:
+def get_batch_service(fake_uof: ProductAggregateUnitOfWork) -> BatchService:
     return BatchService(uow=fake_uof)

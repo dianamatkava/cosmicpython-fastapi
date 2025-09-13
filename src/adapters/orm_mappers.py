@@ -5,7 +5,7 @@ from sqlalchemy.orm import registry, relationship
 from src.allocations.adapters.orm import allocations
 from src.allocations.domain.batch_domain_model import BatchModel
 from src.allocations.domain.product_agregate_model import ProductAggregate
-from src.inventory.adapters.orm import batches, product_aggregate
+from src.inventory.adapters.orm import batches, product
 from src.inventory.domain.batch_model import InventoryBatchModel
 from src.inventory.domain.product_model import ProductModel
 from src.orders.adapters.orm import order_lines
@@ -23,8 +23,17 @@ def start_mappers():
     inventory_batch_mapper = mapper_registry.map_imperatively(
         InventoryBatchModel, batches
     )
-    inventory_product_mapper = mapper_registry.map_imperatively(
-        ProductModel, product_aggregate
+    inventory_product_mapper = mapper_registry.map_imperatively(ProductModel, product)
+
+    product_aggregate_mapper = mapper_registry.map_imperatively(
+        ProductAggregate,
+        product,
+        properties={
+            "_batches": relationship(
+                BatchModel,  # Maps to BatchModel
+                collection_class=set,
+            ),
+        },
     )
 
     allocation_batch_mapper = mapper_registry.map_imperatively(
@@ -36,16 +45,5 @@ def start_mappers():
                 secondary=allocations,  # Through the 'allocations' join table
                 collection_class=set,  # Allocations are stored in a set
             ),
-        },
-    )
-
-    product_aggregate_mapper = mapper_registry.map_imperatively(
-        ProductAggregate,
-        product_aggregate,
-        properties={
-            "_batches": relationship(
-                BatchModel,  # Maps to BatchModel
-                collection_class=set,
-            )
         },
     )

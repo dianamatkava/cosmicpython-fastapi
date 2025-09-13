@@ -6,9 +6,7 @@ from pydantic import BaseModel
 
 
 class AllocationSchemaDTO(BaseModel):
-    order_id: str
-    sku: str
-    qty: int
+    order_line_id: str
 
 
 class BatchSchemaDTO(BaseModel):

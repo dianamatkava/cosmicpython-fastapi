@@ -16,7 +16,7 @@ from starlette.testclient import TestClient
 
 from src.allocations.routes.schemas.allocations.request_models import (
     BatchesCreationModelRequestModel,
-    OrderLineModelRequestModel,
+    AllocationRequestModel,
 )
 from src.allocations.routes.schemas.allocations.response_models import (
     AllocationsAllocateResponseModel,
@@ -74,7 +74,7 @@ def test_happy_path_returns_201_and_allocated_batch(
 
     res = client.post(
         "/allocations",
-        data=OrderLineModelRequestModel(
+        data=AllocationRequestModel(
             order_id="order_1", sku=sku, qty=10
         ).model_dump_json(),  # type: ignore
     )
@@ -88,7 +88,7 @@ def test_unhappy_path_returns_400_and_error_message(client: TestClient):
     with pytest.raises(OutOfStock):
         client.post(
             "/allocations",
-            data=OrderLineModelRequestModel(
+            data=AllocationRequestModel(
                 order_id="order_1", sku="sku", qty=10
             ).model_dump_json(),  # type: ignore
         )

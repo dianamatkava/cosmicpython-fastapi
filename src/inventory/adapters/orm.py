@@ -14,7 +14,7 @@ batches = Table(
         unique=True,
         doc="Purchasing team (upstream ERP/PO system) assigns a batch/PO-number",
     ),
-    Column("sku", ForeignKey("product_aggregates.sku"), doc="Reference to a product"),
+    Column("sku", ForeignKey("product.sku"), doc="Reference to a product"),
     Column(
         "eta",
         Date,
@@ -25,8 +25,8 @@ batches = Table(
 )
 
 
-product_aggregate = Table(
-    "product_aggregates",
+product = Table(
+    "product",
     metadata,
     Column(
         "sku",

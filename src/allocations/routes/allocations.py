@@ -15,6 +15,7 @@ from src.allocations.services.schemas import AllocationSchemaDTO
 from src.allocations.services.allocation_service import AllocationService
 
 router = APIRouter(prefix="/allocations", tags=["allocations"])
+# TODO: Internal Auth
 
 
 @router.get(

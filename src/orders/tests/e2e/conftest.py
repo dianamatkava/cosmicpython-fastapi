@@ -4,7 +4,8 @@ from sqlalchemy.orm import sessionmaker, clear_mappers
 from sqlalchemy_utils import database_exists, create_database
 from starlette.testclient import TestClient
 
-from src.allocations.adapters.orm import metadata, start_mappers
+from src.adapters.orm_mappers import start_mappers
+from src.allocations.adapters.orm import metadata
 from src.app import app
 from src.settings import get_settings
 

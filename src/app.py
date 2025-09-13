@@ -11,6 +11,7 @@ from src.inventory.routes.product import router as product_router
 app = FastAPI()
 router = APIRouter(prefix="", tags=["main"])
 
+# TODO: Add Auth on OpenAPI
 app.include_router(allocations_router)
 app.include_router(order_line_router)
 app.include_router(batch_router)

@@ -4,7 +4,7 @@ from typing import List, Type
 
 from sqlalchemy.orm import Session
 
-from src.allocations.domain import order_line_model as domain
+from src.orders.domain import order_line_model as domain
 from src.shared.repository import AbstractRepository
 
 

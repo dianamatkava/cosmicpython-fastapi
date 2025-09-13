@@ -12,6 +12,7 @@ from src.inventory.routes.schemas.response_models.product import (
 from src.inventory.services.product_service import ProductService
 
 router = APIRouter(prefix="/product", tags=["product"])
+# TODO: Management Auth
 
 
 @router.get(

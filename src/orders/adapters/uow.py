@@ -3,6 +3,7 @@ from typing import Self, Type
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
+from src.inventory.adapters.repository import ProductRepository
 from src.orders.adapters.repository import OrderLineRepository
 from src.settings import get_settings
 from src.shared.repository import AbstractRepository
@@ -21,18 +22,22 @@ class OrderLineUnitOfWork(AbstractUnitOfWork):
     """
 
     order_line_repo: OrderLineRepository
+    inventory_repo: ProductRepository
 
     def __init__(
         self,
         session_factory=DEFAULT_SESSION_FACTORY,
         order_line_repo: Type[AbstractRepository] = OrderLineRepository,
+        product_repo: Type[AbstractRepository] = ProductRepository,
     ):
         self.session_factory = session_factory
         self.order_line_repo_cls = order_line_repo
+        self.product_repo_cls = product_repo
 
     def __enter__(self) -> Self:
         self.session: Session = self.session_factory()
         self.order_line_repo = self.order_line_repo_cls(self.session)
+        self.product_repo = self.product_repo_cls(self.session)
         return super().__enter__()
 
     def __exit__(self, *args):

@@ -14,6 +14,7 @@ from src.inventory.routes.schemas.response_models.batch import BatchesListRespon
 from src.inventory.services.batch_service import BatchService
 
 router = APIRouter(prefix="/batch", tags=["batch"])
+# TODO: Internal Auth
 
 
 @router.get(
@@ -42,6 +43,7 @@ def get_batch(
     Retrieves a single batch by its reference.
     Will return 404 if the batch is not found.
     """
+    # TODO: Return API Model
     return TypeAdapter(BatchSchemaDTO).validate_python(
         batch_service.get_batche_by_ref(ref), from_attributes=True
     )

@@ -2,7 +2,8 @@ import pytest
 from sqlalchemy import create_engine, Engine
 from sqlalchemy.orm import sessionmaker, clear_mappers
 
-from src.allocations.adapters.orm import metadata, start_mappers
+from src.adapters.orm_mappers import start_mappers
+from src.allocations.adapters.orm import metadata
 from src.settings import get_settings
 
 settings = get_settings()

@@ -3,7 +3,7 @@ from sqlalchemy.orm import clear_mappers
 from starlette import status
 
 from src.adapters.orm_mappers import start_mappers
-from src.allocations.routes.allocations import router as allocations_router
+from src.allocations.routes.v1.allocations import router as allocations_router
 from src.orders.routes.order_line import router as order_line_router
 from src.inventory.routes.batchs import router as batch_router
 from src.inventory.routes.product import router as product_router

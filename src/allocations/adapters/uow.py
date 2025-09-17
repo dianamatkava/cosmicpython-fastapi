@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
 from src.allocations.adapters.repository import ProductAggregateRepository
+from src.allocations.services import messagebus
 from src.orders.adapters.repository import OrderLineRepository
 from src.settings import get_settings
 from src.shared.repository import AbstractRepository
@@ -33,16 +34,36 @@ class ProductAggregateUnitOfWork(AbstractUnitOfWork):
 
     def __enter__(self) -> Self:
         self.session: Session = self.session_factory()
-        self.product_aggregate_repo = self.product_aggregate_repo_cls(self.session)
-        self.order_line_repo = self.order_line_repo_cls(self.session)
+        self.product_aggregate_repo: ProductAggregateRepository = (
+            self.product_aggregate_repo_cls(self.session)
+        )
+        self.order_line_repo: OrderLineRepository = self.order_line_repo_cls(
+            self.session
+        )
         return super().__enter__()
 
     def __exit__(self, *args):
         super().__exit__(*args)
 
     def rollback(self):
+        self.publish_events()
+        self._rollback()
+
+    def _rollback(self):
         self.session.rollback()
 
     def commit(self):
-        print(">>>> commit")
+        self.publish_events()
+        self._commit()
+
+    def _commit(self):
         self.session.commit()
+
+    def collect_events(self):
+        events = []
+        for product in self.product_aggregate_repo.seen:
+            events.append(product.events)
+
+    def publish_events(self):
+        for product in self.product_aggregate_repo.seen:
+            messagebus.dispatch(product.events)

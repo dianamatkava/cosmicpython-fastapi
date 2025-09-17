@@ -1,9 +1,11 @@
 # The Repository pattern is an abstraction over persistent storage
-from typing import List, Type
+from typing import Set
+
 import sqlalchemy as sa
 from sqlalchemy.orm import Session
+
 from src.adapters.orm_mappers import product as _product
-from src.allocations.domain.product_agregate_model import ProductAggregate
+from src.allocations.domain.product_aggregate import ProductAggregate
 from src.shared.repository import AbstractRepository
 
 
@@ -13,12 +15,16 @@ class ConcurrencyError(Exception):
 
 class ProductAggregateRepository(AbstractRepository):
     session: Session
+    seen: Set[ProductAggregate]
 
     def __init__(self, session: Session):
         self.session = session
+        self.seen = set()
 
-    def get(self, sku: str) -> Type[ProductAggregate]:
-        return self.session.query(ProductAggregate).filter_by(sku=sku).one()
+    def get(self, sku: str) -> ProductAggregate:
+        res = self.session.query(ProductAggregate).filter_by(sku=sku).one()
+        self.seen.add(res)
+        return res
 
     def add(self, sku: str) -> None:
         raise NotImplementedError
@@ -33,8 +39,8 @@ class ProductAggregateRepository(AbstractRepository):
         if self.session.execute(query).rowcount == 0:
             raise ConcurrencyError(f"Concurrent update for product {product.sku}")
 
-    def list(self) -> List[Type[ProductAggregate]]:
-        return self.session.query(ProductAggregate).all()
+    def list(self) -> None:
+        raise NotImplementedError
 
     def delete(self, sku: str) -> None:
         raise NotImplementedError

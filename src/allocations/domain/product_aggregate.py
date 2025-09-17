@@ -2,7 +2,7 @@
 
 from typing import Set, List, Optional
 
-from src.allocations.domain import batch_domain_model as domain
+from src.allocations.domain import batch as domain
 from src.allocations.domain import events
 from src.orders.domain.order_line_model import OrderLineModel
 

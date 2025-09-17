@@ -17,5 +17,9 @@ class AbstractUnitOfWork(abc.ABC):
     def rollback(self):
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def collect_events(self):
+        raise NotImplementedError
+
 
 TRepos = TypeVar("TRepos", bound=AbstractUnitOfWork)

@@ -3,7 +3,7 @@
 from typing import Tuple
 
 from src.allocations.adapters.uow import ProductAggregateUnitOfWork
-from src.allocations.domain.product_agregate_model import ProductAggregate
+from src.allocations.domain.product_aggregate import ProductAggregate
 from src.allocations.services import messagebus
 
 

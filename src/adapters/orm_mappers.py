@@ -3,8 +3,8 @@
 from sqlalchemy.orm import registry, relationship
 
 from src.allocations.adapters.orm import allocations
-from src.allocations.domain.batch_domain_model import BatchModel
-from src.allocations.domain.product_agregate_model import ProductAggregate
+from src.allocations.domain.batch import BatchModel
+from src.allocations.domain.product_aggregate import ProductAggregate
 from src.inventory.adapters.orm import batches, product
 from src.inventory.domain.batch_model import InventoryBatchModel
 from src.inventory.domain.product_model import ProductModel

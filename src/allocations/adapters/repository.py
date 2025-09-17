@@ -23,7 +23,7 @@ class ProductAggregateRepository(AbstractRepository):
     def add(self, sku: str) -> None:
         raise NotImplementedError
 
-    def update_version(self, product: ProductAggregate) -> None:
+    def cas(self, product: ProductAggregate) -> None:
         old = product.version_number
         query = (
             sa.update(_product)

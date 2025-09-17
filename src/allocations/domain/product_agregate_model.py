@@ -1,8 +1,9 @@
 """Implementation of Optimistic Concurrency Control (OCC) / Optimistic Locking."""
 
-from typing import Set
+from typing import Set, List, Optional
 
-from src.allocations.domain.batch_domain_model import BatchModel
+from src.allocations.domain import batch_domain_model as domain
+from src.allocations.domain import events
 from src.orders.domain.order_line_model import OrderLineModel
 
 
@@ -11,17 +12,21 @@ class ProductAggregate:
 
     sku: str
     version_number: int
-    batches: Set[BatchModel]
+    batches: Set[domain.BatchModel]
+    events: List[events.Event]
 
-    def __init__(self, sku: str, batches: Set[BatchModel], version_number: int = 0):
+    def __init__(
+        self, sku: str, batches: Set[domain.BatchModel], version_number: int = 0
+    ):
         self.sku = sku
         self.version_number = version_number
         self._batches = batches
 
-    def allocate(self, line: OrderLineModel) -> str:
+    def allocate(self, line: OrderLineModel) -> Optional[str]:
         try:
             batch = next(b for b in sorted(self._batches) if b.can_allocate(line))
             batch.allocate(line)
             return batch.reference
         except StopIteration:
-            raise ValueError(f"Out of stock for sku {line.sku}")
+            self.events.append(events.OutOfStockEvent(sku=line.sku))
+            return None

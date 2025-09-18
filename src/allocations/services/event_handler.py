@@ -1,10 +1,10 @@
-"""business logic, Accepts only primitives or a minimal DTO"""
+"""Event-Driven API handlers"""
 
 from typing import Tuple
 
+from src.adapters.email import send_mail
 from src.allocations.adapters.uow import ProductAggregateUnitOfWork
 from src.allocations.domain.product_aggregate import ProductAggregate
-from src.allocations.services import messagebus
 from src.allocations.domain import events
 
 
@@ -16,10 +16,9 @@ def allocate(
     uow: ProductAggregateUnitOfWork, event: events.AllocationRequired
 ) -> Tuple[str, str]:
     with uow as uow:
-        order_line = uow.order_line_repo.get(id=event.orderid)
+        order_line = uow.order_line_repo.get(id=event.order_line_id)
         product: ProductAggregate = uow.product_aggregate_repo.get(sku=order_line.sku)
         batch_ref: str = product.allocate(order_line)
-        messagebus.dispatch(product.events)
         if not batch_ref:
             raise OutOfStock()
         # OCC check with CAS
@@ -41,3 +40,4 @@ def send_out_of_stock_event(
 ):
     # signal purchasing team to issue more batches
     print(f"OutOfStockEvent sku: {event.sku}")
+    send_mail(event.sku)

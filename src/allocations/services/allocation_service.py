@@ -4,7 +4,6 @@ from typing import Tuple
 
 from src.allocations.adapters.uow import ProductAggregateUnitOfWork
 from src.allocations.domain.product_aggregate import ProductAggregate
-from src.allocations.services import messagebus
 
 
 class OutOfStock(Exception):
@@ -24,7 +23,6 @@ class AllocationService:
                 sku=order_line.sku
             )
             batch_ref: str = product.allocate(order_line)
-            messagebus.dispatch(product.events)
             if not batch_ref:
                 raise OutOfStock()
             # OCC check with CAS

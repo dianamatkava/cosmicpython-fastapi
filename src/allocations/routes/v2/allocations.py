@@ -15,7 +15,7 @@ from src.allocations.routes.schemas.allocations.response_models import (
 from src.allocations.services.allocation_service import AllocationService
 from src.allocations.services.messagebus import handle
 
-router = APIRouter(prefix="/allocations", tags=["allocations"])
+router = APIRouter(prefix="/v2/allocations", tags=["allocations"])
 # TODO: Internal Auth
 
 
@@ -36,7 +36,9 @@ def allocate_order_line(
     Will raise an error if no suitable batch is found or if the requested quantity
     cannot be satisfied by available batches.
     """
-    ref, order_id = handle(uow, AllocationRequired(order_line_id=body.order_line_id))
+    ref, order_id, *_ = handle(
+        uow, AllocationRequired(order_line_id=body.order_line_id)
+    )
     return AllocationsAllocateResponseModel(reference=ref, order_id=order_id)
 
 

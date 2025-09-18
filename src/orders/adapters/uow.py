@@ -51,3 +51,9 @@ class OrderLineUnitOfWork(AbstractUnitOfWork):
 
     def flush(self):
         self.session.flush()
+
+    def collect_events(self):
+        raise NotImplementedError
+
+    def publish_events(self):
+        raise NotImplementedError

@@ -39,10 +39,16 @@ EVENT_HANDLER_V2 = {
 def handle(uow: AbstractUnitOfWork, event: _events.Event) -> Any:  # TODO: temp
     queue = [event]
     res = []
+    exceptions = []
     while queue:
         event = queue.pop(0)
         for handler in EVENT_HANDLER_V2.get(type(event), []):
-            res.append(handler(uow, event))  # TODO: temp
+            try:
+                res.append(handler(uow, event))  # TODO: temp
+            except Exception as e:
+                exceptions.append(e)
             queue.extend(uow.collect_events())
 
-    return res
+    if exceptions:
+        raise exceptions[0]
+    return res[0]

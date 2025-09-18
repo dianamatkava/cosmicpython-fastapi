@@ -7,7 +7,7 @@ class AbstractUnitOfWork(abc.ABC):
         return self
 
     def __exit__(self, *args):  # inherited methods
-        pass
+        self.rollback()
 
     @abc.abstractmethod  # enforce method overwrites
     def commit(self):

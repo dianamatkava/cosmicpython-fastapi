@@ -12,7 +12,7 @@ from src.allocations.routes.schemas.allocations.response_models import (
 )
 from src.allocations.services.allocation_service import AllocationService
 
-router = APIRouter(prefix="/allocations", tags=["allocations"])
+router = APIRouter(prefix="/v1/allocations", tags=["allocations"])
 # TODO: Internal Auth
 
 

@@ -5,13 +5,11 @@ from fastapi import Depends, Body
 from pydantic import TypeAdapter
 from starlette import status
 
-from src.inventory.services.schemas import BatchSchemaDTO
-from src.register.conf import get_batch_service
-from src.register.routes.schemas.request_models.batch import (
-    BatchesCreationModelRequestModel,
-)
-from src.register.routes.schemas.response_models.batch import BatchesListResponseModel
-from src.register.services.batch_service import BatchService
+from src.inventory.conf import get_batch_service
+from src.inventory.routes.schemas.request_models.batch import BatchesCreationModelRequestModel
+from src.inventory.routes.schemas.response_models.allocations import BatchesListResponseModel
+from src.inventory.services.batch_service import BatchService
+from src.inventory.services.schemas.batch_dto import BatchSchemaDTO
 
 router = APIRouter(prefix="/batch", tags=["batch"])
 # TODO: Internal Auth

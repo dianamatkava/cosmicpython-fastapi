@@ -2,7 +2,7 @@
 
 from typing import Any, List
 
-from src.register.adapters.uow import ProductUnitOfWork
+from src.inventory.adapters.uow import ProductAggregateUnitOfWork
 from src.inventory.services.schemas.product_dto import ProductDTO
 from src.inventory.services.transformers.product_transformers import (
     transform_product_dto_to_domain_model,
@@ -13,7 +13,7 @@ from src.inventory.services.transformers.product_transformers import (
 class ProductService:
     uow: Any
 
-    def __init__(self, uow: ProductUnitOfWork):
+    def __init__(self, uow: ProductAggregateUnitOfWork):
         self.uow = uow
 
     def create_product(self, product: ProductDTO) -> ProductDTO:

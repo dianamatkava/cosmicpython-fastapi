@@ -17,7 +17,7 @@ from src.register.routes.schemas.response_models.product import (
     ProductDataResponseModel,
 )
 from src.register.services.product_service import ProductService
-from src.register.services.schemas.product_dto import ProductDTO
+from src.inventory.services.schemas.product_dto import ProductDTO
 
 
 def test_create_product_happy_path_returns_200(client: TestClient, mocker: MagicMock):

@@ -2,10 +2,9 @@
 
 from sqlalchemy.orm import registry, relationship
 
-from src.inventory.adapters.orm import allocations
+from src.inventory.adapters.orm import allocations, batches, product
 from src.inventory.domain.batch import BatchModel
 from src.inventory.domain.product_aggregate import ProductAggregate
-from src.register.adapters.orm import batches, product
 from src.register.domain.batch_model import InventoryBatchModel
 from src.register.domain.product_model import ProductModel
 from src.orders.adapters.orm import order_lines
@@ -20,11 +19,6 @@ def start_mappers():
     # Inverting Database Dependency ORM from Domain model
     # Following is the configuration for how to convert between the schema and domain model
     order_lines_mapper = mapper_registry.map_imperatively(OrderLineModel, order_lines)
-    inventory_batch_mapper = mapper_registry.map_imperatively(
-        InventoryBatchModel, batches
-    )
-    inventory_product_mapper = mapper_registry.map_imperatively(ProductModel, product)
-
     product_aggregate_mapper = mapper_registry.map_imperatively(
         ProductAggregate,
         product,
@@ -36,7 +30,7 @@ def start_mappers():
         },
     )
 
-    allocation_batch_mapper = mapper_registry.map_imperatively(
+    batch_mapper = mapper_registry.map_imperatively(
         BatchModel,
         batches,
         properties={

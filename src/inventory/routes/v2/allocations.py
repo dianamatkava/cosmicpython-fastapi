@@ -19,7 +19,7 @@ from src.inventory.routes.schemas.response_models.allocations import (
 )
 from src.inventory.services.messagebus import handle
 
-router = APIRouter(prefix="/v2/inventory", tags=["inventory"])
+router = APIRouter(prefix="/v2/allocations", tags=["allocations"])
 # TODO: Internal Auth
 
 

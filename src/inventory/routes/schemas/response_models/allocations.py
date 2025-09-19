@@ -3,7 +3,8 @@ from typing import List, Annotated
 
 from pydantic import BaseModel, Field
 
-from src.inventory.services.schemas import BatchSchemaDTO, AllocationSchemaDTO
+from src.inventory.services.schemas.allocations_dto import AllocationSchemaDTO
+from src.inventory.services.schemas.batch_dto import BatchSchemaDTO
 
 
 class BatchesListResponseModel(BatchSchemaDTO):

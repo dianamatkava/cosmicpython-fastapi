@@ -14,7 +14,7 @@ class OrderLineDoesNotExists(Exception):
 
 
 class ProductAggregate:
-    """Aggregate root"""
+    """Product Aggregate root"""
 
     sku: str
     version_number: int

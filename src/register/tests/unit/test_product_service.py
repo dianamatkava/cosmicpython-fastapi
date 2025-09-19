@@ -1,6 +1,6 @@
 from src.register.domain.product_model import ProductModel
 from src.register.services.product_service import ProductService
-from src.register.services.schemas.product_dto import ProductDTO
+from src.inventory.services.schemas.product_dto import ProductDTO
 from src.register.tests.conftest import FakeProductRepository
 
 

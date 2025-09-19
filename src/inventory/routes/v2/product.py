@@ -4,12 +4,10 @@ from fastapi import APIRouter, Path, Depends, Body
 from pydantic import TypeAdapter
 from starlette import status
 
-from src.register.conf import get_product_service
-from src.register.routes.schemas.request_models.product import ProductDataRequestModel
-from src.register.routes.schemas.response_models.product import (
-    ProductDataResponseModel,
-)
-from src.register.services.product_service import ProductService
+from src.inventory.conf import get_product_service
+from src.inventory.routes.schemas.request_models.product import ProductDataRequestModel
+from src.inventory.routes.schemas.response_models.product import ProductDataResponseModel
+from src.inventory.services.product_service import ProductService
 
 router = APIRouter(prefix="/product", tags=["product"])
 # TODO: Management Auth

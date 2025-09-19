@@ -12,7 +12,7 @@ from src.inventory.routes.schemas.response_models.allocations import (
 )
 from src.inventory.services.allocation_service import AllocationService
 
-router = APIRouter(prefix="/inventory", tags=["inventory"])
+router = APIRouter(prefix="/v1/allocations", tags=["allocations"])
 # TODO: Internal Auth
 
 

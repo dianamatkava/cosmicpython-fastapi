@@ -1,5 +1,5 @@
+from src.inventory.services.schemas.product_dto import ProductDTO
 from src.register.domain.product_model import ProductModel
-from src.register.services.schemas.product_dto import ProductDTO
 
 
 def transform_product_dto_to_domain_model(product: ProductDTO) -> ProductModel:

@@ -2,7 +2,7 @@ from typing import Annotated
 
 from pydantic import Field, BaseModel
 
-from src.inventory.services.schemas import AllocationSchemaDTO
+from src.inventory.services.schemas.allocations_dto import AllocationSchemaDTO
 
 
 class AllocationRequestModel(AllocationSchemaDTO):

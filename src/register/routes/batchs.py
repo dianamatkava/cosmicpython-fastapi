@@ -5,7 +5,7 @@ from fastapi import Depends, Body
 from pydantic import TypeAdapter
 from starlette import status
 
-from src.inventory.services.schemas import BatchSchemaDTO
+from src.inventory.services.schemas.batch_dto import BatchSchemaDTO
 from src.register.conf import get_batch_service
 from src.register.routes.schemas.request_models.batch import (
     BatchesCreationModelRequestModel,

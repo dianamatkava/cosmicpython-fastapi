@@ -567,11 +567,11 @@ def delete_batch(ref: str, service: BatchService = Depends()):
 
    ```bash
    # Unit + Integration
-   pytest src/allocations/tests/unit
-   pytest src/allocations/tests/integration
+   pytest src/inventory/tests/unit
+   pytest src/inventory/tests/integration
 
    # End-to-End
-   pytest src/allocations/tests/contract
+   pytest src/inventory/tests/contract
    ```
 
 ---

@@ -21,9 +21,6 @@ class BatchesListResponseModel(BatchSchemaDTO):
     available_quantity: Annotated[
         int, Field(description="Quantity of the product available in the batch.")
     ]
-    allocated_quantity: Annotated[
-        int, Field(description="Quantity of the product allocated to the batch.")
-    ]
     allocations: Annotated[
         List[AllocationSchemaDTO], Field(description="List of inventory.")
     ]

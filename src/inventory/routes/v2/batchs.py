@@ -59,7 +59,7 @@ def add_batch(
     Creates a new batch in the register system.
     If a batch with the same reference already exists, it will be rejected.
     """
-    batch_service.add_batch(ref=body.ref, sku=body.sku, qty=body.qty, eta=body.eta)
+    batch_service.add_batch(batch=body)
 
 
 @router.delete("/{ref}", status_code=status.HTTP_200_OK, response_model=None)

@@ -25,4 +25,4 @@ class BatchRepository(AbstractRepository):
         return self.session.query(BatchModel).all()
 
     def delete(self, reference: str) -> None:
-        self.session.query(BatchModel).filter_by(reference=reference).delete()
+        raise NotImplementedError

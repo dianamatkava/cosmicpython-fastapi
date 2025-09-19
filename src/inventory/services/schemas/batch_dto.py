@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Any
 
 from pydantic import BaseModel
 
@@ -8,4 +9,4 @@ class BatchSchemaDTO(BaseModel):
     sku: str
     eta: date | None
     available_quantity: int
-    allocated_quantity: int
+    allocations: Any

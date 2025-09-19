@@ -1,7 +1,6 @@
 """business logic, Accepts only primitives or a minimal DTO"""
 
-from datetime import date
-from typing import Optional, List
+from typing import List
 
 from src.inventory.adapters.uow import ProductAggregateUnitOfWork
 from src.inventory.domain.batch import BatchModel
@@ -22,16 +21,16 @@ class BatchService:
         self.uow = uow
 
     def add_batch(
-        self, ref: str, sku: str, qty: int, eta: Optional[date] = None
+        self, batch: BatchSchemaDTO
     ) -> BatchSchemaDTO:
+        batch_model = BatchModel(**batch.model_dump())
         with self.uow as uow:
-            uow.batch_repo.add(BatchModel(ref, sku, eta, qty))
-            created_batch = uow.batch_repo.get(ref)
+            uow.batch_repo.add(batch_model)
             uow.commit()
             # TODO: IntegrityError
             # TODO: UniqueViolation
             # TODO: ForeignKeyViolation
-        return transform_batch_model_to_dto(created_batch)
+        return transform_batch_model_to_dto(batch_model)
 
     def get_batche_by_ref(self, ref: str) -> BatchSchemaDTO:
         with self.uow as uow:

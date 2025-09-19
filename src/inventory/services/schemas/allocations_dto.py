@@ -2,5 +2,6 @@ from pydantic import BaseModel
 
 
 class AllocationSchemaDTO(BaseModel):
-    order_line_id: str
-
+    order_id: str
+    sku: str
+    qty: int

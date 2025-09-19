@@ -7,5 +7,6 @@ def transform_batch_model_to_dto(batch: BatchModel) -> BatchSchemaDTO:
         reference=batch.reference,
         sku=batch.sku,
         eta=batch.eta,
-        qty=batch._purchased_quantity,  # TODO: do not access private field
+        available_quantity=batch.available_quantity,
+        allocations=batch.allocations
     )

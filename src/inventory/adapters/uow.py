@@ -42,7 +42,7 @@ class ProductAggregateUnitOfWork(AbstractUnitOfWork):
         self.order_line_repo: OrderLineRepository = self.order_line_repo_cls(
             self.session
         )
-        self.batch_repo: OrderLineRepository = self.batch_repo_cls(
+        self.batch_repo: BatchRepository = self.batch_repo_cls(
             self.session
         )
         return super().__enter__()

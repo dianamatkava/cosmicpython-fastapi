@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy.orm import Session
 
-from src.register.adapters.repository import ProductRepository
+from src.register.adapters.repositories.batch_repository import ProductRepository
 
 
 @pytest.fixture(name="product_repository")

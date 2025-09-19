@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from src.inventory.adapters.repository import ProductAggregateRepository
 from src.orders.adapters.repository import OrderLineRepository
+from src.register.adapters.repositories.batch_repository import BatchRepository
 from src.settings import get_settings
 from src.shared.repository import AbstractRepository
 from src.shared.uow import AbstractUnitOfWork
@@ -26,10 +27,12 @@ class ProductAggregateUnitOfWork(AbstractUnitOfWork):
         session_factory=DEFAULT_SESSION_FACTORY,
         product_aggregate_repo: Type[AbstractRepository] = ProductAggregateRepository,
         order_line_repo: Type[AbstractRepository] = OrderLineRepository,
+        batch_repo: Type[AbstractRepository] = BatchRepository,
     ):
         self.session_factory = session_factory
         self.product_aggregate_repo_cls = product_aggregate_repo
         self.order_line_repo_cls = order_line_repo
+        self.batch_repo_cls = batch_repo
 
     def __enter__(self) -> Self:
         self.session: Session = self.session_factory()
@@ -37,6 +40,9 @@ class ProductAggregateUnitOfWork(AbstractUnitOfWork):
             self.product_aggregate_repo_cls(self.session)
         )
         self.order_line_repo: OrderLineRepository = self.order_line_repo_cls(
+            self.session
+        )
+        self.batch_repo: OrderLineRepository = self.batch_repo_cls(
             self.session
         )
         return super().__enter__()

@@ -3,10 +3,10 @@ from typing import Self, Type
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from src.register.adapters.repository import (
-    InventoryBatchRepository,
-    ProductRepository,
+from src.register.adapters.repositories.batch_repository import (
+    BatchRepository,
 )
+from src.register.adapters.repositories.product_repository import ProductRepository
 from src.settings import get_settings
 from src.shared.repository import AbstractRepository
 from src.shared.uow import AbstractUnitOfWork
@@ -23,12 +23,12 @@ class InventoryBatchUnitOfWork(AbstractUnitOfWork):
     Manages session life cycle.
     """
 
-    batch_repo: InventoryBatchRepository
+    batch_repo: BatchRepository
 
     def __init__(
         self,
         session_factory=DEFAULT_SESSION_FACTORY,
-        batch_repo: Type[AbstractRepository] = InventoryBatchRepository,
+        batch_repo: Type[AbstractRepository] = BatchRepository,
     ):
         self.session_factory = session_factory
         self.batch_repo_cls = batch_repo

@@ -3,8 +3,8 @@ from typing import Self, Type
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from src.register.adapters.repository import ProductRepository
 from src.orders.adapters.repository import OrderLineRepository
+from src.register.adapters.repositories.product_repository import ProductRepository
 from src.settings import get_settings
 from src.shared.repository import AbstractRepository
 from src.shared.uow import AbstractUnitOfWork

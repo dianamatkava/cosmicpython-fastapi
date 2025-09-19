@@ -1,5 +1,5 @@
 # The Repository pattern is an abstraction over persistent storage
-from typing import Set
+from typing import Set, List
 
 import sqlalchemy as sa
 from sqlalchemy.orm import Session
@@ -33,8 +33,9 @@ class ProductAggregateRepository(AbstractRepository):
             self.seen.add(res)
         return res
 
-    def add(self, sku: str) -> None:
-        raise NotImplementedError
+    def add(self, product: ProductAggregate) -> None:
+        self.session.add(product)
+        self.seen.add(product)
 
     def cas(self, product: ProductAggregate) -> None:
         old = product.version_number
@@ -46,8 +47,8 @@ class ProductAggregateRepository(AbstractRepository):
         if self.session.execute(query).rowcount == 0:
             raise ConcurrencyError(f"Concurrent update for product {product.sku}")
 
-    def list(self) -> None:
-        raise NotImplementedError
+    def list(self) -> List[ProductAggregate]:
+        return self.session.query(ProductAggregate).all()
 
     def delete(self, sku: str) -> None:
         raise NotImplementedError

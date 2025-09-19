@@ -3,10 +3,10 @@ from sqlalchemy.orm import clear_mappers
 from starlette import status
 
 from src.adapters.orm_mappers import start_mappers
-from src.inventory.routes.v1.allocations import router as allocations_router
 from src.orders.routes.order_line import router as order_line_router
-from src.register.routes.batchs import router as batch_router
-from src.register.routes.product import router as product_router
+from src.inventory.routes.v1.allocations import router as allocations_router
+from src.inventory.routes.v2.product import router as product_router
+from src.inventory.routes.v2.batchs import router as batch_router
 
 app = FastAPI()
 router = APIRouter(prefix="", tags=["main"])

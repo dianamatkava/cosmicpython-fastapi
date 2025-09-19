@@ -4,7 +4,7 @@ import pytest
 from sqlalchemy.exc import NoResultFound
 from sqlmodel import Session
 
-from src.register.adapters.repository import ProductRepository
+from src.register.adapters.repositories.batch_repository import ProductRepository
 from src.register.domain.product_model import ProductModel
 
 

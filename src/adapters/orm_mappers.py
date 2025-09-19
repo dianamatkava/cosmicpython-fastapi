@@ -5,8 +5,6 @@ from sqlalchemy.orm import registry, relationship
 from src.inventory.adapters.orm import allocations, batches, product
 from src.inventory.domain.batch import BatchModel
 from src.inventory.domain.product_aggregate import ProductAggregate
-from src.register.domain.batch_model import InventoryBatchModel
-from src.register.domain.product_model import ProductModel
 from src.orders.adapters.orm import order_lines
 from src.orders.domain.order_line_model import OrderLineModel
 

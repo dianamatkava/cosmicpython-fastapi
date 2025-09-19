@@ -5,7 +5,7 @@ import pytest
 from sqlalchemy.exc import NoResultFound
 from sqlmodel import Session
 
-from src.register.adapters.repository import InventoryBatchRepository
+from src.register.adapters.repositories.batch_repository import BatchRepository
 from src.register.domain.batch_model import InventoryBatchModel
 
 
@@ -23,7 +23,7 @@ def create_batch(
 
 
 def test_repository_can_get_batch(
-    session: Session, batch_repository: InventoryBatchRepository
+    session: Session, batch_repository: BatchRepository
 ):
     reference = "BATCH-001"
     create_batch(session=session, reference=reference)
@@ -34,13 +34,13 @@ def test_repository_can_get_batch(
     assert batch._purchased_quantity == 20
 
 
-def test_repository_can_get_batch_not_found(batch_repository: InventoryBatchRepository):
+def test_repository_can_get_batch_not_found(batch_repository: BatchRepository):
     with pytest.raises(NoResultFound):
         batch_repository.get(reference="BATCH-001")
 
 
 def test_repository_can_list_batches(
-    session: Session, batch_repository: InventoryBatchRepository
+    session: Session, batch_repository: BatchRepository
 ):
     batch_refs = ["BATCH-001", "BATCH-002"]
     for ref in batch_refs:
@@ -52,14 +52,14 @@ def test_repository_can_list_batches(
 
 
 def test_repository_can_list_batches_when_empty(
-    batch_repository: InventoryBatchRepository,
+    batch_repository: BatchRepository,
 ):
     batches = batch_repository.list()
     assert batches == []
 
 
 def test_repository_create_batch(
-    session: Session, batch_repository: InventoryBatchRepository
+    session: Session, batch_repository: BatchRepository
 ):
     reference = "BATCH-001"
     batch = InventoryBatchModel(
@@ -78,7 +78,7 @@ def test_repository_create_batch(
 
 
 def test_repository_create_batch_without_eta(
-    session: Session, batch_repository: InventoryBatchRepository
+    session: Session, batch_repository: BatchRepository
 ):
     reference = "BATCH-001"
     batch = InventoryBatchModel(reference=reference, sku="BLUE_CHAIR", eta=None, qty=30)
@@ -93,7 +93,7 @@ def test_repository_create_batch_without_eta(
 
 
 def test_repository_delete_batch(
-    session: Session, batch_repository: InventoryBatchRepository
+    session: Session, batch_repository: BatchRepository
 ):
     batch_refs = ["BATCH-001", "BATCH-002"]
     for ref in batch_refs:
@@ -107,14 +107,14 @@ def test_repository_delete_batch(
 
 
 def test_repository_delete_batch_when_not_found(
-    session: Session, batch_repository: InventoryBatchRepository
+    session: Session, batch_repository: BatchRepository
 ):
     with nullcontext():
         batch_repository.delete(reference="BATCH-001")
 
 
 def test_repository_with_different_skus(
-    session: Session, batch_repository: InventoryBatchRepository
+    session: Session, batch_repository: BatchRepository
 ):
     create_batch(session=session, reference="BATCH-001", sku="BLUE_CHAIR", qty=10)
     create_batch(session=session, reference="BATCH-002", sku="RED_CHAIR", qty=15)
@@ -129,7 +129,7 @@ def test_repository_with_different_skus(
 
 
 def test_repository_with_eta_dates(
-    session: Session, batch_repository: InventoryBatchRepository
+    session: Session, batch_repository: BatchRepository
 ):
     eta1 = date(2024, 1, 15)
     eta2 = date(2024, 2, 20)

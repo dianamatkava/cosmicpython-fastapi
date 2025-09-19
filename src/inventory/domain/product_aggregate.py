@@ -22,11 +22,11 @@ class ProductAggregate:
     events: List[events.Event]
 
     def __init__(
-        self, sku: str, batches: Set[domain.BatchModel], version_number: int = 0
+        self, sku: str, batches: Set[domain.BatchModel] = None, version_number: int = 0
     ):
         self.sku = sku
         self.version_number = version_number
-        self._batches = batches
+        self._batches = batches or set()
         self.events = []
 
     @reconstructor

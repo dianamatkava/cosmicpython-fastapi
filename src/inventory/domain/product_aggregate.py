@@ -1,10 +1,11 @@
 """Implementation of Optimistic Concurrency Control (OCC) / Optimistic Locking."""
 
-from typing import Set, List, Optional
+from typing import Set, List, Optional, Union
 
 from sqlalchemy.orm import reconstructor
 
-from src.inventory.domain import batch as domain
+import src.inventory.domain.commands
+from src.inventory.domain import batch as domain, commands
 from src.inventory.domain import events
 from src.orders.domain.order_line_model import OrderLineModel
 
@@ -19,7 +20,7 @@ class ProductAggregate:
     sku: str
     version_number: int
     batches: Set[domain.BatchModel]
-    events: List[events.Event]
+    events: List[Union[events.Event, commands.Command]]
 
     def __init__(
         self, sku: str, batches: Set[domain.BatchModel] = None, version_number: int = 0
@@ -57,4 +58,5 @@ class ProductAggregate:
         batch._purchased_quantity = qty
         while batch.available_quantity < 0:
             line = batch.deallocate_one()
-            self.events.append(events.AllocationRequiredEvent(line.id))
+            self.events.append(commands.AllocateOrderLine(line.id))
+        self.events.append(events.BatchQuantityChangedEvent(ref=ref, qty=qty))

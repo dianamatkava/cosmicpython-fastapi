@@ -2,10 +2,10 @@
 
 from typing import Tuple
 
-from src.adapters.email import send_mail
+from src.adapters import email
 from src.inventory.adapters.uow import ProductAggregateUnitOfWork
+from src.inventory.domain import events, commands
 from src.inventory.domain.product_aggregate import ProductAggregate
-from src.inventory.domain import events
 
 
 class OutOfStock(Exception):
@@ -13,7 +13,7 @@ class OutOfStock(Exception):
 
 
 def allocate(
-    uow: ProductAggregateUnitOfWork, event: events.AllocationRequiredEvent
+    uow: ProductAggregateUnitOfWork, event: commands.AllocateOrderLine
 ) -> Tuple[str, str]:
     with uow as uow:
         order_line = uow.order_line_repo.get(id=event.order_line_id)
@@ -36,17 +36,26 @@ def deallocate(uow: ProductAggregateUnitOfWork, order_line_id: int, ref: str) ->
 
 
 def change_batch_quantity(
-    uow: ProductAggregateUnitOfWork, event: events.BatchQuantityChangedEvent
+    uow: ProductAggregateUnitOfWork, event: commands.ChangeBatchQuantity
 ):
     with uow as uow:
-        product: ProductAggregate = uow.product_aggregate_repo.get(sku=event.ref)
+        product: ProductAggregate = uow.product_aggregate_repo.get(ref=event.ref)
         product.change_batch_quantity(ref=event.ref, qty=event.qty)
         uow.commit()
+        return product
 
 
 def send_out_of_stock_event(
     uow: ProductAggregateUnitOfWork, event: events.OutOfStockEvent
 ):
     # signal purchasing team to issue more batches
-    print(f"OutOfStockEvent sku: {event.sku}")
-    send_mail(event.sku)
+    print(f"{event}")
+    email.send_mail(event.sku)
+
+
+def batch_quantity_changed_event(
+    uow: ProductAggregateUnitOfWork, event: events.BatchQuantityChangedEvent
+):
+    # signal purchasing team to issue more batches
+    print(f"{event}")
+    email.send_mail(event.ref)

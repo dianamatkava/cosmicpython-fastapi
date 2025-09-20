@@ -53,6 +53,9 @@ class ProductAggregateUnitOfWork(AbstractUnitOfWork):
     def rollback(self):
         self.session.rollback()
 
+    def flush(self):
+        self.session.flush()
+
     def commit(self):
         self.session.commit()
 
@@ -62,9 +65,3 @@ class ProductAggregateUnitOfWork(AbstractUnitOfWork):
             while product.events:
                 events.append(product.events.pop(0))
         return events
-
-    def publish_events(self):
-        from src.inventory.services.messagebus import dispatch
-
-        for product in self.product_aggregate_repo.seen:
-            dispatch(product.events)

@@ -5,6 +5,7 @@ import sqlalchemy as sa
 from sqlalchemy.orm import Session
 
 from src.adapters.orm_mappers import product as _product
+from src.inventory.domain.batch import BatchModel
 from src.inventory.domain.product_aggregate import ProductAggregate
 from src.shared.repository import AbstractRepository
 
@@ -36,7 +37,7 @@ class ProductAggregateRepository(AbstractRepository):
         return res
 
     def get_by_batch_ref(self, ref: str) -> ProductAggregate:
-        res = self.session.query(ProductAggregate).filter_by(batches__ref=ref).one()
+        res = self.session.query(ProductAggregate).join(ProductAggregate._batches).filter(BatchModel.reference == ref).one()
         if res:
             self.seen.add(res)
         return res

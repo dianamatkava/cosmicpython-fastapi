@@ -10,6 +10,10 @@ class AbstractUnitOfWork(abc.ABC):
         self.rollback()
 
     @abc.abstractmethod  # enforce method overwrites
+    def flush(self):
+        raise NotImplementedError
+
+    @abc.abstractmethod  # enforce method overwrites
     def commit(self):
         raise NotImplementedError
 

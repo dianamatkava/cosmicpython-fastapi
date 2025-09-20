@@ -5,14 +5,9 @@ from starlette import status
 
 from src.inventory.adapters.uow import ProductAggregateUnitOfWork
 from src.inventory.conf import get_unit_of_work
-from src.inventory.domain.events import (
-    AllocationRequiredEvent,
-    BatchQuantityChangedEvent,
-    DeallocateOrderLineEvent,
-)
+from src.inventory.domain.commands import AllocateOrderLine, DeallocateOrderLine
 from src.inventory.routes.schemas.request_models.allocations import (
     AllocationRequestModel,
-    ChangeBatchQuantityRequestModel,
 )
 from src.inventory.routes.schemas.response_models.allocations import (
     AllocationsAllocateResponseModel,
@@ -41,7 +36,7 @@ def allocate_order_line(
     cannot be satisfied by available batches.
     """
     ref, order_id, *_ = handle(
-        uow, AllocationRequiredEvent(order_line_id=body.order_line_id)
+        uow, AllocateOrderLine(order_line_id=body.order_line_id)
     )
     return AllocationsAllocateResponseModel(reference=ref, order_id=order_id)
 
@@ -63,21 +58,5 @@ def deallocate_order_line(
     Will return 404 if either the order or batch is not found.
     The freed quantity becomes available for future inventory.
     """
-    handle(uow, DeallocateOrderLineEvent(order_line_id=order_line_id, ref=ref))
+    handle(uow, DeallocateOrderLine(order_line_id=order_line_id, ref=ref))
 
-
-@router.put("/batch/{ref}", status_code=status.HTTP_200_OK, response_model=None)
-def update_batch(
-    body: Annotated[
-        ChangeBatchQuantityRequestModel,
-        Body(..., description="Batch update body schema"),
-    ],
-    ref: Annotated[
-        str, Path(..., description="The reference of the batch to deallocate")
-    ],
-    uow: Annotated[ProductAggregateUnitOfWork, Depends(get_unit_of_work)],
-) -> None:
-    if isinstance(body, ChangeBatchQuantityRequestModel):
-        handle(uow, BatchQuantityChangedEvent(ref=ref, qty=body.qty))
-    else:
-        raise NotImplementedError

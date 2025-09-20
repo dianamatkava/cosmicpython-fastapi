@@ -5,7 +5,7 @@ from pydantic import Field, BaseModel
 from src.inventory.services.schemas.allocations_dto import AllocationSchemaDTO
 
 
-class AllocationRequestModel(AllocationSchemaDTO):
+class AllocationRequestModel(BaseModel):
     """Order line schema request model."""
 
     order_line_id: Annotated[int, Field(description="Order line unique ID.")]

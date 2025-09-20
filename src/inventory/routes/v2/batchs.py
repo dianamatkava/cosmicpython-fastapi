@@ -5,10 +5,14 @@ from fastapi import Depends, Body
 from pydantic import TypeAdapter
 from starlette import status
 
-from src.inventory.conf import get_batch_service
+from src.inventory.adapters.uow import ProductAggregateUnitOfWork
+from src.inventory.conf import get_batch_service, get_unit_of_work
+from src.inventory.domain.commands import ChangeBatchQuantity
+from src.inventory.routes.schemas.request_models.allocations import ChangeBatchQuantityRequestModel
 from src.inventory.routes.schemas.request_models.batch import BatchesCreationModelRequestModel
 from src.inventory.routes.schemas.response_models.allocations import BatchesListResponseModel
 from src.inventory.services.batch_service import BatchService
+from src.inventory.services.messagebus import handle
 from src.inventory.services.schemas.batch_dto import BatchSchemaDTO
 
 router = APIRouter(prefix="/batch", tags=["batch"])
@@ -72,4 +76,21 @@ def delete_batch(
     Will return 404 if the batch is not found.
     The operation cannot be undone.
     """
-    batch_service.delete_batch(ref)
+    raise NotImplementedError
+
+
+@router.put("/{ref}", status_code=status.HTTP_200_OK, response_model=None)
+def update_batch(
+    body: Annotated[
+        ChangeBatchQuantityRequestModel,
+        Body(..., description="Batch update body schema"),
+    ],
+    ref: Annotated[
+        str, Path(..., description="The reference of the batch to deallocate")
+    ],
+    uow: Annotated[ProductAggregateUnitOfWork, Depends(get_unit_of_work)],
+) -> None:
+    if isinstance(body, ChangeBatchQuantityRequestModel):
+        handle(uow, ChangeBatchQuantity(ref=ref, qty=body.qty))
+    else:
+        raise NotImplementedError

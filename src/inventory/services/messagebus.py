@@ -1,9 +1,75 @@
-from typing import List, Any
+from logging import getLogger
+from typing import List, Any, Dict, Type, Callable, Union
 
-from src.inventory.domain import events as _events
-from src.inventory.services import event_handler as _handler
+from src.inventory.domain import commands
+from src.inventory.domain import events
+from src.inventory.services import event_handler
+from src.shared.log_codes import LogCode
 from src.shared.uow import AbstractUnitOfWork
 
+
+logger = getLogger(__name__)
+
+
+# In-process bus (synchronous)
+EVENT_HANDLER: Dict[Type[events.Event], List[Callable]] = {
+    events.OutOfStockEvent: [event_handler.send_out_of_stock_event],
+    events.BatchQuantityChangedEvent: [event_handler.batch_quantity_changed_event],
+}
+
+COMMAND_HANDLER: Dict[Type[commands.Command], Callable] = {
+    commands.AllocateOrderLine: event_handler.allocate,
+    commands.DeallocateOrderLine: event_handler.deallocate,
+    commands.ChangeBatchQuantity: event_handler.change_batch_quantity,
+}
+
+Message = Union[events.Event, commands.Command]
+
+
+def handle(uow: AbstractUnitOfWork, message: Message) -> Any:  # TODO: temp
+    queue = [message]
+    res = []
+    while queue:
+        message = queue.pop(0)
+        if isinstance(message, events.Event):
+            handle_event(uow=uow, event=message)
+        elif isinstance(message, commands.Command):
+            res.append(handle_command(uow=uow, command=message))
+        else:
+            raise ValueError
+
+        queue.extend(uow.collect_events())
+
+    return res[0]
+
+
+def handle_event(uow: AbstractUnitOfWork, event: events.Event) -> None:
+    for handler in EVENT_HANDLER.get(type(event), []):
+        try:
+            handler(uow, event)
+        except Exception:
+            logger.error(
+                "Event %s failed to execute", event,
+                extra=dict(log_code=LogCode.EVENT_FAILED),
+                exc_info=True
+            )
+
+
+def handle_command(uow: AbstractUnitOfWork, command: commands.Command) -> Any:
+    try:
+        handler = COMMAND_HANDLER.get(type(command))
+        res = handler(uow, command)  # TODO: temp
+        return res
+    except Exception as e:
+        logger.error(
+            "Event %s failed to execute", command,
+            extra=dict(log_code=LogCode.COMMAND_FAILED),
+            exc_info=True
+        )
+        raise e
+
+
+# ------------------------ v1 ------------------------
 
 def send_out_of_stock_event(sku: str):
     # signal purchasing team to issue more batches
@@ -11,44 +77,16 @@ def send_out_of_stock_event(sku: str):
 
 
 # In-process bus (synchronous)
-EVENT_HANDLER = {
-    _events.OutOfStockEvent: [send_out_of_stock_event],
+EVENT_HANDLER_V1 = {
+    events.OutOfStockEvent: [send_out_of_stock_event],
 }
 
 
-def handle_event(event: _events.Event):
-    for handler in EVENT_HANDLER.get(type(event)):
+def handle_event_v1(event: events.Event):
+    for handler in EVENT_HANDLER_V1.get(type(event)):
         handler(**event.__dict__)
 
 
-def dispatch(events: List[_events.Event]):
+def dispatch(events: List[events.Event]):
     for event in events:
-        handle_event(event)
-
-
-# ------------------------ v2 ------------------------
-
-# In-process bus (synchronous)
-EVENT_HANDLER_V2 = {
-    _events.OutOfStockEvent: [_handler.send_out_of_stock_event],
-    _events.BatchCreatedEvent: [_handler.send_out_of_stock_event],
-    _events.AllocationRequiredEvent: [_handler.allocate],
-}
-
-
-def handle(uow: AbstractUnitOfWork, event: _events.Event) -> Any:  # TODO: temp
-    queue = [event]
-    res = []
-    exceptions = []
-    while queue:
-        event = queue.pop(0)
-        for handler in EVENT_HANDLER_V2.get(type(event), []):
-            try:
-                res.append(handler(uow, event))  # TODO: temp
-            except Exception as e:
-                exceptions.append(e)
-            queue.extend(uow.collect_events())
-
-    if exceptions:
-        raise exceptions[0]
-    return res[0]
+        handle_event_v1(event)

@@ -4,7 +4,7 @@ from starlette import status
 
 from src.adapters.orm_mappers import start_mappers
 from src.orders.routes.order_line import router as order_line_router
-from src.inventory.routes.v1.allocations import router as allocations_router
+from src.inventory.routes.v2.allocations import router as allocations_router
 from src.inventory.routes.v2.product import router as product_router
 from src.inventory.routes.v2.batchs import router as batch_router
 

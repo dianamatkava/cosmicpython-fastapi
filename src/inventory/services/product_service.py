@@ -26,7 +26,7 @@ class ProductService:
 
     def get_product(self, sku: str) -> ProductDTO:
         with self.uow as uow:
-            product = uow.product_aggregate_repo.get(sku)
+            product = uow.product_aggregate_repo.get(sku=sku)
 
         return transform_product_domain_model_to_dto(product)
 

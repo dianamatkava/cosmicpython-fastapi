@@ -11,11 +11,9 @@ from unittest.mock import MagicMock
 from starlette import status
 from starlette.testclient import TestClient
 
-from src.inventory.services.schemas import BatchSchemaDTO
-from src.register.routes.schemas.request_models.batch import (
-    BatchesCreationModelRequestModel,
-)
-from src.register.services.batch_service import BatchService
+from src.inventory.routes.schemas.request_models.batch import BatchesCreationModelRequestModel
+from src.inventory.services.batch_service import BatchService
+from src.inventory.services.schemas.batch_dto import BatchOutDTO
 
 
 def test_add_batch_happy_path_returns_201(client: TestClient, mocker: MagicMock):
@@ -28,9 +26,7 @@ def test_add_batch_happy_path_returns_201(client: TestClient, mocker: MagicMock)
 
     assert res.status_code == status.HTTP_201_CREATED
     assert res.json() is None
-    mock_add_batch.assert_called_once_with(
-        ref="BATCH-001", sku="BLUE_CHAIR", qty=20, eta=date(2024, 1, 15)
-    )
+    mock_add_batch.assert_called_once_with(batch=request_data)
 
 
 def test_add_batch_without_eta_returns_201(client: TestClient, mocker: MagicMock):
@@ -43,9 +39,7 @@ def test_add_batch_without_eta_returns_201(client: TestClient, mocker: MagicMock
 
     assert res.status_code == status.HTTP_201_CREATED
     assert res.json() is None
-    mock_add_batch.assert_called_once_with(
-        ref="BATCH-001", sku="BLUE_CHAIR", qty=20, eta=None
-    )
+    mock_add_batch.assert_called_once_with(batch=request_data)
 
 
 def test_add_batch_with_valid_data_validates_request_model(
@@ -68,21 +62,23 @@ def test_add_batch_with_valid_data_validates_request_model(
 
 
 def test_get_batches_happy_path_returns_200(client: TestClient, mocker: MagicMock):
-    # Mock batches that match the expected response structure
+    # arrange
     batches = [
-        BatchSchemaDTO(
-            reference="BATCH-001", sku="BLUE_CHAIR", eta=date(2024, 1, 15), qty=20
+        BatchOutDTO(
+            reference="BATCH-001", sku="BLUE_CHAIR", eta=date(2024, 1, 15), available_quantity=20, allocations=[]
         ),
-        BatchSchemaDTO(
-            reference="BATCH-002", sku="RED_CHAIR", eta=date(2024, 1, 20), qty=15
+        BatchOutDTO(
+            reference="BATCH-002", sku="RED_CHAIR", eta=date(2024, 1, 20), available_quantity=15, allocations=[]
         ),
     ]
     mock_get_batches = mocker.patch.object(
         BatchService, "get_batches", return_value=batches
     )
 
+    # act
     res = client.get("/batch")
 
+    # assert
     assert res.status_code == status.HTTP_200_OK
     assert len(res.json()) == 2
 
@@ -107,8 +103,8 @@ def test_get_batches_empty_list_returns_200(client: TestClient, mocker: MagicMoc
 
 
 def test_get_batch_by_ref_happy_path_returns_200(client: TestClient, mocker: MagicMock):
-    batch = BatchSchemaDTO(
-        reference="BATCH-001", sku="BLUE_CHAIR", eta=date(2024, 1, 15), qty=20
+    batch = BatchOutDTO(
+        reference="BATCH-001", sku="BLUE_CHAIR", eta=date(2024, 1, 15), available_quantity=20, allocations=[]
     )
     mock_get_batch = mocker.patch.object(
         BatchService, "get_batche_by_ref", return_value=batch
@@ -130,8 +126,8 @@ def test_get_batch_by_ref_with_special_characters(
     client: TestClient, mocker: MagicMock
 ):
     batch_ref = "BATCH-001-SPECIAL"
-    batch = BatchSchemaDTO(
-        reference=batch_ref, sku="BLUE_CHAIR", eta=date(2024, 1, 15), qty=20
+    batch = BatchOutDTO(
+        reference=batch_ref, sku="BLUE_CHAIR", eta=date(2024, 1, 15), available_quantity=20, allocations=[]
     )
     mock_get_batch = mocker.patch.object(
         BatchService, "get_batche_by_ref", return_value=batch

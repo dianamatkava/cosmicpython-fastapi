@@ -21,7 +21,15 @@ class ProductAggregateRepository(AbstractRepository):
         self.session = session
         self.seen = set()
 
-    def get(self, sku: str) -> ProductAggregate:
+    def get(self, **kwargs) -> ProductAggregate:
+        if sku := kwargs.get('sku'):
+            return self.get_by_sku(sku=sku)
+        elif ref := kwargs.get('ref'):
+            return self.get_by_batch_ref(ref=ref)
+        else:
+            raise TypeError(f"{self}.get() got an unexpected keyword argument/s {kwargs.keys()}")
+
+    def get_by_sku(self, sku: str) -> ProductAggregate:
         res = self.session.query(ProductAggregate).filter_by(sku=sku).one()
         if res:
             self.seen.add(res)
@@ -51,4 +59,4 @@ class ProductAggregateRepository(AbstractRepository):
         return self.session.query(ProductAggregate).all()
 
     def delete(self, sku: str) -> None:
-        raise NotImplementedError
+        self.session.query(ProductAggregate).filter_by(sku=sku).delete()

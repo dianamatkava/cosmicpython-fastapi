@@ -5,8 +5,8 @@ import pytest
 from sqlalchemy.exc import NoResultFound
 from sqlmodel import Session
 
-from src.register.adapters.repositories.batch_repository import BatchRepository
-from src.register.domain.batch_model import InventoryBatchModel
+from src.inventory.adapters.repositories.batch_repository import BatchRepository
+from src.inventory.domain.batch import BatchModel
 
 
 def create_batch(
@@ -16,7 +16,7 @@ def create_batch(
     qty: int = 20,
     eta: date = None,
 ):
-    batch = InventoryBatchModel(reference=reference, sku=sku, eta=eta, qty=qty)
+    batch = BatchModel(ref=reference, sku=sku, eta=eta, qty=qty)
     session.add(batch)
     session.commit()
     return batch
@@ -62,15 +62,15 @@ def test_repository_create_batch(
     session: Session, batch_repository: BatchRepository
 ):
     reference = "BATCH-001"
-    batch = InventoryBatchModel(
-        reference=reference, sku="RED_CHAIR", eta=date(2024, 1, 15), qty=25
+    batch = BatchModel(
+        ref=reference, sku="RED_CHAIR", eta=date(2024, 1, 15), qty=25
     )
 
     batch_repository.add(batch)
 
     # Verify it was added to the session
     retrieved_batch = (
-        session.query(InventoryBatchModel).filter_by(reference=reference).one()
+        session.query(BatchModel).filter_by(reference=reference).one()
     )
     assert retrieved_batch.reference == reference
     assert retrieved_batch.sku == "RED_CHAIR"
@@ -81,12 +81,12 @@ def test_repository_create_batch_without_eta(
     session: Session, batch_repository: BatchRepository
 ):
     reference = "BATCH-001"
-    batch = InventoryBatchModel(reference=reference, sku="BLUE_CHAIR", eta=None, qty=30)
+    batch = BatchModel(ref=reference, sku="BLUE_CHAIR", eta=None, qty=30)
 
     batch_repository.add(batch)
 
     retrieved_batch = (
-        session.query(InventoryBatchModel).filter_by(reference=reference).one()
+        session.query(BatchModel).filter_by(reference=reference).one()
     )
     assert retrieved_batch.reference == reference
     assert retrieved_batch.eta is None
@@ -101,7 +101,7 @@ def test_repository_delete_batch(
 
     batch_repository.delete(reference="BATCH-001")
 
-    batches = session.query(InventoryBatchModel).all()
+    batches = session.query(BatchModel).all()
     assert len(batches) == 1
     assert batches[0].reference == "BATCH-002"
 

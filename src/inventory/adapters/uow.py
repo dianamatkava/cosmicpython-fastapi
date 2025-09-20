@@ -3,9 +3,9 @@ from typing import Self, Type
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from src.inventory.adapters.repository import ProductAggregateRepository
+from src.inventory.adapters.repositories.batch_repository import BatchRepository
+from src.inventory.adapters.repositories.product_repository import ProductAggregateRepository
 from src.orders.adapters.repository import OrderLineRepository
-from src.register.adapters.repositories.batch_repository import BatchRepository
 from src.settings import get_settings
 from src.shared.repository import AbstractRepository
 from src.shared.uow import AbstractUnitOfWork
@@ -51,17 +51,9 @@ class ProductAggregateUnitOfWork(AbstractUnitOfWork):
         super().__exit__(*args)
 
     def rollback(self):
-        self.publish_events()
-        self._rollback()
-
-    def _rollback(self):
         self.session.rollback()
 
     def commit(self):
-        self.publish_events()
-        self._commit()
-
-    def _commit(self):
         self.session.commit()
 
     def collect_events(self):

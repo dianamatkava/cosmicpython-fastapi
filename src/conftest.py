@@ -8,7 +8,7 @@ from starlette.testclient import TestClient
 from src.adapters.orm_mappers import start_mappers
 from src.inventory.adapters.orm import metadata
 from src.app import app
-from src.register.domain.product_model import ProductModel
+from src.inventory.domain.product_aggregate import ProductAggregate
 from src.settings import get_settings
 
 
@@ -91,8 +91,8 @@ def get_fake_session() -> FakeSession:
 
 
 @pytest.fixture(name="product")
-def create_product(session: Session) -> ProductModel:
-    product = ProductModel(sku="RED_CHAIR")
+def create_product(session: Session) -> ProductAggregate:
+    product = ProductAggregate(sku="RED_CHAIR")
     session.add(product)
     session.commit()
     return product

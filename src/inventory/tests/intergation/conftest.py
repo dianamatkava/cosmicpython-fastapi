@@ -1,33 +1,16 @@
 import pytest
-from sqlalchemy import create_engine, Engine
-from sqlalchemy.orm import sessionmaker, clear_mappers
+from requests import Session
 
-from src.inventory.adapters.orm import metadata, start_mappers
-from src.settings import get_settings
-
-settings = get_settings()
+from src.inventory.adapters.repositories.batch_repository import BatchRepository
+from src.inventory.adapters.repositories.product_repository import ProductAggregateRepository
 
 
-@pytest.fixture(scope="session")
-def in_memory_db():
-    engine = create_engine("sqlite:///:memory:")  # in memory db, or sqlite://
-    # create all tables
-    metadata.drop_all(engine)
-    metadata.create_all(engine)
-    yield engine
-    engine.dispose()
+@pytest.fixture(name="product_repository")
+def get_product_repository(session: Session) -> ProductAggregateRepository:
+    return ProductAggregateRepository(session)
 
 
-@pytest.fixture(scope="function")
-def session(in_memory_db: Engine):
-    start_mappers()
-    connection = in_memory_db.connect()
-    transaction = connection.begin()
-    session = sessionmaker(bind=connection)()
+@pytest.fixture(name="batch_repository")
+def get_batch_repository(session: Session) -> BatchRepository:
+    return BatchRepository(session)
 
-    yield session
-
-    session.close()
-    transaction.rollback()
-    connection.close()
-    clear_mappers()

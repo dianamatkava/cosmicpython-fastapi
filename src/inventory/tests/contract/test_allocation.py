@@ -15,9 +15,9 @@ from starlette import status
 from starlette.testclient import TestClient
 
 from src.inventory.routes.schemas.request_models.allocations import (
-    BatchesCreationModelRequestModel,
     AllocationRequestModel,
 )
+from src.inventory.routes.schemas.request_models.batch import BatchesCreationModelRequestModel
 from src.inventory.routes.schemas.response_models.allocations import (
     AllocationsAllocateResponseModel,
 )

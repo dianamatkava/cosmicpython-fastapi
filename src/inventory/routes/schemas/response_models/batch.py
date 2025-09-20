@@ -3,10 +3,10 @@ from typing import Annotated
 
 from pydantic import Field
 
-from src.inventory.services.schemas import BatchSchemaDTO
+from src.inventory.services.schemas.batch_dto import BatchOutDTO
 
 
-class BatchesListResponseModel(BatchSchemaDTO):
+class BatchesListResponseModel(BatchOutDTO):
     """Model represent list of batches."""
 
     reference: Annotated[str, Field(description="Batch unique ID.")]

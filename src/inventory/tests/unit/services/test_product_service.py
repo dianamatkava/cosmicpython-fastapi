@@ -1,7 +1,7 @@
-from src.register.domain.product_model import ProductModel
-from src.register.services.product_service import ProductService
+from src.inventory.domain.product_aggregate import ProductAggregate
+from src.inventory.services.product_service import ProductService
 from src.inventory.services.schemas.product_dto import ProductDTO
-from src.register.tests.conftest import FakeProductRepository
+from src.inventory.tests.unit.services.conftest import FakeProductRepository
 
 
 def test_create_product(product_service: ProductService):
@@ -13,10 +13,10 @@ def test_create_product(product_service: ProductService):
 
 
 def test_get_product_returns_product(
-    product_service: ProductService, fake_product_repo: FakeProductRepository
+    product_service: ProductService, product_aggregate_repo: FakeProductRepository
 ):
-    product = ProductModel(sku="BLUE_CHAIR")
-    fake_product_repo.build([product])
+    product = ProductAggregate(sku="BLUE_CHAIR")
+    product_aggregate_repo.build([product])
 
     res = product_service.get_product(product.sku)
     assert res.sku == product.sku
@@ -26,10 +26,10 @@ def test_get_product_returns_product(
 
 
 def test_get_all_products(
-    product_service: ProductService, fake_product_repo: FakeProductRepository
+    product_service: ProductService, product_aggregate_repo: FakeProductRepository
 ):
-    products = [ProductModel(sku="BLUE_CHAIR"), ProductModel(sku="RED_CHAIR")]
-    fake_product_repo.build(products)
+    products = [ProductAggregate(sku="BLUE_CHAIR"), ProductAggregate(sku="RED_CHAIR")]
+    product_aggregate_repo.build(products)
 
     res = product_service.get_all_products()
 
@@ -38,18 +38,18 @@ def test_get_all_products(
 
 
 def test_get_all_products_returns_empty_list(
-    product_service: ProductService, fake_product_repo: FakeProductRepository
+    product_service: ProductService, product_aggregate_repo: FakeProductRepository
 ):
     res = product_service.get_all_products()
     assert res == []
 
 
 def test_delete_product(
-    product_service: ProductService, fake_product_repo: FakeProductRepository
+    product_service: ProductService, product_aggregate_repo: FakeProductRepository
 ):
-    product = ProductModel(sku="BLUE_CHAIR")
-    fake_product_repo.build([product])
+    product = ProductAggregate(sku="BLUE_CHAIR")
+    product_aggregate_repo.build([product])
 
     product_service.delete_product(product.sku)
     assert product_service.uow.committed is True
-    assert len(fake_product_repo.list()) == 0
+    assert len(product_aggregate_repo.list()) == 0

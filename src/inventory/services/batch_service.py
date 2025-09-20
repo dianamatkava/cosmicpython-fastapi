@@ -27,6 +27,7 @@ class BatchService:
         with self.uow as uow:
             uow.batch_repo.add(batch_model)
             uow.commit()
+            pass
             # TODO: IntegrityError
             # TODO: UniqueViolation
             # TODO: ForeignKeyViolation

@@ -1,2 +1,0 @@
-"""Classical (imperative) mapping."""
-

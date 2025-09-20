@@ -26,7 +26,7 @@ class ProductAggregate:
     ):
         self.sku = sku
         self.version_number = version_number
-        self._batches = batches or set()
+        self.batches = batches or set()
         self.events = []
 
     @reconstructor

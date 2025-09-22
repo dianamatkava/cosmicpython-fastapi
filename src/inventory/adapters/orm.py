@@ -2,7 +2,7 @@
 
 from sqlalchemy import Column, Integer, String, Table, Date, ForeignKey
 
-from src.adapters.db_metadata import metadata
+from src.database.db_metadata import metadata
 
 allocations = Table(
     "allocations",

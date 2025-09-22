@@ -5,7 +5,7 @@ from sqlalchemy_utils import database_exists, create_database
 from sqlmodel import Session
 from starlette.testclient import TestClient
 
-from src.adapters.orm_mappers import start_mappers
+from src.database.orm_mappers import start_mappers
 from src.inventory.adapters.orm import metadata
 from src.app import app
 from src.inventory.domain.product_aggregate import ProductAggregate

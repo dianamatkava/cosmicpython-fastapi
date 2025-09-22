@@ -4,7 +4,7 @@ from typing import Set, List
 import sqlalchemy as sa
 from sqlalchemy.orm import Session
 
-from src.adapters.orm_mappers import product as _product
+from src.database.orm_mappers import product as _product
 from src.inventory.domain.batch import BatchModel
 from src.inventory.domain.product_aggregate import ProductAggregate
 from src.shared.repository import AbstractRepository
@@ -23,12 +23,14 @@ class ProductAggregateRepository(AbstractRepository):
         self.seen = set()
 
     def get(self, **kwargs) -> ProductAggregate:
-        if sku := kwargs.get('sku'):
+        if sku := kwargs.get("sku"):
             return self.get_by_sku(sku=sku)
-        elif ref := kwargs.get('ref'):
+        elif ref := kwargs.get("ref"):
             return self.get_by_batch_ref(ref=ref)
         else:
-            raise TypeError(f"{self}.get() got an unexpected keyword argument/s {kwargs.keys()}")
+            raise TypeError(
+                f"{self}.get() got an unexpected keyword argument/s {kwargs.keys()}"
+            )
 
     def get_by_sku(self, sku: str) -> ProductAggregate:
         res = self.session.query(ProductAggregate).filter_by(sku=sku).one()
@@ -37,7 +39,12 @@ class ProductAggregateRepository(AbstractRepository):
         return res
 
     def get_by_batch_ref(self, ref: str) -> ProductAggregate:
-        res = self.session.query(ProductAggregate).join(ProductAggregate._batches).filter(BatchModel.reference == ref).one()
+        res = (
+            self.session.query(ProductAggregate)
+            .join(ProductAggregate._batches)
+            .filter(BatchModel.reference == ref)
+            .one()
+        )
         if res:
             self.seen.add(res)
         return res

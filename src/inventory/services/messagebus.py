@@ -67,26 +67,3 @@ def handle_command(uow: AbstractUnitOfWork, command: commands.Command) -> Any:
             exc_info=True
         )
         raise e
-
-
-# ------------------------ v1 ------------------------
-
-def send_out_of_stock_event(sku: str):
-    # signal purchasing team to issue more batches
-    print(f"OutOfStockEvent {sku=}")
-
-
-# In-process bus (synchronous)
-EVENT_HANDLER_V1 = {
-    events.OutOfStockEvent: [send_out_of_stock_event],
-}
-
-
-def handle_event_v1(event: events.Event):
-    for handler in EVENT_HANDLER_V1.get(type(event)):
-        handler(**event.__dict__)
-
-
-def dispatch(events: List[events.Event]):
-    for event in events:
-        handle_event_v1(event)

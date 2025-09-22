@@ -21,7 +21,7 @@ from src.inventory.routes.schemas.request_models.batch import BatchesCreationMod
 from src.inventory.routes.schemas.response_models.allocations import (
     AllocationsAllocateResponseModel,
 )
-from src.inventory.services.allocation_service import OutOfStock
+from src.inventory.services.batch_service import OutOfStock
 from src.settings import get_settings
 
 settings = get_settings()

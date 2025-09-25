@@ -23,7 +23,7 @@ def _on_shutdown_event():
     service_manager.shutdown()
 
 
-def create_app():
+def create_app() -> FastAPI:
     app = FastAPI()
 
     app.include_router(order_line_router)
@@ -33,3 +33,5 @@ def create_app():
 
     app.add_event_handler("startup", _on_startup_event)
     app.add_event_handler("shutdown", _on_startup_event)
+
+    return app

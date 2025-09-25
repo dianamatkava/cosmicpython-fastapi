@@ -31,7 +31,12 @@ class RabbitMQClient(MessagingClient):
 
     def __init__(self, config: MessagingClientSettings):
         connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host=config.host)
+            pika.ConnectionParameters(
+                host=config.host,
+                port=config.port,
+                virtual_host=config.virtual_host,
+                credentials=pika.PlainCredentials(config.user, config.password)
+            )
         )
         self.channel = connection.channel()
         # set prefetch_count so then one worker does not take a bulk of all tasks.

@@ -1,12 +1,29 @@
+version: 3.8;
+
 services:
   db:
     image: postgres
-    env_file:
-      - .env
-    ports:
-      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - cosmicpython-postgres:/var/lib/postgresql
+    ports:
+      - 5432:5432
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbitmq_host
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbitmq
+      - RABBITMQ_DEFAULT_PASS=rabbitmq
+      - RABBITMQ_DEFAULT_VHOST=rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - cosmicpython-rabbitmq:/var/lib/rabbitmq/
 
 volumes:
-  db_data:
+  cosmicpython-postgres:
+  cosmicpython-rabbitmq:

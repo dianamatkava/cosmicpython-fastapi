@@ -4,8 +4,9 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
+from src.database.orm_mappers import *  # do not delete
 
-from src.database.db_metadata import metadata
+from src.database.metadata import metadata
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

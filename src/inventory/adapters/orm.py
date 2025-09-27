@@ -1,8 +1,37 @@
 """Classical (imperative) mapping."""
 
-from sqlalchemy import Column, Integer, String, Table, Date, ForeignKey
+from enum import StrEnum
 
-from src.database.db_metadata import metadata
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    Table,
+    Date,
+    ForeignKey,
+    Boolean,
+    CheckConstraint,
+)
+
+from src.database.metadata import metadata
+
+
+class UnitOfMeasure(StrEnum):
+    """
+    Defines the valid units of measure for a product.
+    Using (str, Enum) allows string-like comparison and serialization.
+    """
+
+    EACH = "EACH"
+    KG = "KG"
+    BOX = "BOX"
+    LITER = "LITER"
+
+
+UOM_VALUES = [e.value for e in UnitOfMeasure]
+quoted_values_list = ", ".join([f"'{v}'" for v in UOM_VALUES])
+UOM_CONSTRAINT_SQL = f"unit_of_measure IN ({quoted_values_list})"
+
 
 allocations = Table(
     "allocations",
@@ -47,6 +76,10 @@ product = Table(
         "version_number",
         Integer,
         default=0,
-        doc="Version number for consistency boundaries",
+        doc="Version number (fence token) for OCC",
     ),
+    Column("name", String(255), nullable=False),
+    Column("unit_of_measure", String(50), nullable=False),
+    Column("is_active", Boolean, default=False),
+    CheckConstraint(UOM_CONSTRAINT_SQL, name="ck_product_unit_of_measure_valid"),
 )

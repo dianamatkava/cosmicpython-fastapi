@@ -16,5 +16,5 @@ class BatchesCreationModelRequestModel(BaseModel):
         Field(
             description="ETA ((Estimated Time of Arrival). Batches have an ETA if they are currently shipping. We allocate to shipment batches in order of which has the earliest ETA."
         ),
-    ]
+    ] = None
     qty: Annotated[int, Field(description="Quantity of the product.")]

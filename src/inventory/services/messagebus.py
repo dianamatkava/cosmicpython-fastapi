@@ -11,7 +11,6 @@ from src.shared.uow import AbstractUnitOfWork
 logger = getLogger(__name__)
 
 
-# In-process bus (synchronous)
 EVENT_HANDLER: Dict[Type[events.Event], List[Callable]] = {
     events.OutOfStockEvent: [event_handler.send_out_of_stock_event],
     events.BatchQuantityChangedEvent: [event_handler.batch_quantity_changed_event],
@@ -49,21 +48,23 @@ def handle_event(uow: AbstractUnitOfWork, event: events.Event) -> None:
             handler(uow, event)
         except Exception:
             logger.error(
-                "Event %s failed to execute", event,
+                "Event %s failed to execute",
+                event,
                 extra=dict(log_code=LogCode.EVENT_FAILED),
-                exc_info=True
+                exc_info=True,
             )
 
 
 def handle_command(uow: AbstractUnitOfWork, command: commands.Command) -> Any:
     try:
         handler = COMMAND_HANDLER.get(type(command))
-        res = handler(uow, command)  # TODO: temp
+        res = handler(uow, command)
         return res
     except Exception as e:
         logger.error(
-            "Event %s failed to execute", command,
+            "Event %s failed to execute",
+            command,
             extra=dict(log_code=LogCode.COMMAND_FAILED),
-            exc_info=True
+            exc_info=True,
         )
         raise e

@@ -1,14 +1,9 @@
 from typing import TypeVar, Type
 
+from src.inventory.adapters.rabbitmq_callbacks import create_message_callback
+from src.inventory.domain import commands, events
 from src.adapters.rabbitmqclient import MessagingClient
 from src.config import Settings
-from src.inventory.services.event_handler import (
-    allocate,
-    deallocate,
-    change_batch_quantity,
-    send_out_of_stock_event,
-    batch_quantity_changed_event,
-)
 
 
 # TODO: move somewhere else
@@ -25,29 +20,35 @@ T = TypeVar("T", bound=MessagingClient)
 
 
 class ServiceManager(Singleton):
-    messaging_client: MessagingClient
+    _messaging_client: MessagingClient
 
-    def startup(self, settings: Settings, messaging_client: Type[T]):
-        self.messaging_client = messaging_client(
+    def startup(self, settings: Settings, messaging_client: Type[MessagingClient]):
+        self._messaging_client = messaging_client(
             config=settings.MESSAGING_CLIENT
-        ).startup()
+        )
 
     def define_queses(self):
-        self.messaging_client.start_queue(queue_name="allocate", callback=allocate)
-        self.messaging_client.start_queue(queue_name="deallocate", callback=deallocate)
-        self.messaging_client.start_queue(
-            queue_name="change_batch_quantity", callback=change_batch_quantity
+        self._messaging_client.start_queue(queue_name="allocate", callback=create_message_callback(commands.AllocateOrderLine))
+        self._messaging_client.start_queue(queue_name="deallocate", callback=create_message_callback(commands.DeallocateOrderLine))
+        self._messaging_client.start_queue(
+            queue_name="change_batch_quantity", callback=create_message_callback(commands.ChangeBatchQuantity)
         )
-        self.messaging_client.start_queue(
-            queue_name="send_out_of_stock_event", callback=send_out_of_stock_event
+        self._messaging_client.start_queue(
+            queue_name="out_of_stock_event", callback=create_message_callback(events.OutOfStockEvent)
         )
-        self.messaging_client.start_queue(
+        self._messaging_client.start_queue(
             queue_name="batch_quantity_changed_event",
-            callback=batch_quantity_changed_event,
+            callback=create_message_callback(events.BatchQuantityChangedEvent),
         )
 
     def shutdown(self):
-        self.messaging_client.shutdown()
+        self._messaging_client.shutdown()
+
+    def get_messaging_client(self):
+        if self._messaging_client is None:
+            raise RuntimeError("Messaging client is not initialized.")
+        return service_manager._messaging_client
 
 
 service_manager = ServiceManager()
+

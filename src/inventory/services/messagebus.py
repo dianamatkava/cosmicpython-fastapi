@@ -1,12 +1,11 @@
 from logging import getLogger
-from typing import List, Any, Dict, Type, Callable, Union
+from typing import List, Dict, Type, Callable, Union
 
 from src.inventory.domain import commands
 from src.inventory.domain import events
 from src.inventory.services import event_handler
 from src.shared.log_codes import LogCode
 from src.shared.uow import AbstractUnitOfWork
-
 
 logger = getLogger(__name__)
 
@@ -25,41 +24,26 @@ COMMAND_HANDLER: Dict[Type[commands.Command], Callable] = {
 Message = Union[events.Event, commands.Command]
 
 
-def handle(uow: AbstractUnitOfWork, message: Message) -> Any:  # TODO: temp
-    queue = [message]
-    res = []
-    while queue:
-        message = queue.pop(0)
-        if isinstance(message, events.Event):
-            handle_event(uow=uow, event=message)
-        elif isinstance(message, commands.Command):
-            res.append(handle_command(uow=uow, command=message))
-        else:
-            raise ValueError
-
-        queue.extend(uow.collect_events())
-
-    return res[0]
+def handle(uow: AbstractUnitOfWork, message: Message) -> None:
+    if isinstance(message, events.Event):
+        handle_event(uow=uow, event=message)
+    elif isinstance(message, commands.Command):
+        handle_command(uow=uow, command=message)
+    else:
+        raise ValueError
 
 
 def handle_event(uow: AbstractUnitOfWork, event: events.Event) -> None:
     for handler in EVENT_HANDLER.get(type(event), []):
-        try:
-            handler(uow, event)
-        except Exception:
-            logger.error(
-                "Event %s failed to execute",
-                event,
-                extra=dict(log_code=LogCode.EVENT_FAILED),
-                exc_info=True,
-            )
+        # HERE WILL POST
+        handler(uow, event)
 
 
-def handle_command(uow: AbstractUnitOfWork, command: commands.Command) -> Any:
+def handle_command(uow: AbstractUnitOfWork, command: commands.Command) -> None:
     try:
+        # HERE WILL POST
         handler = COMMAND_HANDLER.get(type(command))
-        res = handler(uow, command)
-        return res
+        handler(uow, command)
     except Exception as e:
         logger.error(
             "Event %s failed to execute",

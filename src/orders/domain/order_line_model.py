@@ -7,14 +7,14 @@ from typing import Optional
 @dataclass(unsafe_hash=True)
 class OrderLineModel:
     id: int
-    order_id: str
+    order_id: int
     sku: str
     qty: int
 
     def __str__(self):
         return f"{self.qty} units of {self.sku}"
 
-    def __init__(self, order_id: str, sku: str, qty: int, id: Optional[int] = None):
+    def __init__(self, order_id: int, sku: str, qty: int, id: Optional[int] = None):
         if qty <= 0:
             raise ValueError  # TODO: raise proper error
 

@@ -12,9 +12,9 @@ from src.inventory.routes.schemas.request_models.allocations import (
 from src.inventory.routes.schemas.response_models.allocations import (
     AllocationsAllocateResponseModel,
 )
-from src.inventory.services.messagebus import handle
+from src.inventory.services.messagebus_sync_v1 import handle
 
-router = APIRouter(prefix="/views/allocations", tags=["allocations"])
+router = APIRouter(prefix="/allocations", tags=["allocations"])
 # TODO: Internal Auth
 
 

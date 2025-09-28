@@ -22,7 +22,7 @@ class OrderLineUnitOfWork(AbstractUnitOfWork):
     """
 
     order_line_repo: OrderLineRepository
-    inventory_repo: ProductAggregateRepository
+    product_repo: ProductAggregateRepository
 
     def __init__(
         self,

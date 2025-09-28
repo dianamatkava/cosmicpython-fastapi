@@ -22,7 +22,7 @@ class OrderLineService:
         with self.uow as uow:
             # TODO: FK on sku and order
             try:
-                uow.product_repo.get(order_line.sku)
+                uow.product_repo.get(sku=order_line.sku)
             except NoResultFound:
                 # TODO: proper exception handling
                 raise

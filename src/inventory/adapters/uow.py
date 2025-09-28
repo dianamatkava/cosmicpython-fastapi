@@ -57,6 +57,7 @@ class ProductAggregateUnitOfWork(AbstractUnitOfWork):
         self.session.flush()
 
     def commit(self):
+        events = self.collect_events()
         self.session.commit()
 
     def collect_events(self):

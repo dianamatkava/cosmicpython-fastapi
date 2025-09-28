@@ -22,7 +22,11 @@ class MessagingClient(ABC):
         pass
 
     @abstractmethod
-    def start_queue(self, queue_name: str, callback: callable):
+    def start_queue(self, *args, **kwargs):
+        pass
+
+    @abstractmethod
+    def publish(self, *args, **kwargs):
         pass
 
 
@@ -47,7 +51,6 @@ class RabbitMQClient(MessagingClient):
 
     def startup(self):
         self.channel.start_consuming()
-        return self
 
     def shutdown(self):
         self.channel.stop_consuming()
@@ -61,3 +64,13 @@ class RabbitMQClient(MessagingClient):
     def start_queue(self, queue_name: str, callback: Callable, durable: bool = True):
         self.channel.queue_declare(queue_name, durable=durable)
         self.channel.basic_consume(queue=queue_name, on_message_callback=callback)
+
+    def publish(self, routing_key: str, body: bytes):
+        self.channel.basic_publish(
+            exchange='',
+            routing_key=routing_key,
+            body=body,
+            properties=pika.BasicProperties(
+                delivery_mode=pika.DeliveryMode.Persistent
+            )
+        )

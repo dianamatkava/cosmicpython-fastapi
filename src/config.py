@@ -4,7 +4,7 @@ class MessagingClientSettings:
     virtual_host = 'rabbitmq'
     user = 'rabbitmq'
     password = 'rabbitmq'
-    prefetch_count = 1
+    prefetch_count = 10
 
 
 class Settings:

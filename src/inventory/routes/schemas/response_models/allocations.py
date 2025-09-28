@@ -30,4 +30,4 @@ class AllocationsAllocateResponseModel(BaseModel):
     """Model represent allocation response."""
 
     reference: Annotated[str, Field(description="Allocated batch unique ID.")]
-    order_id: Annotated[str, Field(description="Allocated order unique ID.")]
+    order_id: Annotated[int, Field(description="Allocated order unique ID.")]

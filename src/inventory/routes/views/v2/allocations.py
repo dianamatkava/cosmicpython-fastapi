@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Body, Path
 from starlette import status
 
-from adapters.rabbitmqclient import MessagingClient
+from src.adapters.rabbitmqclient import MessagingClient
 from src.inventory.conf import get_messaging_client
 from src.inventory.domain.commands import AllocateOrderLine, DeallocateOrderLine
 from src.inventory.routes.schemas.request_models.allocations import (
@@ -14,16 +14,13 @@ router = APIRouter(prefix="/allocations", tags=["allocations"])
 # TODO: Internal Auth
 
 
-@router.post(
-    "",
-    status_code=status.HTTP_202_ACCEPTED
-)
+@router.post("", status_code=status.HTTP_202_ACCEPTED)
 def allocate_order_line(
     body: Annotated[
         AllocationRequestModel,
         Body(..., description="The order line details to allocate"),
     ],
-    messaging_client: Annotated[MessagingClient, Depends(get_messaging_client)]
+    messaging_client: Annotated[MessagingClient, Depends(get_messaging_client)],
 ) -> None:
     """
     Allocates an order line to the most suitable batch.
@@ -31,12 +28,10 @@ def allocate_order_line(
     cannot be satisfied by available batches.
     """
     cmd = AllocateOrderLine(order_line_id=body.order_line_id)
-    messaging_client.publish('allocate', cmd.model_dump_json())
+    messaging_client.publish("allocate", cmd.model_dump_json())
 
 
-@router.delete(
-    "/batch/{ref}/{order_line_id}", status_code=status.HTTP_202_ACCEPTED
-)
+@router.delete("/batch/{ref}/{order_line_id}", status_code=status.HTTP_202_ACCEPTED)
 def deallocate_order_line(
     order_line_id: Annotated[
         int, Path(..., description="The ID of the order line to deallocate")
@@ -52,5 +47,4 @@ def deallocate_order_line(
     The freed quantity becomes available for future inventory.
     """
     cmd = DeallocateOrderLine(order_line_id=order_line_id, ref=ref)
-    messaging_client.publish('deallocate', cmd.model_dump_json())
-
+    messaging_client.publish("deallocate", cmd.model_dump_json())

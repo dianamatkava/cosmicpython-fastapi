@@ -2,8 +2,8 @@ from typing import Annotated
 
 from fastapi import Depends
 
-from adapters.rabbitmqclient import MessagingClient
-from service_manager import service_manager
+from src.adapters.rabbitmqclient import MessagingClient
+from src.service_manager import service_manager
 from src.inventory.adapters.uow import ProductAggregateUnitOfWork
 from src.inventory.services.batch_service import BatchService
 from src.inventory.services.product_service import ProductService

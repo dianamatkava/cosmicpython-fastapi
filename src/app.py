@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from sqlalchemy.orm import clear_mappers
 
-from service_manager import service_manager
+from src.service_manager import service_manager
 from src.adapters.rabbitmqclient import RabbitMQClient
 from src.config import Settings
 from src.database.orm_mappers import start_mappers
@@ -27,8 +27,8 @@ def create_app() -> FastAPI:
     app = FastAPI()
 
     app.include_router(order_line_router)
-    app.include_router(allocations_router_v1, prefix='/v1/sync')
-    app.include_router(allocations_router_v2, prefix='/v2')
+    app.include_router(allocations_router_v1, prefix="/v1/sync")
+    app.include_router(allocations_router_v2, prefix="/v2")
     app.include_router(batch_router)
     app.include_router(product_router)
 

@@ -5,11 +5,10 @@ this is not a code smell, this is acceptable and expected trade-off.
 
 import json
 import logging
-import sys
 from logging.handlers import RotatingFileHandler
 from typing import Type
 
-from inventory.services.messagebus import Message, handle
+from src.inventory.services.messagebus import Message, handle
 from src.inventory.adapters.uow import ProductAggregateUnitOfWork
 
 LOG_PATH = "./app.log"
@@ -18,9 +17,7 @@ logger = logging.getLogger("consumer")
 logger.setLevel(logging.INFO)
 
 fh = RotatingFileHandler(LOG_PATH, maxBytes=10_000_000, backupCount=5)
-fh.setFormatter(logging.Formatter(
-    '%(asctime)s %(levelname)s %(name)s %(message)s'
-))
+fh.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(name)s %(message)s"))
 logger.addHandler(fh)
 
 
@@ -35,7 +32,7 @@ def create_message_callback(message: Type[Message]):
 
     def message_handler(chanel, method, props, body):
         try:
-            data = json.loads(body.decode('utf-8'))
+            data = json.loads(body.decode("utf-8"))
             handle(uow, message(**data))
             chanel.basic_ack(delivery_tag=method.delivery_tag)
         except Exception as ex:

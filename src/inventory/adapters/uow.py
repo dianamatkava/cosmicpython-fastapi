@@ -4,7 +4,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
 from src.inventory.adapters.repositories.batch_repository import BatchRepository
-from src.inventory.adapters.repositories.product_repository import ProductAggregateRepository
+from src.inventory.adapters.repositories.outbox_repository import OutboxRepository
+from src.inventory.adapters.repositories.product_repository import (
+    ProductAggregateRepository,
+)
 from src.orders.adapters.repository import OrderLineRepository
 from src.settings import get_settings
 from src.shared.repository import AbstractRepository
@@ -28,11 +31,13 @@ class ProductAggregateUnitOfWork(AbstractUnitOfWork):
         product_aggregate_repo: Type[AbstractRepository] = ProductAggregateRepository,
         order_line_repo: Type[AbstractRepository] = OrderLineRepository,
         batch_repo: Type[AbstractRepository] = BatchRepository,
+        outbox_repo: Type[AbstractRepository] = OutboxRepository,
     ):
         self.session_factory = session_factory
         self.product_aggregate_repo_cls = product_aggregate_repo
         self.order_line_repo_cls = order_line_repo
         self.batch_repo_cls = batch_repo
+        self.outbox_repo_cls = outbox_repo
 
     def __enter__(self) -> Self:
         self.session: Session = self.session_factory()
@@ -42,9 +47,8 @@ class ProductAggregateUnitOfWork(AbstractUnitOfWork):
         self.order_line_repo: OrderLineRepository = self.order_line_repo_cls(
             self.session
         )
-        self.batch_repo: BatchRepository = self.batch_repo_cls(
-            self.session
-        )
+        self.batch_repo: BatchRepository = self.batch_repo_cls(self.session)
+        self.outbox_repo: OutboxRepository = self.outbox_repo_cls(self.session)
         return super().__enter__()
 
     def __exit__(self, *args):
@@ -58,6 +62,8 @@ class ProductAggregateUnitOfWork(AbstractUnitOfWork):
 
     def commit(self):
         events = self.collect_events()
+        for event in events:
+            self.outbox_repo.add(OutBoxModel())
         self.session.commit()
 
     def collect_events(self):

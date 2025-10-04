@@ -11,12 +11,12 @@ from sqlalchemy import (
     ForeignKey,
     Boolean,
     CheckConstraint,
-    JSON,
-    DateTime,
-    func,
 )
 
 from src.database.metadata import metadata
+
+
+# TODO: AT-709 Create Base model with created_at, updated_at
 
 
 class UnitOfMeasure(StrEnum):
@@ -34,16 +34,6 @@ class UnitOfMeasure(StrEnum):
 UOM_VALUES = [e.value for e in UnitOfMeasure]
 quoted_values_list = ", ".join([f"'{v}'" for v in UOM_VALUES])
 UOM_CONSTRAINT_SQL = f"unit_of_measure IN ({quoted_values_list})"
-
-
-class OutboxStatus(StrEnum):
-    NEW = "NEW"
-    SENT = "SENT"
-    FAILED = "FAILED"
-
-
-OUTBOX_STATUS_VALUES = ", ".join([f"'{v}'" for v in [e.value for e in OutboxStatus]])
-OUTBOX_STATUS_CONSTRAINT_SQL = f"status IN ({OUTBOX_STATUS_VALUES})"
 
 
 allocations = Table(
@@ -97,24 +87,4 @@ product = Table(
     Column("unit_of_measure", String(50), nullable=False),
     Column("is_active", Boolean, default=False),
     CheckConstraint(UOM_CONSTRAINT_SQL, name="ck_product_unit_of_measure_valid"),
-)
-
-
-outbox = Table(
-    "outbox",
-    metadata,
-    Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("aggregate_type", String(255), nullable=False),  # Order, Allocation
-    Column(
-        "aggregate_id",
-        String(255),
-        nullable=False,
-        doc="ID of the entity that generated the event",
-    ),
-    Column("routing_key", String(255), nullable=False),
-    Column("body", JSON),
-    Column("retry_count", Integer, nullable=False, default=0),
-    Column("status", String(50), nullable=False, default=OutboxStatus.NEW),
-    Column("created_at", DateTime, nullable=False, default=func.now()),
-    CheckConstraint(OUTBOX_STATUS_CONSTRAINT_SQL, name="ck_outbox_status_valid"),
 )

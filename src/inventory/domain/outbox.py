@@ -3,7 +3,7 @@
 import json
 from datetime import datetime
 
-from src.inventory.adapters.orm import OutboxStatus
+from src.shared.adapters.orm import OutboxStatus
 
 
 class OutBoxModel:

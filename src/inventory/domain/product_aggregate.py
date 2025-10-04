@@ -4,6 +4,7 @@ from typing import Set, List, Optional, Union
 
 from sqlalchemy.orm import reconstructor
 
+import src.shared.domain.events
 from src.inventory.domain import batch as domain, commands
 from src.inventory.domain import events
 from src.orders.domain.order_line_model import OrderLineModel
@@ -19,7 +20,7 @@ class ProductAggregate:
     sku: str
     version_number: int
     batches: Set[domain.BatchModel]
-    events: List[Union[events.DomainEvent, commands.Command]]
+    events: List[Union[src.shared.domain.events.DomainEvent, commands.Command]]
 
     def __init__(
         self, sku: str, batches: Set[domain.BatchModel] = None, version_number: int = 0

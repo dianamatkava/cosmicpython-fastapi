@@ -10,12 +10,7 @@ from src.inventory.adapters.uow import ProductAggregateUnitOfWork
 from src.inventory.services.messagebus import Message, handle
 
 
-def test(chanel, method, props, body):
-    print(chanel, method, props, body, flush=True)
-    chanel.basic_ack(delivery_tag=method.delivery_tag)
-
-
-def create_message_callback(message: Type[Message]):
+def message_product_callback(message: Type[Message]):
     uow = ProductAggregateUnitOfWork()
 
     def message_handler(chanel, method, props, body):

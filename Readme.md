@@ -212,7 +212,7 @@ class Batch:
       4. Ensures all database operations in a single business transaction are atomic.
 
 ```python
-# Example sketch from adapters/uow.py
+# Example sketch from adapters/order_line_uow.py
 
 from sqlalchemy.orm import Session
 from .repository import BatchRepository

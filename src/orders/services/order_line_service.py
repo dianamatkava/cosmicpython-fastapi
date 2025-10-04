@@ -4,7 +4,7 @@ from typing import List
 
 from sqlalchemy.exc import NoResultFound
 
-from src.orders.adapters.uow import OrderLineUnitOfWork
+from src.orders.adapters.uow.order_line_uow import OrderLineUnitOfWork
 from src.orders.services.schemas.order_line_dto import OrderLineSchemaDTO
 from src.orders.services.transformers.order_line_transformers import (
     transform_order_line_domain_to_dto,

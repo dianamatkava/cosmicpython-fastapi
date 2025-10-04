@@ -1,13 +1,23 @@
 """Classical (imperative) mapping."""
 
-from sqlalchemy import Column, Integer, Table, ForeignKey
+from enum import StrEnum
+
+from sqlalchemy import Column, Integer, Table, ForeignKey, String
 
 from src.database.metadata import metadata
+
+
+class OrderStatus(StrEnum):
+    IN_PROCESS = "IN_PROCESS"
+    PAID = "PAID"
+    SHIPPED = "SHIPPED"
+
 
 order = Table(
     "order",
     metadata,
     Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("status", String(255), default=OrderStatus.IN_PROCESS),
 )
 
 
@@ -18,4 +28,19 @@ order_lines = Table(
     Column("order_id", ForeignKey("order.id"), doc="Reference to a order"),
     Column("sku", ForeignKey("product.sku"), doc="Reference to a product"),
     Column("qty", Integer, nullable=False),
+    # Column("purchase_price", Integer, nullable=False),
+)
+
+
+# Denormalized read model, customer facing
+# Command-Query Responsibility Segregation (CQRS) Pattern
+order_view_model = Table(
+    "order_view_model",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("order_id", Integer),
+    Column("order_status", String(255), default=OrderStatus.IN_PROCESS),
+    Column("order_line_id", Integer),
+    Column("product_sku", String(255), doc="Reference to a product"),
+    Column("product_qty", Integer, nullable=False),
 )

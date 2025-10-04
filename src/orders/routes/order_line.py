@@ -5,8 +5,10 @@ from pydantic import TypeAdapter
 from starlette import status
 
 from src.orders.conf import get_order_line_service
-from src.orders.routes.schemas.request_models import OrderLineCreateRequestModel
-from src.orders.routes.schemas.response_models import OrderLineResponseModel
+from src.orders.routes.schemas.request_models.order_line import (
+    OrderLineCreateRequestModel,
+)
+from src.orders.routes.schemas.response_models.order_line import OrderLineResponseModel
 from src.orders.services.order_line_service import OrderLineService
 
 router = APIRouter(prefix="/order_line", tags=["order_line"])

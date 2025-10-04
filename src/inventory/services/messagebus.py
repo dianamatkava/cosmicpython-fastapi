@@ -42,11 +42,10 @@ def handle_command(uow: AbstractUnitOfWork, command: commands.Command) -> None:
     try:
         handler = COMMAND_HANDLER.get(type(command))
         handler(uow, command)
-    except Exception as e:
+    except Exception:
         logger.error(
             "Event %s failed to execute",
             command,
             extra=dict(log_code=LogCode.COMMAND_FAILED),
             exc_info=True,
         )
-        raise e

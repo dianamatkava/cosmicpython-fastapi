@@ -3,7 +3,7 @@ from typing import Type, List
 import pytest
 from sqlalchemy.exc import NoResultFound
 
-from src.orders.adapters.uow import OrderLineUnitOfWork
+from src.orders.adapters.uow.order_line_uow import OrderLineUnitOfWork
 from src.orders.domain.order_line_model import OrderLineModel
 from src.orders.services.order_line_service import OrderLineService
 from src.shared.repository import AbstractRepository

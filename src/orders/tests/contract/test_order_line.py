@@ -11,7 +11,9 @@ from sqlalchemy.exc import NoResultFound
 from starlette import status
 from starlette.testclient import TestClient
 
-from src.orders.routes.schemas.request_models import OrderLineCreateRequestModel
+from src.orders.routes.schemas.request_models.order_line import (
+    OrderLineCreateRequestModel,
+)
 from src.orders.services.order_line_service import OrderLineService
 from src.orders.services.schemas.order_line_dto import OrderLineSchemaDTO
 

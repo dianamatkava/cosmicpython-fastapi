@@ -10,6 +10,7 @@ from src.inventory.routes.views.product import router as product_router
 from src.inventory.routes.views.v1.allocations import router as allocations_router_v1
 from src.inventory.routes.views.v2.allocations import router as allocations_router_v2
 from src.orders.routes.order_line import router as order_line_router
+from src.orders.routes.order import router as order_router
 
 
 def _on_startup_event():
@@ -26,6 +27,7 @@ def _on_shutdown_event():
 def create_app() -> FastAPI:
     app = FastAPI()
 
+    app.include_router(order_router)
     app.include_router(order_line_router)
     app.include_router(allocations_router_v1, prefix="/v1/sync")
     app.include_router(allocations_router_v2, prefix="/v2")

@@ -11,7 +11,7 @@ from src.inventory.adapters.repositories.product_repository import (
 from src.inventory.domain.commands import Command
 from src.inventory.domain.events import DomainEvent
 from src.inventory.domain.outbox import OutBoxModel
-from src.orders.adapters.repository import OrderLineRepository
+from src.orders.adapters.repository.order_line_repository import OrderLineRepository
 from src.settings import get_settings
 from src.shared.repository import AbstractRepository
 from src.shared.uow import AbstractUnitOfWork

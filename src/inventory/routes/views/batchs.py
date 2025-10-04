@@ -5,8 +5,8 @@ from fastapi import Depends, Body
 from pydantic import TypeAdapter
 from starlette import status
 
-from src.inventory.adapters.uow import ProductAggregateUnitOfWork
-from src.inventory.conf import get_batch_service, get_unit_of_work
+from src.adapters.rabbitmqclient import MessagingClient
+from src.inventory.conf import get_batch_service, get_messaging_client
 from src.inventory.domain.commands import ChangeBatchQuantity
 from src.inventory.routes.schemas.request_models.allocations import (
     ChangeBatchQuantityRequestModel,
@@ -18,7 +18,6 @@ from src.inventory.routes.schemas.response_models.allocations import (
     BatchesListResponseModel,
 )
 from src.inventory.services.batch_service import BatchService
-from src.inventory.services.messagebus import handle
 from src.inventory.services.schemas.batch_dto import BatchSchemaDTO
 
 router = APIRouter(prefix="/batch", tags=["batch"])
@@ -94,9 +93,10 @@ def update_batch(
     ref: Annotated[
         str, Path(..., description="The reference of the batch to deallocate")
     ],
-    uow: Annotated[ProductAggregateUnitOfWork, Depends(get_unit_of_work)],
+    messaging_client: Annotated[MessagingClient, Depends(get_messaging_client)],
 ) -> None:
     if isinstance(body, ChangeBatchQuantityRequestModel):
-        handle(uow, ChangeBatchQuantity(ref=ref, qty=body.qty))
+        cmd = ChangeBatchQuantity(ref=ref, qty=body.qty)
+        messaging_client.publish("change_batch_quantity", cmd.model_dump_json())
     else:
         raise NotImplementedError

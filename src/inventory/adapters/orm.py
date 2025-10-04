@@ -50,7 +50,9 @@ allocations = Table(
     "allocations",
     metadata,
     Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("order_id", ForeignKey("order_lines.id"), unique=True),
+    Column(
+        "order_id", ForeignKey("order_lines.id"), unique=True
+    ),  # TODO: rename to order_line_id
     Column("batch_id", ForeignKey("batches.id")),
 )
 

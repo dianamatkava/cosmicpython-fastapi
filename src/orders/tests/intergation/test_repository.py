@@ -5,7 +5,7 @@ from sqlalchemy.exc import NoResultFound
 from sqlmodel import Session
 
 from src.register.domain.product_model import ProductModel
-from src.orders.adapters.repository import OrderLineRepository
+from src.orders.adapters.repository.order_line_repository import OrderLineRepository
 from src.orders.domain.order_line_model import OrderLineModel
 
 

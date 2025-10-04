@@ -8,9 +8,15 @@ from starlette import status
 from src.inventory.adapters.uow import ProductAggregateUnitOfWork
 from src.inventory.conf import get_batch_service, get_unit_of_work
 from src.inventory.domain.commands import ChangeBatchQuantity
-from src.inventory.routes.schemas.request_models.allocations import ChangeBatchQuantityRequestModel
-from src.inventory.routes.schemas.request_models.batch import BatchesCreationModelRequestModel
-from src.inventory.routes.schemas.response_models.allocations import BatchesListResponseModel
+from src.inventory.routes.schemas.request_models.allocations import (
+    ChangeBatchQuantityRequestModel,
+)
+from src.inventory.routes.schemas.request_models.batch import (
+    BatchesCreationModelRequestModel,
+)
+from src.inventory.routes.schemas.response_models.allocations import (
+    BatchesListResponseModel,
+)
 from src.inventory.services.batch_service import BatchService
 from src.inventory.services.messagebus import handle
 from src.inventory.services.schemas.batch_dto import BatchSchemaDTO
@@ -79,7 +85,7 @@ def delete_batch(
     raise NotImplementedError
 
 
-@router.put("/{ref}", status_code=status.HTTP_200_OK, response_model=None)
+@router.put("/{ref}", status_code=status.HTTP_202_ACCEPTED, response_model=None)
 def update_batch(
     body: Annotated[
         ChangeBatchQuantityRequestModel,

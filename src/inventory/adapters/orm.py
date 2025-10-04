@@ -38,8 +38,7 @@ UOM_CONSTRAINT_SQL = f"unit_of_measure IN ({quoted_values_list})"
 
 class OutboxStatus(StrEnum):
     NEW = "NEW"
-    PROCESSING = "PROCESSING"
-    COMPLETED = "COMPLETED"
+    SENT = "SENT"
     FAILED = "FAILED"
 
 
@@ -106,7 +105,7 @@ outbox = Table(
     Column("aggregate_type", String(255), nullable=False),  # Order, Allocation
     Column(
         "aggregate_id",
-        Integer,
+        String(255),
         nullable=False,
         doc="ID of the entity that generated the event",
     ),

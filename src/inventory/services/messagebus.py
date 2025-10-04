@@ -10,7 +10,7 @@ from src.shared.uow import AbstractUnitOfWork
 logger = getLogger(__name__)
 
 
-EVENT_HANDLER: Dict[Type[events.Event], List[Callable]] = {
+EVENT_HANDLER: Dict[Type[events.DomainEvent], List[Callable]] = {
     events.OutOfStockEvent: [event_handler.send_out_of_stock_event],
     events.BatchQuantityChangedEvent: [event_handler.batch_quantity_changed_event],
 }
@@ -21,11 +21,11 @@ COMMAND_HANDLER: Dict[Type[commands.Command], Callable] = {
     commands.ChangeBatchQuantity: event_handler.change_batch_quantity,
 }
 
-Message = Union[events.Event, commands.Command]
+Message = Union[events.DomainEvent, commands.Command]
 
 
 def handle(uow: AbstractUnitOfWork, message: Message) -> None:
-    if isinstance(message, events.Event):
+    if isinstance(message, events.DomainEvent):
         handle_event(uow=uow, event=message)
     elif isinstance(message, commands.Command):
         handle_command(uow=uow, command=message)
@@ -33,15 +33,13 @@ def handle(uow: AbstractUnitOfWork, message: Message) -> None:
         raise ValueError
 
 
-def handle_event(uow: AbstractUnitOfWork, event: events.Event) -> None:
+def handle_event(uow: AbstractUnitOfWork, event: events.DomainEvent) -> None:
     for handler in EVENT_HANDLER.get(type(event), []):
-        # HERE WILL POST
         handler(uow, event)
 
 
 def handle_command(uow: AbstractUnitOfWork, command: commands.Command) -> None:
     try:
-        # HERE WILL POST
         handler = COMMAND_HANDLER.get(type(command))
         handler(uow, command)
     except Exception as e:

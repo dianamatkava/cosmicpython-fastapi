@@ -602,3 +602,9 @@ mypy --install-types
 psql -U postgresql # login to pg
 \l # list databases
 ```
+
+## Migrations
+```shell
+alembic revision --autogenerate -m "<message>"  # create migration file, detect changes automatically
+alembic upgrade head  # apply all migrations
+```

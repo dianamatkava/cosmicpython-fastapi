@@ -9,7 +9,7 @@ from src.shared.uow import AbstractUnitOfWork
 
 logger = getLogger(__name__)
 
-EVENT_HANDLER: Dict[Type[events.Event], List[Callable]] = {
+EVENT_HANDLER: Dict[Type[events.DomainEvent], List[Callable]] = {
     events.OutOfStockEvent: [event_handler.send_out_of_stock_event],
     events.BatchQuantityChangedEvent: [event_handler.batch_quantity_changed_event],
 }
@@ -20,7 +20,7 @@ COMMAND_HANDLER: Dict[Type[commands.Command], Callable] = {
     commands.ChangeBatchQuantity: event_handler.change_batch_quantity,
 }
 
-Message = Union[events.Event, commands.Command]
+Message = Union[events.DomainEvent, commands.Command]
 
 
 # ---------------------- In process message bus (sync approach) ----------------------
@@ -29,7 +29,7 @@ def handle(uow: AbstractUnitOfWork, message: Message) -> Any:
     res = []
     while queue:
         message = queue.pop(0)
-        if isinstance(message, events.Event):
+        if isinstance(message, events.DomainEvent):
             handle_event(uow=uow, event=message)
         elif isinstance(message, commands.Command):
             res.append(handle_command(uow=uow, command=message))
@@ -41,7 +41,7 @@ def handle(uow: AbstractUnitOfWork, message: Message) -> Any:
     return res[0]
 
 
-def handle_event(uow: AbstractUnitOfWork, event: events.Event) -> None:
+def handle_event(uow: AbstractUnitOfWork, event: events.DomainEvent) -> None:
     for handler in EVENT_HANDLER.get(type(event), []):
         try:
             handler(uow, event)

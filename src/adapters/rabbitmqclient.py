@@ -30,6 +30,7 @@ class MessagingClient(ABC):
         pass
 
 
+# TODO: Decouple publisher and consumer
 class RabbitMQClient(MessagingClient):
     channel: BlockingChannel
 
@@ -39,15 +40,10 @@ class RabbitMQClient(MessagingClient):
                 host=config.host,
                 port=config.port,
                 virtual_host=config.virtual_host,
-                credentials=pika.PlainCredentials(config.user, config.password)
+                credentials=pika.PlainCredentials(config.user, config.password),
             )
         )
         self.channel = connection.channel()
-        # set prefetch_count so then one worker does not take a bulk of all tasks.
-        # basic quality of service fare dispatch mechanism
-        self.channel.basic_qos(
-            prefetch_count=config.prefetch_count
-        )  # Specifies a prefetch window in terms of whole messages
 
     def startup(self):
         self.channel.start_consuming()
@@ -67,10 +63,8 @@ class RabbitMQClient(MessagingClient):
 
     def publish(self, routing_key: str, body: bytes):
         self.channel.basic_publish(
-            exchange='',
+            exchange="",
             routing_key=routing_key,
             body=body,
-            properties=pika.BasicProperties(
-                delivery_mode=pika.DeliveryMode.Persistent
-            )
+            properties=pika.BasicProperties(delivery_mode=pika.DeliveryMode.Persistent),
         )

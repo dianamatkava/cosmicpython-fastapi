@@ -10,17 +10,16 @@ from src.service_manager import service_manager
 
 def run():
     start_mappers()
+    service_manager.startup(settings=Settings(), messaging_client=RabbitMQClient)
+    service_manager.define_queses()
+    client = service_manager.get_messaging_client()
+
     while True:
         try:
-            service_manager.startup(
-                settings=Settings(), messaging_client=RabbitMQClient
-            )
-            service_manager.define_queses()
-
-            client = service_manager.get_messaging_client()
             client.startup()
         except Exception as e:
             clear_mappers()
+            client.shutdown()
             print("worker crashed:", e, flush=True)
             time.sleep(5)
 

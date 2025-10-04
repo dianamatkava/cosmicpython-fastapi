@@ -4,25 +4,13 @@ this is not a code smell, this is acceptable and expected trade-off.
 """
 
 import json
-import logging
-from logging.handlers import RotatingFileHandler
 from typing import Type
 
-from src.inventory.services.messagebus import Message, handle
 from src.inventory.adapters.uow import ProductAggregateUnitOfWork
-
-LOG_PATH = "./app.log"
-
-logger = logging.getLogger("consumer")
-logger.setLevel(logging.INFO)
-
-fh = RotatingFileHandler(LOG_PATH, maxBytes=10_000_000, backupCount=5)
-fh.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(name)s %(message)s"))
-logger.addHandler(fh)
+from src.inventory.services.messagebus import Message, handle
 
 
 def test(chanel, method, props, body):
-    logger.error("HELLLO _______________>>>>>>>>>>>>>>")
     print(chanel, method, props, body, flush=True)
     chanel.basic_ack(delivery_tag=method.delivery_tag)
 

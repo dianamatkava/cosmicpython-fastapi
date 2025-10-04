@@ -1,4 +1,4 @@
-from typing import Self, Type
+from typing import Self, Type, List, Union
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
@@ -8,6 +8,9 @@ from src.inventory.adapters.repositories.outbox_repository import OutboxReposito
 from src.inventory.adapters.repositories.product_repository import (
     ProductAggregateRepository,
 )
+from src.inventory.domain.commands import Command
+from src.inventory.domain.events import DomainEvent
+from src.inventory.domain.outbox import OutBoxModel
 from src.orders.adapters.repository import OrderLineRepository
 from src.settings import get_settings
 from src.shared.repository import AbstractRepository
@@ -32,7 +35,7 @@ class ProductAggregateUnitOfWork(AbstractUnitOfWork):
         order_line_repo: Type[AbstractRepository] = OrderLineRepository,
         batch_repo: Type[AbstractRepository] = BatchRepository,
         outbox_repo: Type[AbstractRepository] = OutboxRepository,
-    ):
+    ) -> None:
         self.session_factory = session_factory
         self.product_aggregate_repo_cls = product_aggregate_repo
         self.order_line_repo_cls = order_line_repo
@@ -51,23 +54,29 @@ class ProductAggregateUnitOfWork(AbstractUnitOfWork):
         self.outbox_repo: OutboxRepository = self.outbox_repo_cls(self.session)
         return super().__enter__()
 
-    def __exit__(self, *args):
+    def __exit__(self, *args) -> None:
         super().__exit__(*args)
 
-    def rollback(self):
+    def rollback(self) -> None:
         self.session.rollback()
 
-    def flush(self):
+    def flush(self) -> None:
         self.session.flush()
 
-    def commit(self):
+    def commit(self) -> None:
         events = self.collect_events()
         for event in events:
-            self.outbox_repo.add(OutBoxModel())
+            outbox = OutBoxModel(
+                aggregate_id=event.aggregate_id,
+                aggregate_type=event.aggregate_type,
+                routing_key=event.routing_key,
+                body=event.model_dump_json(),
+            )
+            self.session.add(outbox)
         self.session.commit()
 
-    def collect_events(self):
-        events = []
+    def collect_events(self) -> List[Union[DomainEvent, Command]]:
+        events: List[Union[DomainEvent, Command]] = []
         for product in self.product_aggregate_repo.seen:
             while product.events:
                 events.append(product.events.pop(0))

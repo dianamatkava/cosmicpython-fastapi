@@ -8,7 +8,7 @@ from src.inventory.adapters.orm import OutboxStatus
 
 class OutBoxModel:
     aggregate_type: str
-    aggregate_id: int
+    aggregate_id: str
     routing_key: str
     body: json
     retry_count: int
@@ -18,7 +18,7 @@ class OutBoxModel:
     def __init__(
         self,
         aggregate_type: str,
-        aggregate_id: int,
+        aggregate_id: str,
         routing_key: str,
         body: json,
     ):

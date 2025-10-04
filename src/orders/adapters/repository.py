@@ -1,6 +1,6 @@
 # The Repository pattern is an abstraction over persistent storage
 
-from typing import List, Type
+from typing import List
 
 from sqlalchemy.orm import Session
 
@@ -14,13 +14,13 @@ class OrderLineRepository(AbstractRepository[domain.OrderLineModel]):
     def __init__(self, session: Session):
         self.session = session
 
-    def get(self, id: int) -> Type[domain.OrderLineModel]:
+    def get(self, id: int) -> domain.OrderLineModel:
         return self.session.query(domain.OrderLineModel).filter_by(id=id).one()
 
     def add(self, order_line: domain.OrderLineModel) -> None:
         self.session.add(order_line)
 
-    def list(self) -> List[Type[domain.OrderLineModel]]:
+    def list(self) -> List[domain.OrderLineModel]:
         return self.session.query(domain.OrderLineModel).all()
 
     def delete(self, id: int) -> None:

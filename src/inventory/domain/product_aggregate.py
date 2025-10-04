@@ -4,7 +4,6 @@ from typing import Set, List, Optional, Union
 
 from sqlalchemy.orm import reconstructor
 
-import src.inventory.domain.commands
 from src.inventory.domain import batch as domain, commands
 from src.inventory.domain import events
 from src.orders.domain.order_line_model import OrderLineModel
@@ -20,7 +19,7 @@ class ProductAggregate:
     sku: str
     version_number: int
     batches: Set[domain.BatchModel]
-    events: List[Union[events.Event, commands.Command]]
+    events: List[Union[events.DomainEvent, commands.Command]]
 
     def __init__(
         self, sku: str, batches: Set[domain.BatchModel] = None, version_number: int = 0
@@ -41,7 +40,9 @@ class ProductAggregate:
             batch.allocate(line)
             return batch.reference
         except StopIteration:
-            self.events.append(events.OutOfStockEvent(sku=self.sku))
+            self.events.append(
+                events.OutOfStockEvent(sku=self.sku, aggregate_id=self.sku)
+            )
             return None
 
     def deallocate(self, order_line: OrderLineModel):
@@ -58,5 +59,9 @@ class ProductAggregate:
         batch._purchased_quantity = qty
         while batch.available_quantity < 0:
             line = batch.deallocate_one()
-            self.events.append(commands.AllocateOrderLine(line.id))
-        self.events.append(events.BatchQuantityChangedEvent(ref=ref, qty=qty))
+            self.events.append(
+                commands.AllocateOrderLine(order_line_id=line.id, aggregate_id=self.sku)
+            )
+        self.events.append(
+            events.BatchQuantityChangedEvent(ref=ref, qty=qty, aggregate_id=self.sku)
+        )

@@ -7,8 +7,11 @@ from sqlalchemy import Column, Integer, Table, ForeignKey, String
 from src.database.metadata import metadata
 
 
+# TODO: AT-709 Create Base model with created_at, updated_at
+
+
 class OrderStatus(StrEnum):
-    IN_PROCESS = "IN_PROCESS"
+    IN_PROCESS = "IN_PROGRESS"
     PAID = "PAID"
     SHIPPED = "SHIPPED"
 
@@ -40,7 +43,7 @@ order_view_model = Table(
     Column("id", Integer, primary_key=True, autoincrement=True),
     Column("order_id", Integer),
     Column("order_status", String(255), default=OrderStatus.IN_PROCESS),
-    Column("order_line_id", Integer),
-    Column("product_sku", String(255), doc="Reference to a product"),
-    Column("product_qty", Integer, nullable=False),
+    Column("order_line_id", Integer, nullable=True),
+    Column("product_sku", String(255), nullable=True, doc="Reference to a product"),
+    Column("product_qty", Integer, nullable=True),
 )

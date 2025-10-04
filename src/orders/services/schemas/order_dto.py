@@ -5,6 +5,14 @@ from pydantic import BaseModel
 from src.orders.adapters.orm import OrderStatus
 
 
-class OrderSchemaDTO(BaseModel):
+class OrderCreateSchemaDTO(BaseModel):
     id: Optional[int] = None
     status: OrderStatus = None
+
+
+class OrderSchemaDTO(BaseModel):
+    order_id: int
+    order_status: OrderStatus
+    order_line_id: int
+    product_sku: int
+    product_qty: int

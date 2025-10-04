@@ -5,7 +5,10 @@ from pydantic import TypeAdapter
 from starlette import status
 
 from src.orders.conf import get_order_service
-from src.orders.routes.schemas.response_models.order import OrderResponseModel
+from src.orders.routes.schemas.response_models.order import (
+    OrderCreateResponseModel,
+    OrderResponseModel,
+)
 from src.orders.services.order_service import OrderService
 
 router = APIRouter(prefix="/order", tags=["order"])
@@ -21,10 +24,11 @@ def get_order_by_id(
     order_service: Annotated[OrderService, Depends(get_order_service)],
 ) -> OrderResponseModel:
     return TypeAdapter(OrderResponseModel).validate_python(
-        order_service.get_order(id=order_id), from_attributes=True
+        order_service.get_order(order_id=order_id), from_attributes=True
     )
 
 
+# TODO: AT-708 Add pagination
 @router.get("", status_code=status.HTTP_200_OK, response_model=List[OrderResponseModel])
 def list_orders(
     order_service: Annotated[OrderService, Depends(get_order_service)],
@@ -34,11 +38,13 @@ def list_orders(
     )
 
 
-@router.post("", status_code=status.HTTP_201_CREATED, response_model=OrderResponseModel)
+@router.post(
+    "", status_code=status.HTTP_201_CREATED, response_model=OrderCreateResponseModel
+)
 def create_order(
     order_service: Annotated[OrderService, Depends(get_order_service)],
-) -> OrderResponseModel:
-    return TypeAdapter(OrderResponseModel).validate_python(
+) -> OrderCreateResponseModel:
+    return TypeAdapter(OrderCreateResponseModel).validate_python(
         order_service.create_order(),
         from_attributes=True,
     )

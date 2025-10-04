@@ -9,17 +9,17 @@ class OrderReadModel:
     id: int
     order_id: int
     order_status: OrderStatus
-    order_line_id: int
-    product_sku: str
-    product_qty: int
+    order_line_id: int = None
+    product_sku: str = None
+    product_qty: int = None
 
     def __init__(
         self,
         order_id: int,
         order_status: OrderStatus,
-        order_line_id: int,
-        product_sku: str,
-        product_qty: int,
+        order_line_id: int = None,
+        product_sku: str = None,
+        product_qty: int = None,
         id: Optional[int] = None,
     ):
         self.id = id

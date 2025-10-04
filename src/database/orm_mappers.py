@@ -2,7 +2,7 @@
 
 from sqlalchemy.orm import registry, relationship
 
-from src.inventory.adapters.orm import allocations, batches, product, outbox
+from src.inventory.adapters.orm import allocations, batches, product
 from src.inventory.domain.batch import BatchModel
 from src.inventory.domain.outbox import OutBoxModel
 from src.inventory.domain.product_aggregate import ProductAggregate
@@ -10,6 +10,7 @@ from src.orders.adapters.orm import order_lines, order, order_view_model
 from src.orders.domain import order_line_model as domain
 from src.orders.domain.order_model import OrderModel
 from src.orders.domain.order_read_model import OrderReadModel
+from src.shared.adapters.orm import outbox
 
 mapper_registry = (
     registry()

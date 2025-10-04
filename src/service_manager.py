@@ -1,9 +1,24 @@
 from typing import TypeVar, Type
 
-from src.inventory.adapters.rabbitmq_callbacks import create_message_callback
-from src.inventory.domain import commands, events
 from src.adapters.rabbitmqclient import MessagingClient
 from src.config import Settings
+from src.constants import Queues
+from src.inventory.adapters.rabbitmq_callbacks import message_product_callback
+from src.inventory.domain.commands import (
+    AllocateOrderLine,
+    DeallocateOrderLine,
+    ChangeBatchQuantity,
+)
+from src.inventory.domain.events import OutOfStockEvent, BatchQuantityChangedEvent
+from src.orders.adapters.rabbitmq_callback import message_order_callback
+from src.orders.domain.events import (
+    OrderCreated,
+    OrderLineAdded,
+    OrderLineRemoved,
+    OrderStatusChanged,
+    OrderPayed,
+    OrderShipped,
+)
 
 
 # TODO: move somewhere else
@@ -23,22 +38,53 @@ class ServiceManager(Singleton):
     _messaging_client: MessagingClient
 
     def startup(self, settings: Settings, messaging_client: Type[MessagingClient]):
-        self._messaging_client = messaging_client(
-            config=settings.MESSAGING_CLIENT
-        )
+        self._messaging_client = messaging_client(config=settings.MESSAGING_CLIENT)
 
     def define_queses(self):
-        self._messaging_client.start_queue(queue_name="allocate", callback=create_message_callback(commands.AllocateOrderLine))
-        self._messaging_client.start_queue(queue_name="deallocate", callback=create_message_callback(commands.DeallocateOrderLine))
         self._messaging_client.start_queue(
-            queue_name="change_batch_quantity", callback=create_message_callback(commands.ChangeBatchQuantity)
+            queue_name=Queues.ORDER_CREATED_EVENT,
+            callback=message_order_callback(OrderCreated),
         )
         self._messaging_client.start_queue(
-            queue_name="out_of_stock_event", callback=create_message_callback(events.OutOfStockEvent)
+            queue_name=Queues.ORDER_LINE_ADDED_EVENT,
+            callback=message_order_callback(OrderLineAdded),
         )
         self._messaging_client.start_queue(
-            queue_name="batch_quantity_changed_event",
-            callback=create_message_callback(events.BatchQuantityChangedEvent),
+            queue_name=Queues.ORDER_LINE_REMOVED_EVENT,
+            callback=message_order_callback(OrderLineRemoved),
+        )
+        self._messaging_client.start_queue(
+            queue_name=Queues.ORDER_STATUS_CHANGE_EVENT,
+            callback=message_order_callback(OrderStatusChanged),
+        )
+        self._messaging_client.start_queue(
+            queue_name=Queues.ORDER_PAYED_EVENT,
+            callback=message_order_callback(OrderPayed),
+        )
+        self._messaging_client.start_queue(
+            queue_name=Queues.ORDER_SHIPPED_EVENT,
+            callback=message_order_callback(OrderShipped),
+        )
+
+        self._messaging_client.start_queue(
+            queue_name=Queues.ALLOCATE_COMMAND,
+            callback=message_product_callback(AllocateOrderLine),
+        )
+        self._messaging_client.start_queue(
+            queue_name=Queues.DEALLOCATE_COMMAND,
+            callback=message_product_callback(DeallocateOrderLine),
+        )
+        self._messaging_client.start_queue(
+            queue_name=Queues.CHANGE_BATCH_QUANTITY_COMMAND,
+            callback=message_product_callback(ChangeBatchQuantity),
+        )
+        self._messaging_client.start_queue(
+            queue_name=Queues.OUT_OF_STOCK_EVENT,
+            callback=message_product_callback(OutOfStockEvent),
+        )
+        self._messaging_client.start_queue(
+            queue_name=Queues.BATCH_QUANTITY_CHANGED_EVENT,
+            callback=message_product_callback(BatchQuantityChangedEvent),
         )
 
     def shutdown(self):
@@ -51,4 +97,3 @@ class ServiceManager(Singleton):
 
 
 service_manager = ServiceManager()
-

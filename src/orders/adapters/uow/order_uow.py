@@ -3,7 +3,9 @@ from typing import Self, Type
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
+from src.inventory.domain.outbox import OutBoxModel
 from src.orders.adapters.repository.order_repository import OrderRepository
+from src.orders.adapters.repository.order_view_repository import OrderViewRepository
 from src.settings import get_settings
 from src.shared.repository import AbstractRepository
 from src.shared.uow import AbstractUnitOfWork
@@ -21,18 +23,22 @@ class OrderUnitOfWork(AbstractUnitOfWork):
     """
 
     order_repo: OrderRepository
+    order_view_repo: OrderViewRepository
 
     def __init__(
         self,
         session_factory=DEFAULT_SESSION_FACTORY,
         order_repo: Type[AbstractRepository] = OrderRepository,
+        order_view_repo: Type[AbstractRepository] = OrderViewRepository,
     ):
         self.session_factory = session_factory
         self.order_repo_cls = order_repo
+        self.order_view_repo_cls = order_view_repo
 
     def __enter__(self) -> Self:
         self.session: Session = self.session_factory()
         self.order_repo = self.order_repo_cls(self.session)
+        self.order_view_repo = self.order_view_repo_cls(self.session)
         return super().__enter__()
 
     def __exit__(self, *args):
@@ -42,13 +48,23 @@ class OrderUnitOfWork(AbstractUnitOfWork):
         self.session.rollback()
 
     def commit(self):
+        events = self.collect_events()
+        for event in events:
+            outbox = OutBoxModel(
+                aggregate_id=event.aggregate_id,
+                aggregate_type=event.aggregate_type,
+                routing_key=event.routing_key,
+                body=event.model_dump_json(),
+            )
+            self.session.add(outbox)
         self.session.commit()
 
     def flush(self):
         self.session.flush()
 
     def collect_events(self):
-        raise NotImplementedError
-
-    def publish_events(self):
-        raise NotImplementedError
+        events = []
+        for order in self.order_repo.seen:
+            while order.events:
+                events.append(order.events.pop())
+        return events

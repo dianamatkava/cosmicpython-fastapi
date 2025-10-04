@@ -56,6 +56,3 @@ class OrderLineUnitOfWork(AbstractUnitOfWork):
 
     def collect_events(self):
         raise NotImplementedError
-
-    def publish_events(self):
-        raise NotImplementedError

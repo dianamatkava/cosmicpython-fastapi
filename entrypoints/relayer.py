@@ -2,12 +2,12 @@ import time
 
 from sqlalchemy.orm import clear_mappers
 
-from src.inventory.adapters.orm import OutboxStatus
 from src.inventory.adapters.uow import ProductAggregateUnitOfWork
 from src.database.orm_mappers import start_mappers
 from src.adapters.rabbitmqclient import RabbitMQClient
 from src.config import Settings
 from src.service_manager import service_manager
+from src.shared.adapters.orm import OutboxStatus
 
 
 def run():

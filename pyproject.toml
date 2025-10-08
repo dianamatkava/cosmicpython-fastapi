@@ -20,6 +20,7 @@ sqlalchemy-utils = "^0.41.2"
 alembic = "^1.16.1"
 pytest-mock = "^3.14.1"
 pika = "^1.3.2"
+redis = "^6.4.0"
 
 [tool.poetry.group.dev.dependencies]
 fastapi-cli = "^0.0.7"

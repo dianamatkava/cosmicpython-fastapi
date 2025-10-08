@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from sqlalchemy.orm import clear_mappers
 
+from src.adapters.redisclient import RedisClient
 from src.service_manager import service_manager
 from src.adapters.rabbitmqclient import RabbitMQClient
 from src.config import Settings
@@ -16,7 +17,11 @@ from src.orders.routes.order import router as order_router
 def _on_startup_event():
     clear_mappers()
     start_mappers()
-    service_manager.startup(settings=Settings(), messaging_client=RabbitMQClient)
+    service_manager.startup(
+        settings=Settings(),
+        messaging_client=RabbitMQClient,
+        mem_storage_client=RedisClient,
+    )
 
 
 def _on_shutdown_event():

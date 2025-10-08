@@ -1,6 +1,7 @@
 from typing import TypeVar, Type
 
 from src.adapters.rabbitmqclient import MessagingClient
+from src.adapters.redisclient import MemStorageClient
 from src.config import Settings
 from src.constants import Queues
 from src.inventory.adapters.rabbitmq_callbacks import message_product_callback
@@ -36,9 +37,16 @@ T = TypeVar("T", bound=MessagingClient)
 
 class ServiceManager(Singleton):
     _messaging_client: MessagingClient
+    _mem_storage_client: MemStorageClient
 
-    def startup(self, settings: Settings, messaging_client: Type[MessagingClient]):
+    def startup(
+        self,
+        settings: Settings,
+        messaging_client: Type[MessagingClient],
+        mem_storage_client: Type[MemStorageClient],
+    ):
         self._messaging_client = messaging_client(config=settings.MESSAGING_CLIENT)
+        self._mem_storage_client = mem_storage_client(config=settings.MEM_STORAGE)
 
     def define_queses(self):
         self._messaging_client.start_queue(
@@ -89,11 +97,17 @@ class ServiceManager(Singleton):
 
     def shutdown(self):
         self._messaging_client.shutdown()
+        self._mem_storage_client.shutdown()
 
-    def get_messaging_client(self):
+    def get_messaging_client(self) -> MessagingClient:
         if self._messaging_client is None:
             raise RuntimeError("Messaging client is not initialized.")
         return service_manager._messaging_client
+
+    def get_mem_storage_client(self) -> MemStorageClient:
+        if self._mem_storage_client is None:
+            raise RuntimeError("In memory storage client is not initialized.")
+        return service_manager._mem_storage_client
 
 
 service_manager = ServiceManager()

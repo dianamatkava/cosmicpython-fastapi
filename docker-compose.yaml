@@ -24,6 +24,18 @@ services:
     volumes:
       - cosmicpython-rabbitmq:/var/lib/rabbitmq/
 
+  redis:
+    image: redis:8.0
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_USERNAME=default
+      - REDIS_PASSWORD=redis
+    volumes:
+      - cosmicpython-redis:/data
+
+
 volumes:
   cosmicpython-postgres:
   cosmicpython-rabbitmq:
+  cosmicpython-redis:

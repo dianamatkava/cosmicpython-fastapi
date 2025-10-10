@@ -1,4 +1,4 @@
-from src.orders.adapters.uow.order_uow import OrderUnitOfWork
+from src.orders.adapters.uow import OrderUnitOfWork
 from src.orders.domain.events import (
     OrderCreated,
     OrderShipped,

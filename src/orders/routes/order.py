@@ -6,7 +6,6 @@ from starlette import status
 
 from src.orders.conf import get_order_service
 from src.orders.routes.schemas.response_models.order import (
-    OrderCreateResponseModel,
     OrderResponseModel,
 )
 from src.orders.services.order_service import OrderService
@@ -35,18 +34,6 @@ def list_orders(
 ) -> List[OrderResponseModel]:
     return TypeAdapter(List[OrderResponseModel]).validate_python(
         order_service.get_all_orders(), from_attributes=True
-    )
-
-
-@router.post(
-    "", status_code=status.HTTP_201_CREATED, response_model=OrderCreateResponseModel
-)
-def create_order(
-    order_service: Annotated[OrderService, Depends(get_order_service)],
-) -> OrderCreateResponseModel:
-    return TypeAdapter(OrderCreateResponseModel).validate_python(
-        order_service.create_order(),
-        from_attributes=True,
     )
 
 

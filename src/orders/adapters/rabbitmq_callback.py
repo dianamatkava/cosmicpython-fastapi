@@ -6,7 +6,7 @@ this is not a code smell, this is acceptable and expected trade-off.
 import json
 from typing import Type
 
-from src.orders.adapters.uow.order_uow import OrderUnitOfWork
+from src.orders.adapters.uow import OrderUnitOfWork
 from src.orders.services.messagebus import handle, Message
 
 

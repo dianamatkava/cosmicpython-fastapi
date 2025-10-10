@@ -1,16 +1,17 @@
 .env
-venv
-.DS_Store
-__pycache__/
-.idea
+
+*.db
 *.swp
 *.bkp
-/instance
-static/css/output.css
 
-src/units/control-flow
-webhook_logs.txt
-*.db
-*/units
+venv
+src/units/
 
+# Caches
+__pycache__/
 *_cache/
+
+# IDE files
+.DS_Store
+.idea/
+.vscode/

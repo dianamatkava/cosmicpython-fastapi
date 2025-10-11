@@ -14,6 +14,7 @@ Message = Union[Event, Command]
 
 def message_order_callback(message: Type[Message]):
     from src.orders.services.messagebus import handle
+
     uow = OrderUnitOfWork()
 
     def message_handler(chanel, method, props, body):

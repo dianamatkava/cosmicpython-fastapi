@@ -26,14 +26,16 @@ def order_line_created_event_db(uow: OrderUnitOfWork, event: OrderLineAdded):
         print(f"Order Line saved to DB {event.order_line_id}")
 
 
-def order_line_created_event_mem(event: OrderLineAdded, *args,  **kwargs):
+def order_line_created_event_mem(event: OrderLineAdded, *args, **kwargs):
     client = service_manager.get_mem_storage_client()
-    client.create_document(name=f'order:{event.order_id}', data=event.model_dump(mode='json'))
+    client.create_document(
+        name=f"order:{event.order_id}", data=event.model_dump(mode="json")
+    )
     print(f"Order Line saved in mem {event.order_line_id}")
 
 
 def order_created_event_email(event: OrderCreated, *args, **kwargs):
-    email.send_mail(F"Order Created order_id={event.order_id}")
+    email.send_mail(f"Order Created order_id={event.order_id}")
 
 
 def order_line_added_event(uow: OrderUnitOfWork, event: OrderLineAdded):
@@ -58,13 +60,13 @@ def order_line_removed_event(uow: OrderUnitOfWork, event: OrderLineRemoved):
         uow.commit()
 
 
-def order_status_changed_notify_event(event: OrderStatusChanged, *args,  **kwargs):
-    email.send_mail(F"Order Status Changed order_id={event.order_id}")
+def order_status_changed_notify_event(event: OrderStatusChanged, *args, **kwargs):
+    email.send_mail(f"Order Status Changed order_id={event.order_id}")
 
 
-def order_payed_notify_event(event: OrderPayed, *args,  **kwargs):
-    email.send_mail(F"Order Payed order_id={event.order_id}")
+def order_payed_notify_event(event: OrderPayed, *args, **kwargs):
+    email.send_mail(f"Order Payed order_id={event.order_id}")
 
 
-def order_shipped_notify_event(event: OrderShipped, *args,  **kwargs):
-    email.send_mail(F"Order Shipped order_id={event.order_id}")
+def order_shipped_notify_event(event: OrderShipped, *args, **kwargs):
+    email.send_mail(f"Order Shipped order_id={event.order_id}")

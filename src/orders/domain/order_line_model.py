@@ -3,8 +3,6 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from src.orders.adapters.orm import OrderStatus
-
 
 @dataclass(unsafe_hash=True)
 class OrderLineModel:

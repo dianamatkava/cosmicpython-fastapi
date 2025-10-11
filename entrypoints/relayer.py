@@ -15,7 +15,11 @@ def run():
     start_mappers()
     uow = ProductAggregateUnitOfWork()
 
-    service_manager.startup(settings=Settings(), messaging_client=RabbitMQClient, mem_storage_client=RedisClient)
+    service_manager.startup(
+        settings=Settings(),
+        messaging_client=RabbitMQClient,
+        mem_storage_client=RedisClient,
+    )
     client = service_manager.get_messaging_client()
 
     while True:

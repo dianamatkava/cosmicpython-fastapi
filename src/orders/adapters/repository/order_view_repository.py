@@ -20,7 +20,9 @@ class OrderViewRepository(AbstractRepository[OrderReadModel]):
     def get(self, order_id: int) -> OrderReadModel:
         order = self.in_mem.get_document(f"order:{order_id}")
         if not order:
-            order = self.session.query(OrderReadModel).filter_by(order_id=order_id).one()
+            order = (
+                self.session.query(OrderReadModel).filter_by(order_id=order_id).one()
+            )
         return TypeAdapter(OrderReadModel).validate_python(order, from_attributes=True)
 
     def list(self) -> List[OrderReadModel]:

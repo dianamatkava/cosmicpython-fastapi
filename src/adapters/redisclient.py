@@ -44,7 +44,7 @@ class RedisClient(MemStorageClient):
             port=config.port,
             username=config.user,
             password=config.password,
-            decode_responses=True
+            decode_responses=True,
         )
 
     def get_document(self, name: str) -> dict:

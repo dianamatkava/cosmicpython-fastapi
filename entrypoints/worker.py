@@ -11,7 +11,11 @@ from src.service_manager import service_manager
 
 def run():
     start_mappers()
-    service_manager.startup(settings=Settings(), messaging_client=RabbitMQClient, mem_storage_client=RedisClient)
+    service_manager.startup(
+        settings=Settings(),
+        messaging_client=RabbitMQClient,
+        mem_storage_client=RedisClient,
+    )
     service_manager.define_queses()
 
     client = service_manager.get_messaging_client()

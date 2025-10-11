@@ -10,11 +10,13 @@ from src.orders.domain.events import (
     OrderShipped,
 )
 from src.orders.services.event_handlers import (
-    order_line_added_event,
     order_line_removed_event,
     order_status_changed_notify_event,
     order_payed_notify_event,
-    order_shipped_notify_event, order_line_created_event_db, order_created_event_email, order_line_created_event_mem,
+    order_shipped_notify_event,
+    order_line_created_event_db,
+    order_created_event_email,
+    order_line_created_event_mem,
 )
 from src.shared.domain.events import Event, Command
 from src.constants import LogCode
@@ -31,7 +33,6 @@ EVENT_HANDLERS: Dict[Type[Event], List[Callable]] = {
         order_line_created_event_mem,
     ],
     OrderLineRemoved: [order_line_removed_event],
-
     OrderStatusChanged: [order_status_changed_notify_event],
     OrderPayed: [order_payed_notify_event],
     OrderShipped: [order_shipped_notify_event],

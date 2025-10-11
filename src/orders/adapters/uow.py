@@ -46,9 +46,13 @@ class OrderUnitOfWork(AbstractUnitOfWork):
         self.product_repo_cls = product_repo
 
     def __enter__(self) -> Self:
+        from src.service_manager import service_manager  # TODO: temp
         self.session: Session = self.session_factory()
         self.order_repo = self.order_repo_cls(self.session)
-        self.order_view_repo = self.order_view_repo_cls(self.session)
+        self.order_view_repo = self.order_view_repo_cls(
+            session=self.session,
+            in_mem=service_manager.get_mem_storage_client()
+        )
         self.order_line_repo = self.order_line_repo_cls(self.session)
         self.product_repo = self.product_repo_cls(self.session)
         return super().__enter__()

@@ -43,7 +43,7 @@ order_view_model = Table(
     Column("id", Integer, primary_key=True, autoincrement=True),
     Column("order_id", Integer),
     Column("order_status", String(255), default=OrderStatus.IN_PROCESS),
-    Column("order_line_id", Integer, nullable=True),
-    Column("product_sku", String(255), nullable=True, doc="Reference to a product"),
-    Column("product_qty", Integer, nullable=True),
+    Column("order_line_id", Integer, unique=True, nullable=False),
+    Column("product_sku", String(255), nullable=False, doc="Reference to a product"),
+    Column("product_qty", Integer, nullable=False),
 )

@@ -14,6 +14,7 @@ class OrderLineAdded(Event):
     _routing_key = Queues.ORDER_LINE_ADDED_EVENT
     _aggregate_type = "OrderCreated"
     order_id: int
+    order_status: OrderStatus
     order_line_id: int
     product_sku: str
     product_qty: int

@@ -10,12 +10,11 @@ from src.orders.domain.events import (
     OrderShipped,
 )
 from src.orders.services.event_handlers import (
-    order_created_event,
     order_line_added_event,
     order_line_removed_event,
-    order_status_changed_event,
-    order_payed_event,
-    order_shipped_event,
+    order_status_changed_notify_event,
+    order_payed_notify_event,
+    order_shipped_notify_event, order_line_created_event_db, order_created_event_email, order_line_created_event_mem,
 )
 from src.shared.domain.events import Event, Command
 from src.constants import LogCode
@@ -26,12 +25,16 @@ logger = logging.getLogger(__name__)
 
 
 EVENT_HANDLERS: Dict[Type[Event], List[Callable]] = {
-    OrderCreated: [order_created_event],
-    OrderLineAdded: [order_line_added_event],
+    OrderCreated: [order_created_event_email],
+    OrderLineAdded: [
+        order_line_created_event_db,
+        order_line_created_event_mem,
+    ],
     OrderLineRemoved: [order_line_removed_event],
-    OrderStatusChanged: [order_status_changed_event],
-    OrderPayed: [order_payed_event],
-    OrderShipped: [order_shipped_event],
+
+    OrderStatusChanged: [order_status_changed_notify_event],
+    OrderPayed: [order_payed_notify_event],
+    OrderShipped: [order_shipped_notify_event],
 }
 
 COMMAND_HANDLER: Dict[Type[Command], List[Callable]] = {}
@@ -61,7 +64,7 @@ def handle_event(uow: AbstractUnitOfWork, event: Event) -> None:
 def handle_command(uow: AbstractUnitOfWork, command: Command) -> None:
     try:
         handler = COMMAND_HANDLER.get(type(command))
-        handler(uow, command)
+        handler(uow=uow, command=command)
     except Exception:
         logger.error(
             "Event %s failed to execute",

@@ -4,13 +4,16 @@ this is not a code smell, this is acceptable and expected trade-off.
 """
 
 import json
-from typing import Type
+from typing import Type, Union
 
 from src.orders.adapters.uow import OrderUnitOfWork
-from src.orders.services.messagebus import handle, Message
+from src.shared.domain.events import Event, Command
+
+Message = Union[Event, Command]
 
 
 def message_order_callback(message: Type[Message]):
+    from src.orders.services.messagebus import handle
     uow = OrderUnitOfWork()
 
     def message_handler(chanel, method, props, body):

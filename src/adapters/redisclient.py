@@ -7,7 +7,7 @@ from src.config import MemStoreSettings
 
 class MemStorageClient(ABC):
     @abstractmethod
-    def __init__(self, *args, **kwargs) -> "Self":
+    def __init__(self, *args, **kwargs):
         pass
 
     @abstractmethod
@@ -44,6 +44,7 @@ class RedisClient(MemStorageClient):
             port=config.port,
             username=config.user,
             password=config.password,
+            decode_responses=True
         )
 
     def get_document(self, name: str) -> dict:

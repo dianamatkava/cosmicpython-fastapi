@@ -12,9 +12,9 @@ class OrderCreateResponseModel(BaseResponseModel):
 
 
 class OrderResponseModel(BaseResponseModel):
-    id: Annotated[int, Field(description="ID")]
+    # id: Annotated[int, Field(description="ID")]
     order_id: Annotated[int, Field(description="Order ID")]
     order_status: Annotated[OrderStatus, Field(description="Order status")]
     order_line_id: Annotated[int, Field(description="Order Line ID")]
-    product_sku: Annotated[int, Field(description="Product SKU")]
+    product_sku: Annotated[str, Field(description="Product SKU")]
     product_qty: Annotated[int, Field(description="Purchased product quantity")]

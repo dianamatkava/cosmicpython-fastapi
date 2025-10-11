@@ -50,10 +50,13 @@ class OrderService:
                 uow.order_repo.add(order)
                 uow.flush()
                 order_line.order_id = order.id
+                order.created()
 
             # TODO: AT-115 check if not similar items
             order_line_model = transform_order_line_dto_to_domain(order_line)
             uow.order_line_repo.add(order_line_model)
+            uow.flush()
+            order.added_order_line(order_line_model)
             uow.commit()
         return transform_order_line_domain_to_dto(order_line_model)
 

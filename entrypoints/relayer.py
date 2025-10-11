@@ -2,6 +2,7 @@ import time
 
 from sqlalchemy.orm import clear_mappers
 
+from src.adapters.redisclient import RedisClient
 from src.inventory.adapters.uow import ProductAggregateUnitOfWork
 from src.database.orm_mappers import start_mappers
 from src.adapters.rabbitmqclient import RabbitMQClient
@@ -14,7 +15,7 @@ def run():
     start_mappers()
     uow = ProductAggregateUnitOfWork()
 
-    service_manager.startup(settings=Settings(), messaging_client=RabbitMQClient)
+    service_manager.startup(settings=Settings(), messaging_client=RabbitMQClient, mem_storage_client=RedisClient)
     client = service_manager.get_messaging_client()
 
     while True:

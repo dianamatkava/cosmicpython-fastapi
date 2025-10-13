@@ -33,6 +33,7 @@ EVENT_HANDLERS: Dict[Type[Event], List[Callable]] = {
         order_line_created_event_mem,
     ],
     OrderLineRemoved: [order_line_removed_event],
+    # TODO: to be implemented
     OrderStatusChanged: [order_status_changed_notify_event],
     OrderPayed: [order_payed_notify_event],
     OrderShipped: [order_shipped_notify_event],

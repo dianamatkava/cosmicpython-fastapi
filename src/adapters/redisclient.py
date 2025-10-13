@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import List, Dict
 
 from redis import Redis
 
@@ -12,6 +13,10 @@ class MemStorageClient(ABC):
 
     @abstractmethod
     def get_document(self, name: str) -> dict:
+        pass
+
+    @abstractmethod
+    def get_documents(self, name: str) -> list:
         pass
 
     @abstractmethod
@@ -47,8 +52,18 @@ class RedisClient(MemStorageClient):
             decode_responses=True,
         )
 
-    def get_document(self, name: str) -> dict:
+    def get_keys(self, prefix) -> List:
+        return self.client.keys(f"{prefix}*")
+
+    def get_document(self, name: str) -> Dict:
         return self.client.hgetall(name)
+
+    def get_documents(self, prefix: str) -> List:
+        keys = self.get_keys(prefix)
+        res = []
+        for key in keys:
+            res.append(self.client.hgetall(key))
+        return res
 
     def create_document(self, name: str, data: dict) -> None:
         self.client.hset(name=name, mapping=data)

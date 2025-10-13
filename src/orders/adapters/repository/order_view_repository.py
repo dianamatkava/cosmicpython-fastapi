@@ -26,10 +26,17 @@ class OrderViewRepository(AbstractRepository[OrderReadModel]):
         return TypeAdapter(OrderReadModel).validate_python(order, from_attributes=True)
 
     def list(self) -> List[OrderReadModel]:
-        return self.session.query(OrderReadModel).all()
+        orders = self.in_mem.get_documents("order:")
+        if not orders:
+            orders = self.session.query(OrderReadModel).all()
+        return TypeAdapter(List[OrderReadModel]).validate_python(
+            orders, from_attributes=True
+        )
 
     def add(self, order: OrderReadModel) -> None:
         raise NotImplementedError
 
-    def delete(self, order_id: int) -> None:
-        raise NotImplementedError
+    def delete(self, order_id: int, order_line_id: int) -> None:
+        self.session.query(OrderReadModel).filter_by(
+            order_id=order_id, order_line_id=order_line_id
+        ).delete()

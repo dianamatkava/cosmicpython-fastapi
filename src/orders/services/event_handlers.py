@@ -23,41 +23,36 @@ def order_line_created_event_db(uow: OrderUnitOfWork, event: OrderLineAdded):
         )
         uow.session.add(read_model)
         uow.commit()
-        print(f"Order Line saved to DB {event.order_line_id}")
+        print(f"Order Line saved (DB) {event.order_line_id}")
 
 
 def order_line_created_event_mem(event: OrderLineAdded, *args, **kwargs):
     client = service_manager.get_mem_storage_client()
     client.create_document(
-        name=f"order:{event.order_id}", data=event.model_dump(mode="json")
+        name=f"order:{event.order_id}:{event.order_line_id}",
+        data=event.model_dump(mode="json"),
     )
-    print(f"Order Line saved in mem {event.order_line_id}")
+    print(f"Order Line saved (MEM) {event.order_line_id}")
 
 
 def order_created_event_email(event: OrderCreated, *args, **kwargs):
     email.send_mail(f"Order Created order_id={event.order_id}")
 
 
-def order_line_added_event(uow: OrderUnitOfWork, event: OrderLineAdded):
+def order_line_removed_event_db(uow: OrderUnitOfWork, event: OrderLineRemoved):
     with uow as uow:
-        uow.order_view_repo.update(
+        uow.order_view_repo.delete(
             order_id=event.order_id,
             order_line_id=event.order_line_id,
-            product_sku=event.product_sku,
-            product_qty=event.product_qty,
         )
         uow.commit()
+    print(f"Order Line deleted (DB) {event.order_line_id}")
 
 
-def order_line_removed_event(uow: OrderUnitOfWork, event: OrderLineRemoved):
-    with uow as uow:
-        uow.order_view_repo.update(
-            order_id=event.order_id,
-            order_line_id=event.order_line_id,
-            product_sku=event.product_sku,
-            product_qty=event.product_qty,
-        )
-        uow.commit()
+def order_line_removed_event_mem(event: OrderLineRemoved, *args, **kwargs):
+    client = service_manager.get_mem_storage_client()
+    client.delete_document(f"order:{event.order_id}:{event.order_line_id}")
+    print(f"Order Line deleted (MEM) {event.order_line_id}")
 
 
 def order_status_changed_notify_event(event: OrderStatusChanged, *args, **kwargs):

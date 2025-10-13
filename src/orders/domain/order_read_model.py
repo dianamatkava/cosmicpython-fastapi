@@ -1,12 +1,10 @@
 from dataclasses import dataclass
-from typing import Optional
 
 from src.orders.adapters.orm import OrderStatus
 
 
 @dataclass(unsafe_hash=True)
 class OrderReadModel:
-    id: int
     order_id: int
     order_status: OrderStatus
     order_line_id: int
@@ -20,9 +18,7 @@ class OrderReadModel:
         order_line_id: int,
         product_sku: str,
         product_qty: int,
-        id: Optional[int] = None,
     ):
-        self.id = id
         self.order_id = order_id
         self.order_status = order_status
         self.order_line_id = order_line_id

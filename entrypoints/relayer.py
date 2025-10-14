@@ -13,6 +13,7 @@ from src.shared.adapters.orm import OutboxStatus
 
 def run():
     start_mappers()
+    # TODO: bootstrap DI
     uow = ProductAggregateUnitOfWork()
 
     service_manager.startup(

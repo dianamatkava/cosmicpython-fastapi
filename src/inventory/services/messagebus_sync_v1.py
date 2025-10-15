@@ -6,7 +6,7 @@ from src.inventory.domain import commands
 from src.inventory.domain import events
 from src.inventory.services import event_handler
 from src.constants import LogCode
-from src.shared.uow import AbstractUnitOfWork
+from src.shared.adapters.uow import AbstractUnitOfWork
 
 logger = getLogger(__name__)
 

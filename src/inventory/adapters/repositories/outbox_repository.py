@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from src.inventory.domain.outbox import OutBoxModel
 from src.shared.adapters.orm import OutboxStatus
-from src.shared.repository import AbstractRepository, T
+from src.shared.adapters.repository import AbstractRepository, T
 
 
 class OutboxRepository(AbstractRepository):

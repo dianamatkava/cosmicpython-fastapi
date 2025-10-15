@@ -8,8 +8,8 @@ from src.inventory.domain.product_aggregate import ProductAggregate
 from src.inventory.services.batch_service import BatchService
 from src.inventory.services.product_service import ProductService
 from src.orders.domain.order_line_model import OrderLineModel
-from src.shared.repository import AbstractRepository
-from src.shared.uow import AbstractUnitOfWork
+from src.shared.adapters.repository import AbstractRepository
+from src.shared.adapters.uow import AbstractUnitOfWork
 
 
 class FakeProductRepository(AbstractRepository):
@@ -26,18 +26,22 @@ class FakeProductRepository(AbstractRepository):
         self._products.add(product)
 
     def get(self, **kwargs) -> ProductAggregate:
-        if sku := kwargs.get('sku'):
+        if sku := kwargs.get("sku"):
             return self.get_by_sku(sku=sku)
-        elif ref := kwargs.get('ref'):
+        elif ref := kwargs.get("ref"):
             return self.get_by_batch_ref(ref=ref)
         else:
-            raise TypeError(f"{self}.get() got an unexpected keyword argument/s {kwargs.keys()}")
+            raise TypeError(
+                f"{self}.get() got an unexpected keyword argument/s {kwargs.keys()}"
+            )
 
     def get_by_sku(self, sku: str) -> ProductAggregate:
         return next(p for p in self._products if p.sku == sku)
 
     def get_by_batch_ref(self, ref: str) -> ProductAggregate:
-        return next(p for p in self._products if ref in set(b.reference for b in p.batches))
+        return next(
+            p for p in self._products if ref in set(b.reference for b in p.batches)
+        )
 
     def list(self) -> List[ProductAggregate]:
         return list(self._products)
@@ -156,7 +160,12 @@ def get_fake_uof(fake_session: FakeSession) -> FakeUoW:
 
 
 @pytest.fixture(name="uow")
-def get_fake_uow(fake_session: FakeSession, batch_repo: FakeBatchRepository, product_aggregate_repo: FakeProductRepository, order_line_repo: FakeOrderLineRepository):
+def get_fake_uow(
+    fake_session: FakeSession,
+    batch_repo: FakeBatchRepository,
+    product_aggregate_repo: FakeProductRepository,
+    order_line_repo: FakeOrderLineRepository,
+):
     return FakeUoW(
         session_factory=lambda: fake_session,
         product_aggregate_repo=product_aggregate_repo,

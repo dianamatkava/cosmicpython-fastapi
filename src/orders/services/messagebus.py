@@ -20,7 +20,7 @@ from src.orders.services.event_handlers import (
 )
 from src.shared.domain.events import Event, Command
 from src.constants import LogCode
-from src.shared.uow import AbstractUnitOfWork
+from src.shared.adapters.uow import AbstractUnitOfWork
 
 
 logger = logging.getLogger(__name__)

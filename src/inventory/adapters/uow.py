@@ -13,8 +13,8 @@ from src.shared.domain.events import DomainEvent
 from src.inventory.domain.outbox import OutBoxModel
 from src.orders.adapters.repository.order_line_repository import OrderLineRepository
 from src.settings import get_settings
-from src.shared.repository import AbstractRepository
-from src.shared.uow import AbstractUnitOfWork
+from src.shared.adapters.repository import AbstractRepository
+from src.shared.adapters.uow import AbstractUnitOfWork
 
 settings = get_settings()
 

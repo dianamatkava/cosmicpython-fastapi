@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from src.database.orm_mappers import product as _product
 from src.inventory.domain.batch import BatchModel
 from src.inventory.domain.product_aggregate import ProductAggregate
-from src.shared.repository import AbstractRepository
+from src.shared.adapters.repository import AbstractRepository
 
 
 class ConcurrencyError(Exception):

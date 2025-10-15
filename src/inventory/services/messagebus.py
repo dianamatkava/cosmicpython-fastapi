@@ -10,7 +10,7 @@ from src.inventory.domain.events import BatchQuantityChangedEvent, OutOfStockEve
 from src.inventory.services import event_handler
 from src.shared.domain.events import Command, Event
 from src.constants import LogCode
-from src.shared.uow import AbstractUnitOfWork
+from src.shared.adapters.uow import AbstractUnitOfWork
 
 logger = getLogger(__name__)
 

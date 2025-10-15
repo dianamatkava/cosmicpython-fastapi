@@ -3,6 +3,7 @@ from typing import Self, Type
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
+from src.bootstrap import boot
 from src.inventory.adapters.repositories.product_repository import (
     ProductAggregateRepository,
 )
@@ -11,8 +12,8 @@ from src.orders.adapters.repository.order_line_repository import OrderLineReposi
 from src.orders.adapters.repository.order_repository import OrderRepository
 from src.orders.adapters.repository.order_view_repository import OrderViewRepository
 from src.settings import get_settings
-from src.shared.repository import AbstractRepository
-from src.shared.uow import AbstractUnitOfWork
+from src.shared.adapters.repository import AbstractRepository
+from src.shared.adapters.uow import AbstractUnitOfWork
 
 settings = get_settings()
 
@@ -46,12 +47,10 @@ class OrderUnitOfWork(AbstractUnitOfWork):
         self.product_repo_cls = product_repo
 
     def __enter__(self) -> Self:
-        from src.service_manager import service_manager  # TODO: temp
-
         self.session: Session = self.session_factory()
         self.order_repo = self.order_repo_cls(self.session)
         self.order_view_repo = self.order_view_repo_cls(
-            session=self.session, in_mem=service_manager.get_mem_storage_client()
+            session=self.session, in_mem=boot.get_mem_storage_client()
         )
         self.order_line_repo = self.order_line_repo_cls(self.session)
         self.product_repo = self.product_repo_cls(self.session)

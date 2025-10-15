@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from src.adapters.redisclient import MemStorageClient
 from src.orders.domain.order_read_model import OrderReadModel
-from src.shared.repository import AbstractRepository
+from src.shared.adapters.repository import AbstractRepository
 
 
 class OrderViewRepository(AbstractRepository[OrderReadModel]):

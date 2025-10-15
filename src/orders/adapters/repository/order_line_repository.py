@@ -5,7 +5,7 @@ from typing import List
 from sqlalchemy.orm import Session
 
 from src.orders.domain import order_line_model as domain
-from src.shared.repository import AbstractRepository
+from src.shared.adapters.repository import AbstractRepository
 
 
 class OrderLineRepository(AbstractRepository[domain.OrderLineModel]):

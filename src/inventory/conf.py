@@ -3,14 +3,14 @@ from typing import Annotated
 from fastapi import Depends
 
 from src.adapters.rabbitmqclient import MessagingClient
-from src.service_manager import service_manager
+from src.bootstrap import boot
 from src.inventory.adapters.uow import ProductAggregateUnitOfWork
 from src.inventory.services.batch_service import BatchService
 from src.inventory.services.product_service import ProductService
 
 
 def get_messaging_client() -> MessagingClient:
-    return service_manager.get_messaging_client()
+    return boot.messaging_client
 
 
 def get_unit_of_work() -> ProductAggregateUnitOfWork:

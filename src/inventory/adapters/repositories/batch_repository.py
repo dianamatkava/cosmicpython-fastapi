@@ -4,7 +4,7 @@ from typing import List
 from sqlalchemy.orm import Session
 
 from src.inventory.domain.batch import BatchModel
-from src.shared.repository import AbstractRepository
+from src.shared.adapters.repository import AbstractRepository
 
 
 class BatchRepository(AbstractRepository):
@@ -14,9 +14,7 @@ class BatchRepository(AbstractRepository):
         self.session = session
 
     def get(self, reference: str) -> BatchModel:
-        return (
-            self.session.query(BatchModel).filter_by(reference=reference).one()
-        )
+        return self.session.query(BatchModel).filter_by(reference=reference).one()
 
     def add(self, batch: BatchModel) -> None:
         self.session.add(batch)
